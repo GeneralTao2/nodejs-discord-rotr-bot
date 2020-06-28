@@ -1,7 +1,6 @@
-//https://discord.com/oauth2/authorize?client_id=726008192425001011&scope=bot&permissions=8
 const discord = require('discord.js');
-const token = 'NzI2MDA4MTkyNDI1MDAxMDEx.XvXMYA.y_40azZtW-OiU8ozPjgr1FnLUhM';
 const playerList = require('./player_manager')
+const configs = require('./configs')
 
 const client = new discord.Client();
 
@@ -67,7 +66,7 @@ function requestMailing(userMail) {
   let playerIndex = playerList.findByName(nameId);
   playerIndex--;
   let playerDiskr = playerList.players[playerIndex].id;
-  let mail = 'Hello, **' + nameId + '**! Want to play?\n`' + userMail + '`';
+  let mail = 'Hello! Want to play?\n`' + userMail + '`';
   client.users.cache.get(playerDiskr).send(mail);
 }
 
@@ -171,6 +170,6 @@ function defineMember(nameId) {
 }
   
 
-client.login(token);
+client.login(configs.token);
 
 //playerList.save();
