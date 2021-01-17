@@ -17,11 +17,7 @@ async function getDocumentsByMatch(collection, match) {
 }
 
 async function addPlayerData(data) {
-    if(await findAddedPlayerById(data.discordId)) {
-        return 'nok';
-    }
-    exports.addedPlayers.insertOne(data);
-    return 'ok';
+  exports.addedPlayers.insertOne(data);
 }
 
 async function updatePlayerDataById(id, data) {
@@ -29,39 +25,74 @@ async function updatePlayerDataById(id, data) {
 }
 
 async function addPlayerToInvitedList(player) {
-    if(await findInvitedPlayerById(player.discordId)) {
-        return 'nok';
-    }
-    exports.invitedPlayes.insertOne(player);
-    return 'ok';
+  exports.invitedPlayers.insertOne(player);
+}
+
+async function addPlayerToBannedList(player) {
+  exports.bannedPlayers.insertOne(player);
 }
 
 async function findInvitedPlayerById(id) {
-    return await exports.invitedPlayes.findOne( { discordId: id } );;
+    return await exports.invitedPlayers.findOne( { discordId: id } );;
 } 
 
 async function findAddedPlayerById(id) {
     return await exports.addedPlayers.findOne( { discordId: id } );
 } 
 
-function removeInvitedPlayerById(id) {
-  exports.invitedPlayes.findOneAndDelete( { discordId: id } );
+async function findBannedPlayerById(id) {
+  return await exports.bannedPlayers.findOne( { discordId: id } );
+} 
+
+async function removeInvitedPlayerById(id) {
+  return await exports.invitedPlayers.findOneAndDelete( { discordId: id } );
 }
 
 async function removeAddedPlayerById(id) {
   return await exports.addedPlayers.findOneAndDelete( { discordId: id } );
 }
 
-async function updateInvitedList() {
-  const cursor = invitedPlayes.find({});
-  while(await cursor.hasNext()) {
-    const doc = await cursor.next();
-    
-  }
+async function removeBannedPlayerById(id) {
+  return await exports.bannedPlayers.findOneAndDelete( { discordId: id } );
 }
 
+async function invitedPlayersForEach(callback) {
+  const cursor = exports.invitedPlayers.find({});
+  let array = [];
+  while(await cursor.hasNext()) {
+    const doc = await cursor.next()
+    array.push(await callback(doc))
+  }
+  return array
+}
+
+async function addedPlayersForEach(callback) {
+  const cursor = exports.addedPlayers.find({});
+  let array = [];
+  while(await cursor.hasNext()) {
+    const doc = await cursor.next()
+    array.push(await callback(doc))
+  }
+  return array
+}
+
+async function bannedPlayersForEach(callback) {
+  const cursor = exports.bannedPlayers.find({});
+  let array = [];
+  while(await cursor.hasNext()) {
+    const doc = await cursor.next()
+    array.push(await callback(doc))
+  }
+  return array
+}
+
+exports.bannedPlayersForEach = bannedPlayersForEach
+exports.addedPlayersForEach = addedPlayersForEach
+exports.removeBannedPlayerById = removeBannedPlayerById;
+exports.findBannedPlayerById = findBannedPlayerById;
+exports.addPlayerToBannedList = addPlayerToBannedList;
+exports.invitedPlayersForEach = invitedPlayersForEach;
 exports.removeAddedPlayerById = removeAddedPlayerById;
-exports.updateInvitedList = updateInvitedList;
 exports.removeInvitedPlayerById = removeInvitedPlayerById;
 exports.findInvitedPlayerById = findInvitedPlayerById;
 exports.addPlayerToInvitedList = addPlayerToInvitedList;

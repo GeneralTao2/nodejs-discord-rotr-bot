@@ -1,6 +1,6 @@
 const configs = require('./configs')
 
-const { Client, MessageEmbed } = require('discord.js');
+const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 
 const Canvas = require('canvas');
 
@@ -13,6 +13,11 @@ const guildId = '448934652992946176';
 const chennelId = '726026506869932043';
 
 const botUserId = '726008192425001011';
+
+const botModeratorRoleData = {
+	name: "Bot Moderator",
+	color: [212, 102, 59]
+}
 
 function logGuildCannels() {
     console.log(client.guilds);
@@ -70,9 +75,10 @@ function getLanguageByUserId(id) {
 }
 
 async function init() {
-    exports.currentGuild = client.guilds.cache.get(guildId);
-    exports.currentChennel = client.channels.cache.get(chennelId);
+    exports.currentGuild = await client.guilds.cache.get(guildId);
+    exports.currentChennel = await client.channels.cache.get(chennelId);
     await exports.currentGuild.members.fetch();
+    await exports.currentGuild.roles.fetch()
 }
 
 function getTagByUserId(id) {
@@ -97,7 +103,68 @@ function draw() {
     
 }
 
+function imageAttachment(buffer) {
+    return new MessageAttachment(buffer, 'map.png');
+}
+
+async function getLastUserDMbyId(id) {
+    const user = getUserById(id)
+    await user.createDM()
+    await user.dmChannel.messages.fetch(user.dmChannel.lastMessageID);
+    return user.dmChannel.messages.cache.array()[0];
+}
+
+function isPlayerModerById(id) {
+    const roleArray = exports.currentGuild.roles.cache.filter(role => role.name === "Bot Moderator").array()
+    if(!roleArray.length) {
+        return
+    }
+    const role = roleArray[0]
+    return getGuildMemberByUserId(id).roles.cache.has(role.id)
+}
+
+function findRoleByName(name) {
+    const roleArray = exports.currentGuild.roles.cache.filter(role => role.name === name).array()
+    if(roleArray.length === 0) {
+        return null
+    }
+    return roleArray[0]
+}
+
+async function pinModerRoleById(id) {
+	const role = findRoleByName(botModeratorRoleData.name)
+	if(role) {
+		const member = getGuildMemberByUserId(id)
+		member.roles.add(role.id)
+	} else {
+		await exports.currentGuild.roles.create({
+			data: botModeratorRoleData,
+			reason: 'These pepale has access to dangerous RotrManager bot'
+		})
+	}
+}
+
+function unpinModerRoleById(id) {
+	const role = findRoleByName(botModeratorRoleData.name)
+	if(role) {
+		const member = getGuildMemberByUserId(id)
+		member.roles.remove(role.id)
+	} else {
+		return
+	}
+}
+
+async function sendMessageToUser(user) {
+    
+}
+
+exports.isPlayerModerById = isPlayerModerById
+exports.unpinModerRoleById = unpinModerRoleById
+exports.findRoleByName = findRoleByName
+exports.pinModerRoleById = pinModerRoleById
+exports.getLastUserDMbyId = getLastUserDMbyId;
 exports.draw = draw; 
+exports.imageAttachment = imageAttachment;
 exports.ErrorMessage = ErrorMessage;
 exports.getTagByUserId = getTagByUserId;
 exports.getLanguageByUserId = getLanguageByUserId;
