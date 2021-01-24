@@ -213,7 +213,7 @@ async function getMaps() {
   return await fsPromises.readdir('Maps');
 }
 
-async function getMapsByPlayerQuantity(playerQuantity) {
+async function getMapInfosByPlayerQuantity(playerQuantity) {
   const maps = await getMaps();
   const separatedMapInfos = []
   for(let i=0; i<maps.length; i++) {
@@ -229,7 +229,8 @@ async function getMapsByPlayerQuantity(playerQuantity) {
   return separatedMapInfos
 }
 
-exports.getMapsByPlayerQuantity = getMapsByPlayerQuantity;
+
+exports.getMapInfosByPlayerQuantity = getMapInfosByPlayerQuantity;
 exports.getMaps = getMaps;
 exports.makeAllImages = makeAllImages;
 exports.getMapInfo = getMapInfo;

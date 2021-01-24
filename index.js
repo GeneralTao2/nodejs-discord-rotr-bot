@@ -4,6 +4,7 @@ const configs = require('./configs')
 const banner = require("./bannerManager")
 const mapm = require("./mapManager")
 const local = require("./localization")
+const moment = require("moment")
 //GeneralTao#5693
 // ======================================================================== CONNECTION ============
 
@@ -13,6 +14,7 @@ discord.client.on('ready',async () => {
     db.addedPlayers = await db.client.db("test").collection("addedPlayers");
     db.invitedPlayers = await db.client.db("test").collection("invitedPlayers");
     db.bannedPlayers = await db.client.db("test").collection("bannedPlayers");
+    db.gathers = await db.client.db("test").collection("gathers");
   } catch (error) {
     console.log(error)
   }
@@ -32,25 +34,8 @@ discord.client.on('ready',async () => {
   const maps = await mapm.getMaps()
   const members = discord.currentGuild.members.cache.array();
 
-  const buffer = await banner.getMapCollageByPlayer(2);
-  const attachment = discord.imageAttachment(buffer);
-  await discord.currentChennel.send('', attachment);
-  /*for(let m=0; m<1; m++) {
-    const user = members[m].user;
-    for(let i=10; i<11; i++) {
-      //console.log(user)
-      if(maps[i] === "MapCache.ini") {
-        continue
-      }
-      //const mapName = '[RANK] [NMC] Plant Waste'
-      const buffer = await banner.getGameBanner(maps[i], user)
-      const attachment = discord.imageAttachment(buffer);
-      await discord.currentChennel.send('', attachment);
-    }
-  }*/
   discord.draw();
-  //console.log(discord.getUserByTagObj(testTag));
-  //playerList.init();
+
 });
 
 async function invitePlyerToGame(user, map, message) {
@@ -66,7 +51,7 @@ async function initLastInvitationMessages() {
     const user = await discord.getUserById(invitedPlayer.discordId)
     const lastMessage = await discord.getLastUserDMbyId(invitedPlayer.discordId);
     await removeUpDownReactions(lastMessage);
-    upDownManager(lastMessage, user.id, () => {
+    upDownManager(lastMessage, user.id, threeDays, () => {
       addPlayerAfterInviting(user)
     }, () => {
       ignorePlayerAfterInviting(user)
@@ -97,6 +82,31 @@ async function banPlayer(user, reason) {
   });
 }
 
+async function gather(inviterUser, invitedUserList, time, playerQuantity, mapName){
+  let gatherData = {
+    discordId: inviterUser.id,
+    tag: {
+      name: inviterUser.username,
+      discr: inviterUser.discriminator
+    },
+    mapName: mapName,
+    playerQuantity: playerQuantity,
+    expireAt: moment(new Date()).add(time, 'm').toDate(),
+    invitedPlayer: [] 
+  }
+  for(let i=0; i<invitedUserList.length; i++) {
+    gatherData.invitedPlayer.push({
+      discordId: invitedUserList[i].id,
+      tag: {
+        name: invitedUserList[i].username,
+        discr: invitedUserList[i].discriminator
+      },
+      accept: '🔄'
+    })
+  }
+  return await db.addGather(gatherData)
+}
+
 async function addPlayer(user) {
   return await db.addPlayerData({
     discordId: user.id,
@@ -109,10 +119,14 @@ async function addPlayer(user) {
   });
 }
 
+function getLocalContent(user, contentCB) {
+  const language = discord.getLanguageByUserId(user.id);
+  return contentCB(arguments, language)
+}
+
 async function sendMessageToUser(user, contentCB) {
 	try {
-    const language = discord.getLanguageByUserId(user.id);
-    const content = contentCB(arguments, language)
+    const content = getLocalContent(user, contentCB)
     discord.getLanguageByUserId(user.id)
 		return await user.send(content)
 	} catch (error) {
@@ -137,6 +151,7 @@ async function addPlayerAfterInviting(user) {
   }
   addPlayer(user);
   db.removeInvitedPlayerById(user.id);
+  sendMessageToUser(user, local.adding)
   discord.currentChennel.send("All right, player `"+user.tag+"` added.");
 }
 
@@ -170,7 +185,7 @@ async function invatePlayerCommand(message) {
     if(!sendedMessage) {
       return
     }
-    upDownManager(sendedMessage, user.id, () => {
+    upDownManager(sendedMessage, user.id, threeDays, () => {
       addPlayerAfterInviting(user)
     }, () => {
       ignorePlayerAfterInviting(user)
@@ -222,11 +237,17 @@ async function cancelPlayerInvitationCommand(message) {
 
 async function banPlayerCommand(message) {
   message.react('👌');
+
   if(!discord.isPlayerModerById(message.author.id)) {
     discord.currentChennel.send("Only moderator can send this command.")
     return
   }
   const user = message.mentions.users.array()[0]
+
+  if(user.id === "383277523561086979") {
+    discord.currentChennel.send("Cannot ban `"+user.tag+"`.")
+    return
+  }
 
   if(user.bot) {
     discord.currentChennel.send("Cannot invite bot `"+user.tag+"`.")
@@ -288,36 +309,65 @@ async function getInvitedPlayersCommand(message) {
     const user = discord.getUserById(player.discordId)
     return user.tag
   })
+  let content = '#468fbc'
   if(list.length === 0) {
-    discord.currentChennel.send("Invited plyers list is empty.")
-    return
+    content = "Empty."
+  } else {
+    for(let i=0; i<list.length; i++) {
+      content += (i+1).toString() + '. ' + list[i] + '\n';
+    }
   }
-  let content = '```'
-  for(let i=0; i<list.length; i++) {
-    content += (i+1).toString() + '. ' + list[i] + '\n';
-  }
-  content += '```'
-  discord.currentChennel.send(content)
+  discord.currentChennel.send({embed: {
+    color: 3447003,
+    title: "Invited playres            :arrows_counterclockwise:",
+    description: content
+  }})
 }
 
 //---------------------------------------------------------------- GET ADDED PLAYERS ----------------
 
 async function getAddedPlayersCommand(message) {
+  //user.presence.status
   message.react('👌');
   let list = await db.addedPlayersForEach(async player => {
     const user = discord.getUserById(player.discordId)
-    return user.tag
+    return {
+      tag: user.tag,
+      presence: discord.isOnlineById(user.id)
+    }
   })
   if(list.length === 0) {
     discord.currentChennel.send("Added plyers list is empty.")
     return
   }
-  let content = '```'
+  let onlineContent = ''
+  let onlinePointer = 1;
+  let offlineContent = ''
+  let offlinePointer = 1;
   for(let i=0; i<list.length; i++) {
-    content += (i+1).toString() + '. ' + list[i] + '\n';
+    if(list[i].presence) {
+      onlineContent += onlinePointer.toString() + '. ' + list[i].tag + '\n'
+      onlinePointer++
+    } else {
+      offlineContent += offlinePointer.toString() + '. ' + list[i].tag + '\n'
+      offlinePointer++
+    }
   }
-  content += '```'
-  discord.currentChennel.send(content)
+  if(onlineContent === '') {
+    onlineContent = 'Empty.'
+  }
+  if(offlineContent === '') {
+    offlineContent = "Empty."
+  }
+  discord.currentChennel.send({embed: {
+    color: '#74af67',
+    title: "Added playres                                          :white_check_mark:",
+    fields: [
+      { name: ':green_circle: online', value: onlineContent, inline: true },
+      { name: ':black_circle: offline', value: offlineContent, inline: true },
+    ]
+  }
+})
 }
 
 //---------------------------------------------------------------- GET BANNED PLARS ----------------
@@ -328,16 +378,19 @@ async function getBannedPlayersCommand(message) {
     const user = discord.getUserById(player.discordId)
     return user.tag
   })
+  let content = ''
   if(list.length === 0) {
-    discord.currentChennel.send("Banned plyers list is empty.")
-    return
+    content = "Empty."
+  } else {
+    for(let i=0; i<list.length; i++) {
+      content += (i+1).toString() + '. ' + list[i] + '\n';
+    }
   }
-  let content = '```'
-  for(let i=0; i<list.length; i++) {
-    content += (i+1).toString() + '. ' + list[i] + '\n';
-  }
-  content += '```'
-  discord.currentChennel.send(content)
+  discord.currentChennel.send({embed: {
+    color: '#d5952f',
+    title: "Banned playres            :hammer:",
+    description: content
+  }})
 }
 
 //---------------------------------------------------------------- ADD ----------------
@@ -414,25 +467,295 @@ async function unmakeModerCommand(message) {
 
 //---------------------------------------------------------------- SHOW MAPS ----------------
 
-async function showMaps(message) {
-  const buffer = await banner.getGameBanner(maps[i], user)
-  const attachment = discord.imageAttachment(buffer);
-  await discord.currentChennel.send('', attachment);
+async function showMapsCommand(message) {
+  const match = message.content.match(/^-maps ([2-8])$/)
+  if(match) {
+    const buffer = await banner.getMapCollageByPlayer(parseInt(match[1]));
+    if(buffer) {
+      const attachment = new discord.MessageAttachment(buffer, 'map.png');
+      await discord.currentChennel.send('', attachment);
+    } else {
+      discord.currentChennel.send("Oh, dont't have such maps.")
+    }
+  } else {
+    discord.currentChennel.send("Wrong players quantity.")
+  }
 }
 
-//---------------------------------------------------------------- GET BANNED PLARS ----------------
+//---------------------------------------------------------------- SHOW MAP ----------------
+
+async function showMapCommand(message) {
+  if(!message.content.match(/^-map ([2-8])/)) {
+    discord.currentChennel.send("Wrong players quantity.")
+    return
+  }
+  const match = message.content.match(/^-map ([2-8]) ([0-9]{1,3})$/)
+  if(match) {
+    const map = await banner.getMapInfoByPlayerAndIndex(parseInt(match[1]), parseInt(match[2]));
+    const attachment = new discord.MessageAttachment(buffer, 'map.png');
+    console.log(map.info.name)
+    await discord.currentChennel.send(map.info.name+"\nSize: "+ map.info.size.x + "x"+map.info.size.y, attachment);
+  } else {
+    discord.currentChennel.send("Wrong map number.")
+  }
+}
+
+//---------------------------------------------------------------- JOIN ----------------
+
+async function joinCommand(message) {
+  const user = message.author
+  if(await db.findAddedPlayerById(user.id)) {
+    sendMessageToUser(user, local.addingTwice)
+    return
+  }
+  addPlayer(user);
+  sendMessageToUser(user, local.adding)
+  db.removeInvitedPlayerById(user.id)
+  discord.currentChennel.send("All right, player `"+user.tag+"` added.");
+}
+
+//---------------------------------------------------------------- LEAVE ----------------
+
+async function leaveCommand(message) {
+  message.react('👌');
+  const user = message.author
+  sendMessageToUser(user, local.rejection)
+  db.removeAddedPlayerById(user.id)
+}
+
+//---------------------------------------------------------------- GATHER ----------------
+
+async function gatherPlayersCommand(message) {
+  const user = message.author
+  const gatherDataByUserId = await db.findGatherById(user.id)
+  if(gatherDataByUserId) {
+    const m = (gatherDataByUserId.expireAt.getTime() - new Date().getTime())/60000
+    const mRemaining = m|0
+    const sRemaining = ((((m*100)|0)%100)*0.6)|0
+    discord.currentChennel.send("You already gathered players. Wait `"+mRemaining.toString()+":"+sRemaining+"` minutes.");
+    return;
+  }
+
+  let gatherBanner
+  let comment;
+  let playerQuantity
+  let time
+  let success = false;
+  const match = message.content.match(/^-gather (.{1}) (.{1,3}) (.{1,2}) (.*)$/)
+  if(match) {
+    message.react('👌');
+    success = true
+
+    if(match[1] === "-" && match[2] === "-") {
+      playerQuantity = null
+      gatherBanner = await banner.getGatherByUser(user)
+    } 
+    if(match[1] != "-" && match[2] === "-") {
+      if(!match[1].match(/^[2-8]$/)) {
+        discord.currentChennel.send("Wrong player quantity.")
+        return
+      }
+      playerQuantity = parseInt(match[1])
+      gatherBanner = await banner.getGatherByPlayerQuantityAndUser(
+      playerQuantity, user)
+    } 
+    if(match[1] != "-" && match[2] != "-") {
+      if(!match[1].match(/^[2-8]$/)) {
+        discord.currentChennel.send("Wrong player quantity.")
+        return
+      }
+      if(!match[2].match(/^[0-9]{1,3}$/)) {
+        discord.currentChennel.send("Wrong map number.")
+        return
+      }
+      playerQuantity = parseInt(match[1])
+      gatherBanner = await banner.getGatherByPlayerQuantityPointerAndUser(
+      playerQuantity, parseInt(match[2]), user)
+      if(!gatherBanner) {
+        discord.currentChennel.send("Wrong map number.")
+        return
+      }
+    }
+    
+    if(await db.findGatherByPlayerQuantityAndMapName(playerQuantity, gatherBanner.mapInfo.name)) {
+      discord.currentChennel.send("The same gather already exists.")
+      return
+    }
+
+    if(match[3] != "-") {
+      if(!match[3].match(/^[0-9]{1,2}$/)) {
+        discord.currentChennel.send("Wrong time.")
+        return
+      }
+      time = parseInt(match[3])
+      if(time < 2 || time > 60) {
+        discord.currentChennel.send("Wrong time.")
+        return
+      }
+    } else {
+      time = 10
+    }
+
+    if(match[4] != "-") {
+      if(match[4].length < 3 && match[4].length > 256) {
+        discord.currentChennel.send("Wrong comment.")
+        return
+      }
+      comment = match[4]
+    } else {
+      comment = '-'
+    }
+
+  } else {
+    console.log("fuck")
+    return;
+  }
+   
+  if(success) {
+    
+    let list = await db.addedPlayersForEach(async player => {
+      const user = discord.getUserById(player.discordId)
+      return user
+    })
+
+    
+    let gatheredUserList = []
+    for(let i=0; i<list.length; i++) {
+      if(list[i].id === user.id) {
+        continue
+      }
+      if(discord.isOnlineById(list[i].id)) {
+        gatheredUserList.push(list[i])
+      }
+    }
+
+    const gatheredListLenth = gatheredUserList.length.toString().length
+    let onlineContent = ''
+    let states = ''
+    for(let i=0; i<gatheredUserList.length; i++) {
+      let iString = (i+1).toString() + '.'
+      const iStringLength = iString.length
+      for(let j=iStringLength; j<gatheredListLenth+1; j++) {
+        iString += ' '
+      }
+      states += "`"+iString+'` :arrows_counterclockwise:\n'
+      onlineContent += "`"+iString+'` ' + gatheredUserList[i].tag + '\n'
+    }
+
+    if(onlineContent === '') {
+      discord.currentChennel.send("No players to gather.")
+      return
+    }
+    
+    const attachment = new discord.MessageAttachment(gatherBanner.buffer, 'help.png');
+    let embed = new discord.MessageEmbed({
+      color: '#b6cbd1',
+      title: "Gathering                                                                                         :incoming_envelope:",
+      files: [
+        attachment
+      ],
+      image: {
+        url: 'attachment://help.png'
+      },
+      fields: [
+        { name: 'Gathered players', value: onlineContent, inline: true},
+        { name: 'State', value: states, inline: true},
+        { name: 'Your invitation will look like', value: comment === '-' ? "No comment." : comment },
+      ],
+      timestamp: moment(new Date()).add(time, 'm').toDate(),
+      footer: {
+        text: "Vote ✅ or ❎ to continue or cancel. Gathering is valid until"
+      }
+    })
+    let gatherMessage = await discord.currentChennel.send(embed)
+    upDownManager(gatherMessage, user.id, 2*60*1000, async () => {
+      const gatherDataByUserId = await db.findGatherById(user.id)
+      if(gatherDataByUserId) {
+        const m = (gatherDataByUserId.expireAt.getTime() - new Date().getTime())/60000
+        const mRemaining = m|0
+        const sRemaining = ((((m*100)|0)%100)*0.6)|0
+        discord.currentChennel.send("You already gathered players. Wait `"+mRemaining.toString()+":"+sRemaining+"` minutes.");
+        return;
+      }
+
+      if(await db.findGatherByPlayerQuantityAndMapName(playerQuantity, gatherBanner.mapInfo.name)) {
+        discord.currentChennel.send("The same gather already exists.")
+        return
+      }
+
+      message.react('👌');
+      gather(user, gatheredUserList, time, playerQuantity, 
+        gatherBanner.mapInfo ? gatherBanner.mapInfo.name : null)
+      for(let i=0; i<gatheredUserList.length; i++) {
+        sendInvitationToGathered(gatheredUserList[i], user, attachment, comment, time);
+      }
+      let interval = setInterval( async () => {
+        let newGatherData = await db.findGatherById(user.id)
+        let newStates = ''
+        for(let i=0; i<newGatherData.invitedPlayer.length; i++) {
+          let iString = (i+1).toString() + '.'
+          const iStringLength = iString.length
+          for(let j=iStringLength; j<gatheredListLenth+1; j++) {
+            iString += ' '
+          }
+          newStates += '`'+iString+'` '+newGatherData.invitedPlayer[i].accept+'\n'
+        }
+        embed.fields[1].value = newStates
+        gatherMessage.edit(embed)
+
+      }, 3000)
+      setTimeout(() => {
+        clearInterval(interval)
+      }, time*60*1000);
+    }, () => {
+      gatherMessage.react('🙅🏼‍♀️');
+    })
+  }
+}
+
+async function sendInvitationToGathered(user, inviter, attachment, comment, time) {
+  let embed = new discord.MessageEmbed({
+    color: '#b6cbd1',
+    title: getLocalContent(user, local.gather)+"                                                                                         :incoming_envelope:",
+    files: [
+      attachment
+    ],
+    image: {
+      url: 'attachment://help.png'
+    },
+    fields: [
+      { name: getLocalContent(user, local.wasInvitedToGame), value: comment === '-' ? getLocalContent(user, local.noComment) : comment },
+    ],
+    timestamp: moment(new Date()).add(time, 'm').toDate(),
+    footer: {
+      text: getLocalContent(user, local.gatherMessageFooter)
+    }
+  })
+
+  let message = await user.send(embed)
+  upDownManager(message, user.id, time*60*1000, () => {
+    db.updateGatherData(inviter.id, user.id, '✅')
+  }, () => {
+    db.updateGatherData(inviter.id, user.id, '❎')
+  })
+}
+
+//---------------------------------------------------------------- LEAVE ----------------
 
 
-//---------------------------------------------------------------- GET BANNED PLARS ----------------
+//---------------------------------------------------------------- LEAVE ----------------
+
+
+//---------------------------------------------------------------- LEAVE ----------------
 
 const threeDays = 3*24*60*60*1000;
-function upDownManager(message, userId, upFunction, downFunction) {
+function upDownManager(message, userId, ttl, upFunction, downFunction, endFunction) {
   message.react('✅');
   message.react('❎');
   const upFilter = (reaction, user) => reaction.emoji.name === '✅' && user.id === userId;
   const downFilter = (reaction, user) => reaction.emoji.name === '❎' && user.id === userId;
-  const upCollector = message.createReactionCollector(upFilter, { time: threeDays });
-  const downCollector = message.createReactionCollector(downFilter, { time: threeDays });
+  const upCollector = message.createReactionCollector(upFilter, { time: ttl });
+  const downCollector = message.createReactionCollector(downFilter, { time: ttl });
   upCollector.on('collect', r => { 
     removeUpDownReactions(message);
     message.react('👌');
@@ -443,8 +766,10 @@ function upDownManager(message, userId, upFunction, downFunction) {
     downFunction();
   });
   downCollector.on('end', collected => { 
-    console.log(`Collected ${collected.size} items`);
     removeUpDownReactions(message);
+    if(endFunction) {
+      endFunction()
+    }
   });
 }
 
@@ -464,14 +789,11 @@ async function ignorePlayerAfterInviting(user) {
   if(invitedPlayer) {
     db.removeInvitedPlayerById(userId);
     const userTag = user.username + '#' + user.discriminator;
+    sendMessageToUser(user, local.rejection)
     discord.currentChennel.send("Payer `" + userTag +"` rejected invitation.");
   }
 }
 
-
-async function handleUserMessage(message) {
-  
-}
 // ================================================================ DISCORD EVENT HANDLING =========
 
 // Handle message types
@@ -485,7 +807,19 @@ discord.client.on('message', async (message) => {
   }
 
   if(!message.guild) {
-    handleUserMessage(message);
+    if(message.content.match(/-join/)) {
+      joinCommand(message)
+    }
+  }
+
+  if(!await db.findAddedPlayerById(message.author.id)) {
+    return
+  }
+
+  if(!message.guild) {
+    if(message.content.match(/-leave/)) {
+      leaveCommand(message)
+    }
     return;
   }
 
@@ -494,48 +828,51 @@ discord.client.on('message', async (message) => {
     return;
   }
   if(message.mentions.users.array().length) {
-    if (message.content.match(/-invite {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-invite {1,5}<@![0-9]{18}>/)) {
       invatePlayerCommand(message);
     }
-    if (message.content.match(/-remove {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-remove {1,5}<@![0-9]{18}>/)) {
       removePlayerCommand(message);
     }
-    if (message.content.match(/-cancel {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-cancel {1,5}<@![0-9]{18}>/)) {
       cancelPlayerInvitationCommand(message);
     }
-    if (message.content.match(/-ban {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-ban {1,5}<@![0-9]{18}>/)) {
       banPlayerCommand(message);
     }
-    if (message.content.match(/-unban {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-unban {1,5}<@![0-9]{18}>/)) {
       unbanPlayerCommand(message);
     }
-    if (message.content.match(/-user {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-user {1,5}<@![0-9]{18}>/)) {
       getUserCommand(message);
     }
-    if (message.content.match(/-add {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-add {1,5}<@![0-9]{18}>/)) {
       addCommand(message);
     }
-    if (message.content.match(/-moder {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-moder {1,5}<@![0-9]{18}>/)) {
       makeModerCommand(message);
     }
-    if (message.content.match(/-unmoder {1,5}<@![0-9]{18}>/)) {
+    if (message.content.match(/^-unmoder {1,5}<@![0-9]{18}>/)) {
       unmakeModerCommand(message);
     }
   }
-  if (message.content.match(/-added/)) {
+  if (message.content.match(/^-added/)) {
     getAddedPlayersCommand(message);
   }
-  if (message.content.match(/-invited/)) {
+  if (message.content.match(/^-invited/)) {
     getInvitedPlayersCommand(message);
   }
-  if (message.content.match(/-banned/)) {
+  if (message.content.match(/^-banned/)) {
     getBannedPlayersCommand(message);
   }
-  if (message.content.match(/-gather/)) {
-    gatherPlayerCommand(message);
+  if (message.content.match(/^-maps /)) {
+    showMapsCommand(message);
   }
-  if (message.content.match(/-maps/)) {
-    showMaps(message);
+  if (message.content.match(/^-map /)) {
+    showMapCommand(message);
+  }
+  if (message.content.match(/^-gather/)) {
+    gatherPlayersCommand(message);
   }
 });
 

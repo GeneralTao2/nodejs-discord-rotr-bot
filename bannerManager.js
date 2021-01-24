@@ -7,67 +7,245 @@ const mapm = require('./mapManager')
 //22 margin
 //h 172
 //w 619
-async function getGameBanner(mapName, inviter) {
-	const canvas = createCanvas(619, 172)
+async function getGatherByPlayerQuantityPointerAndUser(playerQuantity, pointer, user) {
+	const bannerWidth = 619;
+	const bannerHeight = 172;
+	
+	const canvas = createCanvas(bannerWidth, bannerHeight)
+	const mapInfos = await mapm.getMapInfosByPlayerQuantity(playerQuantity)
+	if(pointer < 1 || pointer > mapInfos-1) {
+		return null
+	}
+	const mapInfo = mapInfos[pointer-1]
 	const ctx = canvas.getContext('2d')
 	const bg = await loadImage('images/bg1.jpg')
-	const map = await loadImage('maked_maps/'+mapName+'.png')
+	const map = await loadImage('maked_maps/'+mapInfo.name+'.png')
 	const spawnImage = await loadImage('images/spawn.png');
   	const techImage = await loadImage('images/tech.png');
 	const supplyImage = await loadImage('images/supply.png');
 	const bordersImage = await loadImage('images/borders.png');
-	const mapInfo = await mapm.getMapInfo(mapName);
-	const avatar = await loadImage(inviter.displayAvatarURL({ format: 'jpg' }));
+	const avatar = await loadImage(user.displayAvatarURL({ format: 'jpg' }));
 
-	const bannerWidth = 619;
-	const bannerHeight = 172;
+	const padding = 22;
 
-	ctx.drawImage(bg, 0, 0, 619, 172)
-	ctx.drawImage(map, 22, 22)
+	ctx.drawImage(bg, 0, 0, bannerWidth, bannerHeight)
+	ctx.drawImage(map, padding, padding)
 
-	const marginTop = -5;
-	const marginLeft = 5;
+	const mapTextLineQuantity = 5;
+	const mapTextHeight = 16
+	const mapTextMarginTop = 13
+	const iconMarginLeft = 172
+	const mapTextLineSpacing = (bannerHeight - 2*padding + mapTextHeight/2)/mapTextLineQuantity
 
-	ctx.font = '16px sans-serif';
+	const iconsMarginTop = -2
+	const iconSize = 20
+	const mapTextMarginLeft = iconMarginLeft + iconSize + 5
+
+	ctx.font = mapTextHeight.toString() + 'px sans-serif';
 	ctx.fillStyle = '#ffffff';
-	ctx.fillText(mapName, 172, 38+marginTop);
 
-	ctx.drawImage(bordersImage, 172, 50+marginTop, 20, 20)
-	ctx.fillText(mapInfo.size.x.toString()+' x '+mapInfo.size.y.toString(), 192+marginLeft, 65+marginTop);
-	ctx.drawImage(techImage, 172, 80+marginTop, 20, 20)
-	ctx.fillText(mapInfo.techPosition.length.toString(), 192+marginLeft, 95+marginTop);
-	ctx.drawImage(supplyImage, 172, 110+marginTop, 20, 20)
-	ctx.fillText(mapInfo.supplyPosition.length.toString(), 192+marginLeft, 125+marginTop);
-	ctx.drawImage(spawnImage, 172, 140+marginTop, 20, 20)
-	ctx.fillText(mapInfo.playerStrats.length.toString(), 192+marginLeft, 155+marginTop);
-
-	const canvasAvatar = createCanvas(172, 172)
+	ctx.fillText(mapInfo.name, iconMarginLeft, mapTextLineSpacing*0 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(bordersImage, iconMarginLeft, mapTextLineSpacing*1 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText(mapInfo.size.x.toString()+' x '+mapInfo.size.y.toString(), mapTextMarginLeft, mapTextLineSpacing*1 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(techImage, iconMarginLeft, mapTextLineSpacing*2 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText(mapInfo.techPosition.length.toString(), mapTextMarginLeft, mapTextLineSpacing*2 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(supplyImage, iconMarginLeft, mapTextLineSpacing*3 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText(mapInfo.supplyPosition.length.toString(), mapTextMarginLeft, mapTextLineSpacing*3 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(spawnImage, iconMarginLeft, mapTextLineSpacing*4 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText(mapInfo.playerStrats.length.toString(), mapTextMarginLeft, mapTextLineSpacing*4 + padding + mapTextMarginTop)
+	
+	const canvasAvatar = createCanvas(bannerHeight, bannerHeight)
 	const ctxAvatar = canvasAvatar.getContext('2d')
-	ctxAvatar.drawImage(avatar, 0, 0, 172, 172)
+	ctxAvatar.drawImage(avatar, 0, 0, bannerHeight, bannerHeight)
 	ctxAvatar.globalCompositeOperation = "destination-out";
 	gradient = ctxAvatar.createLinearGradient(0, 86, 128, 86);
 	gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
 	gradient.addColorStop(1, "rgba(255, 255, 255, 0.8)");
 	ctxAvatar.fillStyle = gradient;
-	ctxAvatar.fillRect(0, 0, 172, 172);
-	
-	ctx.drawImage(canvasAvatar, 447, 0, 172, 172)
+	ctxAvatar.fillRect(0, 0, bannerHeight, bannerHeight);
+	ctx.drawImage(canvasAvatar, 447, 0, bannerHeight, bannerHeight)
 
-	ctx.font = '20px sans-serif';
-	const inviterTegString = inviter.tag;
-	const textWidth = ctx.measureText(inviterTegString).width;
-	ctx.fillText(inviterTegString, bannerWidth - textWidth - 22, bannerHeight - 22);
+	const tegTextHeight = 20;
+	ctx.font = tegTextHeight.toString() + 'px sans-serif';
+	const tagTextWidth = ctx.measureText(user.tag).width;
+	ctx.fillText(user.tag, bannerWidth - tagTextWidth - padding, bannerHeight - padding);
 
-	//const buffer = canvas.toBuffer('image/png')
-	//fs.writeFileSync('test.png', buffer)
-	return canvas.toBuffer()
+	ctx.font = '30px sans-serif';
+	ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+	const inv = "INVITATION BY"
+	const invTextWidth = ctx.measureText(inv).width;
+	ctx.fillText(inv, bannerWidth - invTextWidth - padding, bannerHeight - (tegTextHeight + padding));
+
+	return {
+		buffer: canvas.toBuffer(),
+		mapInfo: mapInfo
+	}
 }
 
+async function getGatherByPlayerQuantityAndUser(playerQuantity, user) {
+	const bannerWidth = 619;
+	const bannerHeight = 172;
+	
+	const canvas = createCanvas(bannerWidth, bannerHeight)
+	const ctx = canvas.getContext('2d')
+	const bg = await loadImage('images/bg1.jpg')
+	const map = await loadImage('images/nomap'+playerQuantity.toString()+'.png')
+	const spawnImage = await loadImage('images/spawn.png');
+  	const techImage = await loadImage('images/tech.png');
+	const supplyImage = await loadImage('images/supply.png');
+	const bordersImage = await loadImage('images/borders.png');
+	const avatar = await loadImage(user.displayAvatarURL({ format: 'jpg' }));
+
+	const padding = 22;
+
+	ctx.drawImage(bg, 0, 0, bannerWidth, bannerHeight)
+	ctx.drawImage(map, padding, padding, 128, 128)
+
+	const mapTextLineQuantity = 5;
+	const mapTextHeight = 16
+	const mapTextMarginTop = 13
+	const iconMarginLeft = 172
+	const mapTextLineSpacing = (bannerHeight - 2*padding + mapTextHeight/2)/mapTextLineQuantity
+
+	const iconsMarginTop = -2
+	const iconSize = 20
+	const mapTextMarginLeft = iconMarginLeft + iconSize + 5
+
+	ctx.font = mapTextHeight.toString() + 'px sans-serif';
+	ctx.fillStyle = '#ffffff';
+
+	ctx.fillText("???", iconMarginLeft, mapTextLineSpacing*0 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(bordersImage, iconMarginLeft, mapTextLineSpacing*1 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText('"???" x "???"', mapTextMarginLeft, mapTextLineSpacing*1 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(techImage, iconMarginLeft, mapTextLineSpacing*2 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText("???", mapTextMarginLeft, mapTextLineSpacing*2 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(supplyImage, iconMarginLeft, mapTextLineSpacing*3 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText("???", mapTextMarginLeft, mapTextLineSpacing*3 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(spawnImage, iconMarginLeft, mapTextLineSpacing*4 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText(playerQuantity.toString(), mapTextMarginLeft, mapTextLineSpacing*4 + padding + mapTextMarginTop)
+	
+	const canvasAvatar = createCanvas(bannerHeight, bannerHeight)
+	const ctxAvatar = canvasAvatar.getContext('2d')
+	ctxAvatar.drawImage(avatar, 0, 0, bannerHeight, bannerHeight)
+	ctxAvatar.globalCompositeOperation = "destination-out";
+	gradient = ctxAvatar.createLinearGradient(0, 86, 128, 86);
+	gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+	gradient.addColorStop(1, "rgba(255, 255, 255, 0.8)");
+	ctxAvatar.fillStyle = gradient;
+	ctxAvatar.fillRect(0, 0, bannerHeight, bannerHeight);
+	ctx.drawImage(canvasAvatar, 447, 0, bannerHeight, bannerHeight)
+
+	const tegTextHeight = 20;
+	ctx.font = tegTextHeight.toString() + 'px sans-serif';
+	const tagTextWidth = ctx.measureText(user.tag).width;
+	ctx.fillText(user.tag, bannerWidth - tagTextWidth - padding, bannerHeight - padding);
+
+	ctx.font = '30px sans-serif';
+	ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+	const inv = "INVITATION BY"
+	const invTextWidth = ctx.measureText(inv).width;
+	ctx.fillText(inv, bannerWidth - invTextWidth - padding, bannerHeight - (tegTextHeight + padding));
+
+	return {
+		buffer: canvas.toBuffer(),
+		mapInfo: {
+			name: null
+		}
+	}
+}
+
+async function getGatherByUser(user) {
+	const bannerWidth = 619;
+	const bannerHeight = 172;
+	
+	const canvas = createCanvas(bannerWidth, bannerHeight)
+	const ctx = canvas.getContext('2d')
+	const bg = await loadImage('images/bg1.jpg')
+	const map = await loadImage('images/nomap.png')
+	const spawnImage = await loadImage('images/spawn.png');
+  	const techImage = await loadImage('images/tech.png');
+	const supplyImage = await loadImage('images/supply.png');
+	const bordersImage = await loadImage('images/borders.png');
+	const avatar = await loadImage(user.displayAvatarURL({ format: 'jpg' }));
+
+	const padding = 22;
+
+	ctx.drawImage(bg, 0, 0, bannerWidth, bannerHeight)
+	ctx.drawImage(map, padding, padding, 128, 128)
+
+	const mapTextLineQuantity = 5;
+	const mapTextHeight = 16
+	const mapTextMarginTop = 13
+	const iconMarginLeft = 172
+	const mapTextLineSpacing = (bannerHeight - 2*padding + mapTextHeight/2)/mapTextLineQuantity
+
+	const iconsMarginTop = -2
+	const iconSize = 20
+	const mapTextMarginLeft = iconMarginLeft + iconSize + 5
+
+	ctx.font = mapTextHeight.toString() + 'px sans-serif';
+	ctx.fillStyle = '#ffffff';
+
+	ctx.fillText("???", iconMarginLeft, mapTextLineSpacing*0 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(bordersImage, iconMarginLeft, mapTextLineSpacing*1 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText('"???" x "???"', mapTextMarginLeft, mapTextLineSpacing*1 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(techImage, iconMarginLeft, mapTextLineSpacing*2 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText("???", mapTextMarginLeft, mapTextLineSpacing*2 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(supplyImage, iconMarginLeft, mapTextLineSpacing*3 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText("???", mapTextMarginLeft, mapTextLineSpacing*3 + padding + mapTextMarginTop);
+	
+	ctx.drawImage(spawnImage, iconMarginLeft, mapTextLineSpacing*4 + padding + iconsMarginTop, iconSize, iconSize)
+	ctx.fillText("???", mapTextMarginLeft, mapTextLineSpacing*4 + padding + mapTextMarginTop)
+	
+	const canvasAvatar = createCanvas(bannerHeight, bannerHeight)
+	const ctxAvatar = canvasAvatar.getContext('2d')
+	ctxAvatar.drawImage(avatar, 0, 0, bannerHeight, bannerHeight)
+	ctxAvatar.globalCompositeOperation = "destination-out";
+	gradient = ctxAvatar.createLinearGradient(0, 86, 128, 86);
+	gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+	gradient.addColorStop(1, "rgba(255, 255, 255, 0.8)");
+	ctxAvatar.fillStyle = gradient;
+	ctxAvatar.fillRect(0, 0, bannerHeight, bannerHeight);
+	ctx.drawImage(canvasAvatar, 447, 0, bannerHeight, bannerHeight)
+
+	const tegTextHeight = 20;
+	ctx.font = tegTextHeight.toString() + 'px sans-serif';
+	const tagTextWidth = ctx.measureText(user.tag).width;
+	ctx.fillText(user.tag, bannerWidth - tagTextWidth - padding, bannerHeight - padding);
+
+	ctx.font = '30px sans-serif';
+	ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+	const inv = "INVITATION BY"
+	const invTextWidth = ctx.measureText(inv).width;
+	ctx.fillText(inv, bannerWidth - invTextWidth - padding, bannerHeight - (tegTextHeight + padding));
+
+	return {
+		buffer: canvas.toBuffer(),
+		mapInfo: {
+			name: null
+		}
+	}
+}
+
+
+
 async function getMapCollageByPlayer(playerQuantity) {
-	const mapInfos = await mapm.getMapsByPlayerQuantity(playerQuantity)
+	const mapInfos = await mapm.getMapInfosByPlayerQuantity(playerQuantity)
+	if(mapInfos.length === 0) {
+		return null
+	}
 	const collageSize = (Math.sqrt(mapInfos.length) | 0) + 1;
-	const mapQonY = mapInfos.length / collageSize
-	const mapQonX = mapInfos.length % collageSize
 	const canvas = createCanvas(128*collageSize, 128*collageSize)
 	const ctx = canvas.getContext('2d')
 	let mapXcaunter = 0;
@@ -99,5 +277,20 @@ async function getMapCollageByPlayer(playerQuantity) {
 	return canvas.toBuffer()
 }
 
+async function getMapInfoByPlayerAndIndex(playerQuantity, pointer) {
+	const mapInfo = (await mapm.getMapInfosByPlayerQuantity(playerQuantity))[pointer-1]
+	const canvas = createCanvas(128, 128)
+	const map = await loadImage('maked_maps/'+mapInfo.name+'.png')
+	const ctx = canvas.getContext('2d')
+	ctx.drawImage(map, 0, 0)
+	return {
+		buffer: canvas.toBuffer(),
+		info: mapInfo
+	}
+}
+
+exports.getGatherByUser = getGatherByUser
+exports.getGatherByPlayerQuantityAndUser = getGatherByPlayerQuantityAndUser;
+exports.getMapInfoByPlayerAndIndex = getMapInfoByPlayerAndIndex;
 exports.getMapCollageByPlayer = getMapCollageByPlayer;
-exports.getGameBanner = getGameBanner;
+exports.getGatherByPlayerQuantityPointerAndUser = getGatherByPlayerQuantityPointerAndUser;

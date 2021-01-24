@@ -1,6 +1,6 @@
 const configs = require('./configs')
 
-const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
+const { Client, MessageEmbed, MessageAttachment, Attachment } = require('discord.js');
 
 const Canvas = require('canvas');
 
@@ -103,9 +103,6 @@ function draw() {
     
 }
 
-function imageAttachment(buffer) {
-    return new MessageAttachment(buffer, 'map.png');
-}
 
 async function getLastUserDMbyId(id) {
     const user = getUserById(id)
@@ -154,17 +151,22 @@ function unpinModerRoleById(id) {
 	}
 }
 
-async function sendMessageToUser(user) {
-    
-}
+function isOnlineById(id) {
+    const user = getUserById(id)
+    if(user.presence.status === 'offline') {
+        return false
+    } else {
+        return true
+    }
+} 
 
+exports.isOnlineById = isOnlineById
 exports.isPlayerModerById = isPlayerModerById
 exports.unpinModerRoleById = unpinModerRoleById
 exports.findRoleByName = findRoleByName
 exports.pinModerRoleById = pinModerRoleById
 exports.getLastUserDMbyId = getLastUserDMbyId;
 exports.draw = draw; 
-exports.imageAttachment = imageAttachment;
 exports.ErrorMessage = ErrorMessage;
 exports.getTagByUserId = getTagByUserId;
 exports.getLanguageByUserId = getLanguageByUserId;
@@ -181,3 +183,5 @@ exports.ruUserRoleId = ruUserRoleId;
 exports.guildId = guildId;
 exports.chennelId = chennelId;
 exports.botUserId = botUserId;
+exports.MessageAttachment = MessageAttachment
+exports.MessageEmbed = MessageEmbed

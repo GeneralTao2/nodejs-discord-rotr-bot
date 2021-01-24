@@ -33,7 +33,50 @@ exports.banning = function banning(args, language) {
 }
 
 exports.unbanning = function unbanning(args, language) {
-	const ru = 'Ты был разбанен игроком `'+args[2]+'`. Теперь ты можешь пользоваться моими командами.'
-	const en = 'You was unbanned by `'+args[2]+'`. Now you can use my commands.'
+	const ru = 'Ты был разбанен игроком `'+args[2]+'`. Теперь ты можешь вступить к нам набрав `-join`.'
+	const en = 'You was unbanned by `'+args[2]+'`. Now you can join us, typing `-join`.'
 	return returnMessage(language, en, ru);
 }
+
+exports.adding = function adding(args, language) {
+	const ru = 'Отлично, теперь ты вступил в наши ряды. Чтобы просмотреть набор комманд набери `-help`.'
+	const en = 'Excellent, now you joined to us. To show my commands type `-help`.'
+	return returnMessage(language, en, ru);
+}
+
+exports.rejection = function rejection(args, language) {
+	const ru = 'Очень жаль, но ничего страшного. Если передумаешь, то просто набери `-join`.'
+	const en = 'I\'m sorry, but it\'s okay. If you change your mind, just type ` - join`'
+	return returnMessage(language, en, ru);
+}
+
+exports.addingTwice = function addingTwice(args, language) {
+	const ru = 'Нельзя добавить себя дважды.'
+	const en = 'You can\'t add yourself twice.'
+	return returnMessage(language, en, ru);
+}
+
+exports.wasInvitedToGame = function wasInvitedToGame(args, language) {
+	const ru = 'Ты был приглашён в игру!'
+	const en = 'You was invited to game!'
+	return returnMessage(language, en, ru);
+}
+
+exports.noComment = function noComment(args, language) {
+	const ru = 'Комментария нет.'
+	const en = 'No comment.'
+	return returnMessage(language, en, ru);
+}
+
+exports.gatherMessageFooter = function gatherMessageFooter(args, language) {
+	const ru = 'Жми на ✅ или ❎ чтобы принять или отказаться. До'
+	const en = 'Vote ✅ or ❎ to accept or cancel. Gathering is valid until'
+	return returnMessage(language, en, ru);
+}
+
+exports.gather = function gatherMessageFooter(args, language) {
+	const ru = 'Собрание'
+	const en = 'Gathering'
+	return returnMessage(language, en, ru);
+}
+

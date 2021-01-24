@@ -32,6 +32,20 @@ async function addPlayerToBannedList(player) {
   exports.bannedPlayers.insertOne(player);
 }
 
+async function addGather(player) {
+  exports.gathers.insertOne(player);
+}
+async function findGatherById(id) {
+  return await exports.gathers.findOne( { discordId: id } );;
+} 
+
+async function findGatherByPlayerQuantityAndMapName(playerQuantity, mapName) {
+  return await exports.gathers.findOne( {"$and": [
+    { playerQuantity: playerQuantity },
+    { mapName: mapName }
+   ]} )
+} 
+
 async function findInvitedPlayerById(id) {
     return await exports.invitedPlayers.findOne( { discordId: id } );;
 } 
@@ -86,6 +100,21 @@ async function bannedPlayersForEach(callback) {
   return array
 }
 
+async function updateGatherData(inviterId, userId, state) {
+  return await exports.gathers.updateOne({
+    discordId: inviterId,
+    "invitedPlayer.discordId": userId
+  }, {
+    "$set": {
+      "invitedPlayer.$.accept": state
+    }
+  })
+}
+
+exports.findGatherByPlayerQuantityAndMapName = findGatherByPlayerQuantityAndMapName
+exports.updateGatherData = updateGatherData
+exports.findGatherById = findGatherById
+exports.addGather = addGather
 exports.bannedPlayersForEach = bannedPlayersForEach
 exports.addedPlayersForEach = addedPlayersForEach
 exports.removeBannedPlayerById = removeBannedPlayerById;
