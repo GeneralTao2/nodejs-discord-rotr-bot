@@ -115,30 +115,48 @@ async function getMapInfo(mapName) {
 }
 
 async function makeImage(mapInfo) {
-  const canvas = createCanvas(128, 128)
-  const ctx = canvas.getContext('2d')
   const spawnImage = await loadImage('images/spawn.png');
   const techImage = await loadImage('images/tech.png');
   const supplyImage = await loadImage('images/supply.png');
   const mapBuffer = await tga2png('Maps/'+mapInfo.name+'/'+mapInfo.name+'.tga')
   const mapImage = new Image();
   mapImage.src = mapBuffer;
-  ctx.drawImage(mapImage, 0, 0)
-  const x_scale = 128/mapInfo.size.x;
-  const y_scale = 128/mapInfo.size.y;
+
+  const canvas_x = 128
+  const canvas_y = 128
+  const canvas = createCanvas(canvas_x, canvas_y)
+  const ctx = canvas.getContext('2d')
+
+  let x_size
+  let y_size
+  if(mapInfo.size.x > mapInfo.size.y) {
+    x_size = canvas_x
+    y_size = (canvas_x/mapInfo.size.x)*mapInfo.size.y
+  } else if(mapInfo.size.x < mapInfo.size.y) {
+    x_size = (canvas_y/mapInfo.size.y)*mapInfo.size.x
+    y_size = canvas_y
+  } else {
+    x_size = canvas_x
+    y_size = canvas_y
+  }
+  const x_pos = canvas_x/2 - x_size/2
+  const y_pos = canvas_y/2 - y_size/2
+  ctx.drawImage(mapImage, x_pos, y_pos, x_size, y_size)
+  const x_scale = x_size/mapInfo.size.x;
+  const y_scale = y_size/mapInfo.size.y;
   for(let i=0; i<mapInfo.playerStrats.length; i++) {
-    const x = mapInfo.playerStrats[i].x * x_scale;
-    const y = (mapInfo.size.y - mapInfo.playerStrats[i].y) * y_scale;
+    const x = mapInfo.playerStrats[i].x * x_scale + x_pos;
+    const y = (mapInfo.size.y - mapInfo.playerStrats[i].y) * y_scale + y_pos;
     ctx.drawImage(spawnImage, x-8, y-8, 20, 20)
   }
   for(let i=0; i<mapInfo.supplyPosition.length; i++) {
-    const x = mapInfo.supplyPosition[i].x * x_scale;
-    const y = (mapInfo.size.y - mapInfo.supplyPosition[i].y )* y_scale;
+    const x = mapInfo.supplyPosition[i].x * x_scale + x_pos;
+    const y = (mapInfo.size.y - mapInfo.supplyPosition[i].y )* y_scale + y_pos;
     ctx.drawImage(supplyImage, x-7, y-7, 14, 14)
   }
   for(let i=0; i<mapInfo.techPosition.length; i++) {
-    const x = mapInfo.techPosition[i].x * x_scale;
-    const y = (mapInfo.size.y - mapInfo.techPosition[i].y) * y_scale;
+    const x = mapInfo.techPosition[i].x * x_scale + x_pos;
+    const y = (mapInfo.size.y - mapInfo.techPosition[i].y) * y_scale + y_pos;
     ctx.drawImage(techImage, x-7, y-7, 14, 14)
   }
   const buffer = canvas.toBuffer('image/png')

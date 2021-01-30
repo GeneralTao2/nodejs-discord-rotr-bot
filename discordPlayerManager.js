@@ -1,6 +1,6 @@
 const configs = require('./configs')
 
-const { Client, MessageEmbed, MessageAttachment, Attachment } = require('discord.js');
+const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 
 const Canvas = require('canvas');
 
@@ -106,10 +106,20 @@ function draw() {
 
 async function getLastUserDMbyId(id) {
     const user = getUserById(id)
-    await user.createDM()
-    await user.dmChannel.messages.fetch(user.dmChannel.lastMessageID);
-    return user.dmChannel.messages.cache.array()[0];
+    if(!user.dmChannel) {
+        await user.createDM()
+    }
+    return await user.dmChannel.messages.fetch(user.dmChannel.lastMessageID)
 }
+
+async function getUserDMbyMessageId(userId, messageId) {
+    const user = getUserById(userId)
+    if(!user.dmChannel) {
+        await user.createDM()
+    }
+    return await user.dmChannel.messages.fetch(messageId)
+}
+
 
 function isPlayerModerById(id) {
     const roleArray = exports.currentGuild.roles.cache.filter(role => role.name === "Bot Moderator").array()
@@ -160,6 +170,7 @@ function isOnlineById(id) {
     }
 } 
 
+exports.getUserDMbyMessageId = getUserDMbyMessageId
 exports.isOnlineById = isOnlineById
 exports.isPlayerModerById = isPlayerModerById
 exports.unpinModerRoleById = unpinModerRoleById

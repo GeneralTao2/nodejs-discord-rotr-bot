@@ -21,7 +21,7 @@ discord.client.on('ready',async () => {
 
   console.log("Yeah, connected!");
   await discord.init();
-  await initLastInvitationMessages();
+  await initReactionsAfterRelog();
   //DARKozDARKA
 //#4148
   let testTag = {
@@ -46,22 +46,47 @@ async function invitePlyerToGame(user, map, message) {
 
 // ======================================================================== DISCORD ===============
 
-async function initLastInvitationMessages() {
+async function initReactionsAfterRelog() {
+  // Invitation
   db.invitedPlayersForEach(async (invitedPlayer) => {
-    const user = await discord.getUserById(invitedPlayer.discordId)
-    const lastMessage = await discord.getLastUserDMbyId(invitedPlayer.discordId);
+    const user = discord.getUserById(invitedPlayer.discordId)
+    const lastMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.messageId);
+    const msRemaining = invitedPlayer.createdAt.getTime() + threeDays - new Date().getTime()
     await removeUpDownReactions(lastMessage);
-    upDownManager(lastMessage, user.id, threeDays, () => {
+    upDownManager(lastMessage, user.id, msRemaining, () => {
       addPlayerAfterInviting(user)
     }, () => {
       ignorePlayerAfterInviting(user)
     })
   })
+
+  // Gathering
+  db.gathersForEach(async (gather) => {
+    const inviter = discord.getUserById(gather.discordId)
+    const msRemaining = gather.expireAt.getTime() - new Date().getTime()
+    const gatherMessage = await discord.currentChennel.messages.fetch(gather.messageId)
+    setGatherUpdateInterval(gatherMessage, gather.discordId, msRemaining)
+    for(let i=0; i<gather.invitedPlayer.length; i++) {
+      const user = await discord.getUserById(gather.invitedPlayer[i].discordId)
+      const directMessage = await discord.getUserDMbyMessageId(
+        gather.invitedPlayer[i].discordId, gather.invitedPlayer[i].messageId);
+      await removeUpDownReactions(directMessage);
+      upDownManager(directMessage, user.id, msRemaining, () => {
+        db.updateGatherData(inviter.id, user.id, '✅')
+      }, () => {
+        db.updateGatherData(inviter.id, user.id, '❎')
+      })
+    }
+  })
+
 }
 
-async function invitePlayer(user) {
+
+
+async function invitePlayer(messageId, user) {
   return await db.addPlayerToInvitedList({
     discordId: user.id,
+    messageId: messageId,
     tag: {
       name: user.username,
       discr: user.discriminator
@@ -82,9 +107,10 @@ async function banPlayer(user, reason) {
   });
 }
 
-async function gather(inviterUser, invitedUserList, time, playerQuantity, mapName){
+async function gather(messageId, inviterUser, invitedUserList, gatherInvitationMessageIdList, time, playerQuantity, mapName){
   let gatherData = {
     discordId: inviterUser.id,
+    messageId: messageId,
     tag: {
       name: inviterUser.username,
       discr: inviterUser.discriminator
@@ -97,6 +123,7 @@ async function gather(inviterUser, invitedUserList, time, playerQuantity, mapNam
   for(let i=0; i<invitedUserList.length; i++) {
     gatherData.invitedPlayer.push({
       discordId: invitedUserList[i].id,
+      messageId: gatherInvitationMessageIdList[i],
       tag: {
         name: invitedUserList[i].username,
         discr: invitedUserList[i].discriminator
@@ -126,7 +153,8 @@ function getLocalContent(user, contentCB) {
 
 async function sendMessageToUser(user, contentCB) {
 	try {
-    const content = getLocalContent(user, contentCB)
+    const language = discord.getLanguageByUserId(user.id);
+    const content = contentCB(arguments, language)
     discord.getLanguageByUserId(user.id)
 		return await user.send(content)
 	} catch (error) {
@@ -179,12 +207,12 @@ async function invatePlayerCommand(message) {
       discord.currentChennel.send("Player `"+user.tag+"` already invited.");
       continue
     }
-    invitePlayer(user)
     
     const sendedMessage = await sendMessageToUser(user, local.invitation, message.author.tag)
     if(!sendedMessage) {
       return
     }
+    invitePlayer(sendedMessage.id, user)
     upDownManager(sendedMessage, user.id, threeDays, () => {
       addPlayerAfterInviting(user)
     }, () => {
@@ -259,6 +287,10 @@ async function banPlayerCommand(message) {
     return
   }
   let reason = reasonMatch[1]
+  if(reason.length <=2 || reason.length >= 256) {
+    discord.currentChennel.send("Reason field is wrong.")
+    return
+  }
   db.removeAddedPlayerById(user.id)
   db.removeInvitedPlayerById(user.id)
   banPlayer(user, reason)
@@ -415,7 +447,7 @@ async function addCommand(message) {
     }
     db.removeInvitedPlayerById(user.id)
     if(await db.findAddedPlayerById(user.id)) {
-      console.log("Player "+user.tag+" already added.")
+      discord.currentChennel.send("Player `"+user.tag+"` already added.")
       return
     }
     addPlayer(user);
@@ -492,7 +524,7 @@ async function showMapCommand(message) {
   const match = message.content.match(/^-map ([2-8]) ([0-9]{1,3})$/)
   if(match) {
     const map = await banner.getMapInfoByPlayerAndIndex(parseInt(match[1]), parseInt(match[2]));
-    const attachment = new discord.MessageAttachment(buffer, 'map.png');
+    const attachment = new discord.MessageAttachment(map.buffer, 'map.png');
     console.log(map.info.name)
     await discord.currentChennel.send(map.info.name+"\nSize: "+ map.info.size.x + "x"+map.info.size.y, attachment);
   } else {
@@ -522,6 +554,31 @@ async function leaveCommand(message) {
   sendMessageToUser(user, local.rejection)
   db.removeAddedPlayerById(user.id)
 }
+
+//---------------------------------------------------------------- HELP ----------------
+
+async function helpCommand(message) {
+  message.react('👌');
+
+  discord.currentChennel.send(local.moderatorCommands('ru'))
+  discord.currentChennel.send(local.moderatorCommands('en'))
+}
+
+//---------------------------------------------------------------- MAKE MAPS ----------------
+
+async function makeMapsCommand(message) {
+  message.react('👌');
+  if(!discord.isPlayerModerById(message.author.id)) {
+    discord.currentChennel.send("Only moderator can send this command.")
+    return
+  }
+  await mapm.makeAllImages()
+  message.react('🤌');
+}
+
+//---------------------------------------------------------------- GATHER ----------------
+
+//---------------------------------------------------------------- GATHER ----------------
 
 //---------------------------------------------------------------- GATHER ----------------
 
@@ -576,6 +633,11 @@ async function gatherPlayersCommand(message) {
         return
       }
     }
+
+    if(match[1] === "-" && match[2] != "-") {
+      discord.currentChennel.send("Wrong player quantity.")
+      return
+    }
     
     if(await db.findGatherByPlayerQuantityAndMapName(playerQuantity, gatherBanner.mapInfo.name)) {
       discord.currentChennel.send("The same gather already exists.")
@@ -588,7 +650,7 @@ async function gatherPlayersCommand(message) {
         return
       }
       time = parseInt(match[3])
-      if(time < 2 || time > 60) {
+      if(time <= 2 || time >= 60) {
         discord.currentChennel.send("Wrong time.")
         return
       }
@@ -650,7 +712,7 @@ async function gatherPlayersCommand(message) {
     const attachment = new discord.MessageAttachment(gatherBanner.buffer, 'help.png');
     let embed = new discord.MessageEmbed({
       color: '#b6cbd1',
-      title: "Gathering                                                                                         :incoming_envelope:",
+      title: "Gathering",
       files: [
         attachment
       ],
@@ -684,39 +746,49 @@ async function gatherPlayersCommand(message) {
       }
 
       message.react('👌');
-      gather(user, gatheredUserList, time, playerQuantity, 
-        gatherBanner.mapInfo ? gatherBanner.mapInfo.name : null)
+      let gatherInvitationMessageIdList = []
       for(let i=0; i<gatheredUserList.length; i++) {
-        sendInvitationToGathered(gatheredUserList[i], user, attachment, comment, time);
+        gatherInvitationMessageIdList
+        .push(await sendInvitationToGathered(gatheredUserList[i], user, attachment, comment, time) )
       }
-      let interval = setInterval( async () => {
-        let newGatherData = await db.findGatherById(user.id)
-        let newStates = ''
-        for(let i=0; i<newGatherData.invitedPlayer.length; i++) {
-          let iString = (i+1).toString() + '.'
-          const iStringLength = iString.length
-          for(let j=iStringLength; j<gatheredListLenth+1; j++) {
-            iString += ' '
-          }
-          newStates += '`'+iString+'` '+newGatherData.invitedPlayer[i].accept+'\n'
-        }
-        embed.fields[1].value = newStates
-        gatherMessage.edit(embed)
-
-      }, 3000)
-      setTimeout(() => {
-        clearInterval(interval)
-      }, time*60*1000);
+      gather(gatherMessage.id, user, gatheredUserList, gatherInvitationMessageIdList, time, playerQuantity, 
+        gatherBanner.mapInfo ? gatherBanner.mapInfo.name : null)
+      setGatherUpdateInterval(gatherMessage, user.id, time*60*1000)
     }, () => {
       gatherMessage.react('🙅🏼‍♀️');
     })
   }
 }
 
+function setGatherUpdateInterval(message, inviterId, ttl) {
+  let interval = setInterval( async () => {
+    let newGatherData = await db.findGatherById(inviterId)
+    const gatheredListLenth = newGatherData.invitedPlayer.length.toString().length
+    let newStates = ''
+    for(let i=0; i<newGatherData.invitedPlayer.length; i++) {
+      let iString = (i+1).toString() + '.'
+      const iStringLength = iString.length
+      for(let j=iStringLength; j<gatheredListLenth+1; j++) {
+        iString += ' '
+      }
+      newStates += '`'+iString+'` '+newGatherData.invitedPlayer[i].accept+'\n'
+    }
+    message.embeds[0].fields[1].value = newStates
+    message.embeds[0].image = {
+      url: 'attachment://help.png'
+    }
+    message.edit(message.embeds[0])
+
+  }, 3000)
+  setTimeout(() => {
+    clearInterval(interval)
+  }, ttl);
+}
+
 async function sendInvitationToGathered(user, inviter, attachment, comment, time) {
   let embed = new discord.MessageEmbed({
     color: '#b6cbd1',
-    title: getLocalContent(user, local.gather)+"                                                                                         :incoming_envelope:",
+    title: getLocalContent(user, local.gather),
     files: [
       attachment
     ],
@@ -738,6 +810,7 @@ async function sendInvitationToGathered(user, inviter, attachment, comment, time
   }, () => {
     db.updateGatherData(inviter.id, user.id, '❎')
   })
+  return message.id
 }
 
 //---------------------------------------------------------------- LEAVE ----------------
@@ -823,8 +896,7 @@ discord.client.on('message', async (message) => {
     return;
   }
 
-  let chennel = message.guild.channels.cache.find(ch => ch.name === 'bot');
-  if (!chennel) {
+  if (message.channel.name != 'bot') {
     return;
   }
   if(message.mentions.users.array().length) {
@@ -873,6 +945,12 @@ discord.client.on('message', async (message) => {
   }
   if (message.content.match(/^-gather/)) {
     gatherPlayersCommand(message);
+  }
+  if (message.content.match(/^-help$/)) {
+    helpCommand(message);
+  }
+  if (message.content.match(/^-makemaps/)) {
+    makeMapsCommand(message);
   }
 });
 

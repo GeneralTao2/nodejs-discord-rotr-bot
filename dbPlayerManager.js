@@ -46,6 +46,16 @@ async function findGatherByPlayerQuantityAndMapName(playerQuantity, mapName) {
    ]} )
 } 
 
+async function gathersForEach(callback) {
+  const cursor = exports.gathers.find({});
+  let array = [];
+  while(await cursor.hasNext()) {
+    const doc = await cursor.next()
+    array.push(await callback(doc))
+  }
+  return array
+}
+
 async function findInvitedPlayerById(id) {
     return await exports.invitedPlayers.findOne( { discordId: id } );;
 } 
@@ -111,6 +121,7 @@ async function updateGatherData(inviterId, userId, state) {
   })
 }
 
+exports.gathersForEach = gathersForEach
 exports.findGatherByPlayerQuantityAndMapName = findGatherByPlayerQuantityAndMapName
 exports.updateGatherData = updateGatherData
 exports.findGatherById = findGatherById
