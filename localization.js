@@ -76,11 +76,17 @@ exports.gatherMessageFooter = function gatherMessageFooter(args, language) {
 	return returnMessage(language, en, ru);
 }
 
+exports.gather = function gather(args, language) {
+	const ru = 'Собрание'
+	const en = 'Gather'
+	return returnMessage(language, en, ru);
+}
+
 
 const {MessageEmbed} = require('discord.js');
 exports.playerCommands = function playerCommands(language) {
 	const ru = new MessageEmbed({
-		color: '#b6cbd1',
+		color: '#51cf70',
 		title: "Игроки", 
 		description: "Эти команды доступны всем игрокам в группе.",               
 		fields: [
@@ -162,7 +168,7 @@ exports.playerCommands = function playerCommands(language) {
 		]
 	  })
 	const en = new MessageEmbed({
-		color: '#b6cbd1',
+		color: '#51cf70',
 		title: "Players", 
 		description: "These commands can use any group member.",                  
 		fields: [
@@ -249,8 +255,8 @@ exports.playerCommands = function playerCommands(language) {
 
 exports.moderatorCommands = function moderatorCommands(language) {
 	const ru = new MessageEmbed({
-		color: '#b6cbd1',
-		title: "Модератор", 
+		color: [212, 102, 59],
+		title: "Модераторы", 
 		description: "Эти команды доступны только игрокам с ролью `Bot Moderator`.",               
 		fields: [
 			{
@@ -326,8 +332,8 @@ exports.moderatorCommands = function moderatorCommands(language) {
 		]
 	  })
 	  const en = new MessageEmbed({
-		color: '#b6cbd1',
-		title: "Moderator", 
+		color: [212, 102, 59],
+		title: "Moderators", 
 		description: "These commands can use only members that have `Bot Moderator` role.",               
 		fields: [
 			{
@@ -405,5 +411,123 @@ exports.moderatorCommands = function moderatorCommands(language) {
 	return returnMessage(language, en, ru);
 }
 
+
+exports.configCommands = function configCommands(language) {
+	const ru = new MessageEmbed({
+		color: '#a80000',
+		title: "Конфиграции", 
+		description: "Эти команды доступны только игрокам с ролью `Bot Moderator`. Предназначены для первоначальной настройки бота после вступлнения в сеть.",               
+		fields: [
+			{
+				name: '-set_indexes', 
+				value: 'Проводит некоторую настройку базы данных. Обычно настраивается само, если бот был приглошён в сеть будучи онлайн. В противном случае необходимо вызвать эту команду.'
+			},
+			{
+				name: '-set_ru_role `<role>`', 
+				value: 'Регистрирует либо заменяет роль для русскоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.'
+			},
+			{
+				name: '`<role>`', 
+				value: 'Упоминание роли в формате @роль.'
+			},
+			{
+				name: '-set_en_role `<role>`', 
+				value: 'Регистрирует либо заменяет роль для англоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.'
+			},
+			{
+				name: '`<role>`', 
+				value: 'Упоминание роли в формате @роль.'
+			},
+			{
+				name: '-set_moderator_role `<role>`', 
+				value: 'Заменяет роль для модераторов. Регистрация возможна только автору бота.'
+			},
+			{
+				name: '`<role>`', 
+				value: 'Упоминание роли в формате @роль.'
+			},
+			{
+				name: '-home', 
+				value: 'Прикрепляет бота к определённому текстовому каналу, где им можно пользоваться. Возможно только если у бота нет зарегистрированного текстовго канала.'
+			},
+			{
+				name: '-evict', 
+				value: 'Открепляет бота от текстовго канала. После вызова команды бота можно вновь прикрепить к какому-то текстовому каналу.'
+			}
+		]
+	  })
+	  const en = new MessageEmbed({
+		color: '#a80000',
+		title: "Confogurations", 
+		description: "These commands are only available to players with the `Bot Moderator` role. Designed for initial configuration of the bot after joining the network. ",               
+		fields: [
+			{
+				name: '-set_indexes', 
+				value: 'Performs some configuration of the database. Usually it is configured on its own if the bot was invaded into the network while online. Otherwise, you must invoke this command. '
+			},
+			{
+				name: '-set_ru_role `<role>`', 
+				value: 'Registers or replaces the role for Russian-speaking users. If missing, all messages will be in English. '
+			},
+			{
+				name: '`<role>`', 
+				value: 'Mention role in format @role.'
+			},
+			{
+				name: '-set_en_role `<role>`', 
+				value: 'Registers or replaces a role for English speaking users. If missing, all messages will be in English.'
+			},
+			{
+				name: '`<role>`', 
+				value: 'Mention role in format @role.'
+			},
+			{
+				name: '-set_moderator_role `<role>`', 
+				value: 'Replaces the role for moderators. Registration is possible only for the author of the bot.'
+			},
+			{
+				name: '`<role>`', 
+				value: 'Mention role in format @role.'
+			},
+			{
+				name: '-home', 
+				value: 'Attaches the bot to a specific text channel where it can be used. This is possible only if the bot does not have a registered text channel.'
+			},
+			{
+				name: '-evict', 
+				value: 'Detaches the bot from the text channel. After calling the command, the bot can be reattached to some text channel.'
+			}
+		]
+	  })
+	return returnMessage(language, en, ru);
+}
+
+
+
+exports.about = function about(language) {
+	const ru = new MessageEmbed({
+		color: '#b6cbd1',
+		title: "Игроки", 
+		description: "Эти команды доступны всем игрокам в группе.",               
+		fields: [
+			{
+				name: '-invite `<player>...`', 
+				value: 'Пригласить одного или несколькоих игроков в группу.'
+			},
+		]
+	  })
+	const en = new MessageEmbed({
+		color: '#b6cbd1',
+		title: "Players", 
+		description: "These commands can use any group member.",                  
+		fields: [
+			{
+				name: '-invite `<player>...`', 
+				value: 'Invite on or more players to group.'
+			},
+		]
+	  })
+	return returnMessage(language, en, ru);
+}
 
 

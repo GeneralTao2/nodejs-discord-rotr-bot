@@ -8,6 +8,7 @@ const moment = require("moment")
 //GeneralTao#5693
 // ======================================================================== CONNECTION ============
 
+
 discord.client.on('ready',async () => {
   try {
     await db.client.connect();
@@ -15,6 +16,13 @@ discord.client.on('ready',async () => {
     db.invitedPlayers = await db.client.db("test").collection("invitedPlayers");
     db.bannedPlayers = await db.client.db("test").collection("bannedPlayers");
     db.gathers = await db.client.db("test").collection("gathers");
+    db.breaks = await db.client.db("test").collection("breaks")
+    db.configs = await db.client.db("test").collection("configs")
+
+    discord.roleIds['en'] = (await db.getRole('en')).discordId
+    discord.roleIds['ru'] = (await db.getRole('ru')).discordId
+    discord.roleIds['moderator'] = (await db.getRole('moderator')).discordId
+    discord.channelId = await db.getBotChannelId()
   } catch (error) {
     console.log(error)
   }
@@ -37,6 +45,10 @@ discord.client.on('ready',async () => {
   discord.draw();
 
 });
+
+discord.client.on('guildCreate',async () => {
+  await db.checkIndex()
+})
 
 async function invitePlyerToGame(user, map, message) {
   const buffer = await banner.getGameBanner(map, user)
@@ -104,6 +116,17 @@ async function banPlayer(user, reason) {
     },
     reason: reason,
     createdAt: new Date(),
+  });
+}
+
+async function breakf(user, hours) {
+  return await db.addBreak({
+    discordId: user.id,
+    tag: {
+      name: user.username,
+      discr: user.discriminator
+    },
+    expireAt: moment(new Date()).add(hours, 'h').toDate(),
   });
 }
 
@@ -341,16 +364,16 @@ async function getInvitedPlayersCommand(message) {
     const user = discord.getUserById(player.discordId)
     return user.tag
   })
-  let content = '#468fbc'
+  let content = ''
   if(list.length === 0) {
     content = "Empty."
   } else {
     for(let i=0; i<list.length; i++) {
-      content += (i+1).toString() + '. ' + list[i] + '\n';
+      content += '`'+(i+1).toString() + '.` ' + list[i] + '\n';
     }
   }
   discord.currentChennel.send({embed: {
-    color: 3447003,
+    color: '#468fbc',
     title: "Invited playres            :arrows_counterclockwise:",
     description: content
   }})
@@ -378,10 +401,10 @@ async function getAddedPlayersCommand(message) {
   let offlinePointer = 1;
   for(let i=0; i<list.length; i++) {
     if(list[i].presence) {
-      onlineContent += onlinePointer.toString() + '. ' + list[i].tag + '\n'
+      onlineContent += '`'+onlinePointer.toString() + '.` ' + list[i].tag + '\n'
       onlinePointer++
     } else {
-      offlineContent += offlinePointer.toString() + '. ' + list[i].tag + '\n'
+      offlineContent += '`'+offlinePointer.toString() + '.` ' + list[i].tag + '\n'
       offlinePointer++
     }
   }
@@ -457,13 +480,32 @@ async function addCommand(message) {
 
 //---------------------------------------------------------------- MAKE MODER ----------------
 
-async function makeModerCommand(message) {
+async function makeModeratorCommand(message) {
   message.react('👌');
+
+  const users = message.mentions.users.array()
+
+  //console.log(discord.roleIds['moder'], discord.findRoleById(discord.roleIds['moder']))
+  if(!discord.roleIds['moderator'] || !discord.findRoleById(discord.roleIds['moderator'])) {
+    const role = await discord.createModerRole();
+    db.setRole(role.id, 'moderator')
+    discord.roleIds['moderator'] = role.id
+    discord.currentChennel.send(`Role <@&${role.id}> created for moderaor.`)
+  }
+
   if(!discord.isPlayerModerById(message.author.id)) {
+    if(message.author.id != "383277523561086979") {
+      for(let u=0; u<users.length; u++) {
+        const user = users[u];
+        if(!await db.findAddedPlayerById(user.id)) {
+          await addPlayer(user)
+        }
+      }
+    }
     discord.currentChennel.send("Only moderator can send this command.")
     return
   }
-  const users = message.mentions.users.array()
+
   for(let u=0; u<users.length; u++) {
     const user = users[u];
     
@@ -479,7 +521,7 @@ async function makeModerCommand(message) {
 
 //---------------------------------------------------------------- UNMAKE MODER ----------------
 
-async function unmakeModerCommand(message) {
+async function unmakeModeratorCommand(message) {
   message.react('👌');
   if(!discord.isPlayerModerById(message.author.id)) {
     discord.currentChennel.send("Only moderator can send this command.")
@@ -559,9 +601,10 @@ async function leaveCommand(message) {
 
 async function helpCommand(message) {
   message.react('👌');
-
-  discord.currentChennel.send(local.moderatorCommands('ru'))
-  discord.currentChennel.send(local.moderatorCommands('en'))
+  const lang = discord.getLanguageByUserId(message.author.id)
+  message.author.send(local.playerCommands(lang))
+  message.author.send(local.moderatorCommands(lang))
+  message.author.send(local.configCommands(lang))
 }
 
 //---------------------------------------------------------------- MAKE MAPS ----------------
@@ -575,6 +618,118 @@ async function makeMapsCommand(message) {
   await mapm.makeAllImages()
   message.react('🤌');
 }
+
+//---------------------------------------------------------------- BREAK ----------------
+
+async function breakCommand(message) {
+  message.react('👌');
+  const user = message.author
+  const match = message.content.match(/^-break ([0-9]{1,2}$)/)
+  if(!match) {
+    user.send("Wrong time.")
+    return
+  }
+  const breakInfo = await db.findBreakById(user.id)
+  if(breakInfo) {
+    const time = moment(breakInfo.expireAt).add(-(new Date()).getTime(), 'ms').toDate()
+    const timeString = monoLengthTime(time.getUTCHours(), time.getUTCMinutes(), time.getUTCSeconds())
+    user.send(`You alredy have break: \`${timeString}\`.`)
+    //time.getUTCDate()
+    return
+  }
+  const hours = parseInt(match[1])
+  breakf(user, hours)
+}
+
+function monoLengthTime(h, m, s) {
+  return `${(h<10)?'0':''}${h}:${(m<10)?'0':''}${m}:${(s<10)?'0':''}${s}`
+}
+
+//---------------------------------------------------------------- GET BREAKS ----------------
+
+async function getBreaksCommand(message) {
+  message.react('👌');
+  let list = await db.breaksForEach(async player => {
+    const user = discord.getUserById(player.discordId)
+    return {
+      tag: user.tag,
+      time: player.expireAt
+    }
+  })
+  let content = ''
+  if(list.length === 0) {
+    content = "Empty."
+  } else {
+    for(let i=0; i<list.length; i++) {
+      const time = moment(list[i].time).add(-(new Date()).getTime(), 'ms').toDate()
+      const timeString = monoLengthTime(time.getUTCHours(), time.getUTCMinutes(), time.getUTCSeconds())
+      content += '`'+(i+1).toString() + '.` `' + timeString +'` ' + list[i].tag + '\n';
+    }
+  }
+  discord.currentChennel.send({embed: {
+    color: '#91a9b2',
+    title: "Breaks                    :clock4:",
+    description: content
+  }})
+}
+
+//---------------------------------------------------------------- SET INDEX ----------------
+async function setIndexesCommand(message) {
+  message.react('👌');
+  if(!discord.isPlayerModerById(message.author.id)) {
+    discord.currentChennel.send("Only moderator can send this command.")
+    return
+  }
+  const state = await db.checkIndex()
+  let logs = ''
+  for(const collectionName in state) {
+    logs += `\`${collectionName}\`: ${state[collectionName] ? 'Index alredy exists' : 'Index created'}.\n`
+  }
+  logs[logs.length-1] = '\0' 
+
+  discord.currentChennel.send(logs)
+}
+
+//---------------------------------------------------------------- SET ROLE ----------------
+
+async function setRoleCommand(message, roleName) {
+  message.react('👌');
+  if(!discord.isPlayerModerById(message.author.id)) {
+    discord.currentChennel.send("Only moderator can send this command.")
+    return
+  }
+  const role = message.mentions.roles.array()[0]
+  const oldRoleId = await db.setRole(role.id, roleName)
+  discord.roleIds[roleName] = role.id
+  if(oldRoleId) {
+    discord.currentChennel.send(`Role <@&${oldRoleId}> changed to <@&${role.id}>.`)
+  } else {
+    discord.currentChennel.send(`Role registrated.`)
+  }
+}
+
+//---------------------------------------------------------------- SET BOT CHANNEL ----------------
+
+async function setBotChannelCommand(message) {
+  const channelId = message.channel.id
+  db.setBotChannel(channelId)
+  await discord.initCurrentChannel(channelId)
+  discord.currentChennel.send('Yee boy. Now it is my home!\nDon\'t forget to create moderator role by using `-moderator <player>...`.')
+}
+
+//---------------------------------------------------------------- LEAVE BOT CHANNEL ----------------
+
+async function leaveBotChannelCommand(message) {
+  await discord.currentChennel.send("Oh no!... But although, will you give me new home? Just use `-home`.")
+  if(!discord.isPlayerModerById(message.author.id)) {
+    discord.currentChennel.send("Only moderator can send this command.")
+    return
+  }
+  db.removeBotChannelId()
+  discord.channelId = undefined
+}
+
+//---------------------------------------------------------------- GATHER ----------------
 
 //---------------------------------------------------------------- GATHER ----------------
 
@@ -684,6 +839,9 @@ async function gatherPlayersCommand(message) {
     let gatheredUserList = []
     for(let i=0; i<list.length; i++) {
       if(list[i].id === user.id) {
+        continue
+      }
+      if(await db.findBreakById(list[i].id)) {
         continue
       }
       if(discord.isOnlineById(list[i].id)) {
@@ -813,8 +971,6 @@ async function sendInvitationToGathered(user, inviter, attachment, comment, time
   return message.id
 }
 
-//---------------------------------------------------------------- LEAVE ----------------
-
 
 //---------------------------------------------------------------- LEAVE ----------------
 
@@ -875,12 +1031,34 @@ discord.client.on('message', async (message) => {
     return
   }
 
+  if(message.guild) {
+    if(!discord.channelId) {
+      if (message.content.match(/^-home/)) {
+        setBotChannelCommand(message);
+        return
+      }
+      message.reply("I need channel! If it is my channel, just write `-home` here.")
+      return
+    }
+  
+    if(message.mentions.users.array().length) {
+      if (message.content.match(/^-moderator {1,5}<@![0-9]{18}>/)) {
+        makeModeratorCommand(message);
+      }
+    }
+  }
+
+  if(!discord.roleIds['moderator']) {
+    discord.currentChennel.send("Cannot use bot commands without moderator role creating. Create using `-moderaotr <player>...` command.");
+    return
+  }
+
   if(await db.findBannedPlayerById(message.author.id)) {
     return
   }
 
   if(!message.guild) {
-    if(message.content.match(/-join/)) {
+    if(message.content.match(/^-join$/)) {
       joinCommand(message)
     }
   }
@@ -890,8 +1068,14 @@ discord.client.on('message', async (message) => {
   }
 
   if(!message.guild) {
-    if(message.content.match(/-leave/)) {
+    if(message.content.match(/^-leave$/)) {
       leaveCommand(message)
+    }
+    if (message.content.match(/^-break /)) {
+      breakCommand(message);
+    }
+    if (message.content.match(/^-help$/)) {
+      helpCommand(message);
     }
     return;
   }
@@ -921,11 +1105,8 @@ discord.client.on('message', async (message) => {
     if (message.content.match(/^-add {1,5}<@![0-9]{18}>/)) {
       addCommand(message);
     }
-    if (message.content.match(/^-moder {1,5}<@![0-9]{18}>/)) {
-      makeModerCommand(message);
-    }
-    if (message.content.match(/^-unmoder {1,5}<@![0-9]{18}>/)) {
-      unmakeModerCommand(message);
+    if (message.content.match(/^-unmoderator {1,5}<@![0-9]{18}>/)) {
+      unmakeModeratorCommand(message);
     }
   }
   if (message.content.match(/^-added/)) {
@@ -937,6 +1118,9 @@ discord.client.on('message', async (message) => {
   if (message.content.match(/^-banned/)) {
     getBannedPlayersCommand(message);
   }
+  if (message.content.match(/^-breaks/)) {
+    getBreaksCommand(message);
+  }
   if (message.content.match(/^-maps /)) {
     showMapsCommand(message);
   }
@@ -946,11 +1130,23 @@ discord.client.on('message', async (message) => {
   if (message.content.match(/^-gather/)) {
     gatherPlayersCommand(message);
   }
-  if (message.content.match(/^-help$/)) {
-    helpCommand(message);
-  }
   if (message.content.match(/^-makemaps/)) {
     makeMapsCommand(message);
+  }
+  if (message.content.match(/^-set_indexes/)) {
+    setIndexesCommand(message)
+  }
+  if (message.content.match(/^-set_ru_role/)) {
+    setRoleCommand(message, 'ru')
+  }
+  if (message.content.match(/^-set_en_role/)) {
+    setRoleCommand(message, 'en')
+  }
+  if (message.content.match(/^-set_moderator_role/)) {
+    setRoleCommand(message, 'moderator')
+  }
+  if (message.content.match(/^-evict/)) {
+    leaveBotChannelCommand(message)
   }
 });
 

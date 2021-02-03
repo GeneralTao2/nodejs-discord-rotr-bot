@@ -6,11 +6,18 @@ const Canvas = require('canvas');
 
 const client = new Client();
 
-const enUserRoleId = '726406438142083133';
-const ruUserRoleId = '449178005353267201';
+let roleIds = {
+    en: null,
+    ru: null,
+    moderator: null
+  }
+
+//const enUserRoleId = '726406438142083133';
+//const ruUserRoleId = '449178005353267201';
 
 const guildId = '448934652992946176';
-const chennelId = '726026506869932043';
+//let channelId = '726026506869932043';
+exports.channelId = undefined
 
 const botUserId = '726008192425001011';
 
@@ -65,20 +72,27 @@ function hasRoleByUserIdAndRoleId(userId, roleId) {
 }
 
 function getLanguageByUserId(id) {
-    if(hasRoleByUserIdAndRoleId(id, enUserRoleId)) {
+    if(hasRoleByUserIdAndRoleId(id, roleIds['en'])) {
         return 'en';
     }
-    if(hasRoleByUserIdAndRoleId(id, ruUserRoleId)) {
+    if(hasRoleByUserIdAndRoleId(id, roleIds['ru'])) {
         return 'ru'
     }
-    return null;
+    return 'en';
+}
+
+async function initCurrentChannel(channelId) {
+	exports.channelId = channelId
+	exports.currentChennel = await client.channels.cache.get(exports.channelId);
 }
 
 async function init() {
     exports.currentGuild = await client.guilds.cache.get(guildId);
-    exports.currentChennel = await client.channels.cache.get(chennelId);
-    await exports.currentGuild.members.fetch();
+    await exports.currentGuild.members.fetch()
     await exports.currentGuild.roles.fetch()
+    if(exports.channelId) {
+        await initCurrentChannel(exports.channelId)
+    }
 }
 
 function getTagByUserId(id) {
@@ -122,7 +136,8 @@ async function getUserDMbyMessageId(userId, messageId) {
 
 
 function isPlayerModerById(id) {
-    const roleArray = exports.currentGuild.roles.cache.filter(role => role.name === "Bot Moderator").array()
+    const roleArray = exports.currentGuild.roles.cache.filter(
+			role => role.id === roleIds['moderator']).array()
     if(!roleArray.length) {
         return
     }
@@ -138,16 +153,29 @@ function findRoleByName(name) {
     return roleArray[0]
 }
 
+async function createModerRole() {
+    return await exports.currentGuild.roles.create({
+        data: botModeratorRoleData,
+        reason: 'These pepale has access to dangerous RotrManager bot'
+    })
+}
+
+function findRoleById(id) {
+	const roleArray = exports.currentGuild.roles.cache.filter(role => role.id === id).array()
+    if(roleArray.length === 0) {
+        return null
+    }
+  return roleArray[0]
+}
+
 async function pinModerRoleById(id) {
 	const role = findRoleByName(botModeratorRoleData.name)
 	if(role) {
 		const member = getGuildMemberByUserId(id)
-		member.roles.add(role.id)
+        member.roles.add(role.id)
+        //roleIds['moderator'] = role.id
 	} else {
-		await exports.currentGuild.roles.create({
-			data: botModeratorRoleData,
-			reason: 'These pepale has access to dangerous RotrManager bot'
-		})
+
 	}
 }
 
@@ -170,6 +198,8 @@ function isOnlineById(id) {
     }
 } 
 
+exports.findRoleById = findRoleById
+exports.createModerRole = createModerRole
 exports.getUserDMbyMessageId = getUserDMbyMessageId
 exports.isOnlineById = isOnlineById
 exports.isPlayerModerById = isPlayerModerById
@@ -187,12 +217,11 @@ exports.getUserById = getUserById;
 exports.getUserByTagObj = getUserByTagObj;
 exports.matchTagObjByTagString = matchTagObjByTagString;
 exports.matchTagStringByCommand = matchTagStringByCommand;
+exports.initCurrentChannel = initCurrentChannel
 exports.init = init;
 exports.client = client;
-exports.enUserRoleId = enUserRoleId;
-exports.ruUserRoleId = ruUserRoleId;
 exports.guildId = guildId;
-exports.chennelId = chennelId;
 exports.botUserId = botUserId;
+exports.roleIds = roleIds
 exports.MessageAttachment = MessageAttachment
 exports.MessageEmbed = MessageEmbed
