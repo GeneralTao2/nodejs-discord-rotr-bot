@@ -604,7 +604,9 @@ async function helpCommand(message) {
   const lang = discord.getLanguageByUserId(message.author.id)
   message.author.send(local.playerCommands(lang))
   message.author.send(local.moderatorCommands(lang))
-  message.author.send(local.configCommands(lang))
+  if(await discord.isPlayerModerById(message.author.id)) {
+    message.author.send(local.configCommands(lang))
+  }
 }
 
 //---------------------------------------------------------------- MAKE MAPS ----------------
@@ -645,6 +647,18 @@ function monoLengthTime(h, m, s) {
   return `${(h<10)?'0':''}${h}:${(m<10)?'0':''}${m}:${(s<10)?'0':''}${s}`
 }
 
+//---------------------------------------------------------------- UNBREAK ----------------
+
+async function unbreakCommand(message) {
+  message.react('👌')
+  const user = message.author
+  const breakInfo = await db.removeBreakById(user.id)
+  console.log(breakInfo)
+  if(!breakInfo.value) {
+    sendMessageToUser(user, local.missngBreak)
+  }
+}
+
 //---------------------------------------------------------------- GET BREAKS ----------------
 
 async function getBreaksCommand(message) {
@@ -668,7 +682,7 @@ async function getBreaksCommand(message) {
   }
   discord.currentChennel.send({embed: {
     color: '#91a9b2',
-    title: "Breaks                    :clock4:",
+    title: "Breaks                                       :clock4:",
     description: content
   }})
 }
@@ -1073,6 +1087,9 @@ discord.client.on('message', async (message) => {
     }
     if (message.content.match(/^-break /)) {
       breakCommand(message);
+    }
+    if (message.content.match(/^-unbreak/)) {
+      unbreakCommand(message);
     }
     if (message.content.match(/^-help$/)) {
       helpCommand(message);

@@ -82,6 +82,12 @@ exports.gather = function gather(args, language) {
 	return returnMessage(language, en, ru);
 }
 
+exports.missngBreak = function missngBreak(args, language) {
+	const ru = 'У тебя нет перерывов.'
+	const en = 'You don\'t have breaks.'
+	return returnMessage(language, en, ru);
+}
+
 
 const {MessageEmbed} = require('discord.js');
 exports.playerCommands = function playerCommands(language) {
