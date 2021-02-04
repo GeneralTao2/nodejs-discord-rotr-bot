@@ -211,6 +211,9 @@ async function filterMaps() {
 }
 
 async function makeAllImages() {
+  if (!await fs.existsSync('maked_maps')){
+    await fsPromises.mkdir('maked_maps');
+  }
   try {
     await filterMaps();
     const maps = await fsPromises.readdir('Maps');
