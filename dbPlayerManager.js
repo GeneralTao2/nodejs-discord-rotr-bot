@@ -203,19 +203,20 @@ async function getRole(roleName) {
   return await exports.configs.findOne({roleId: roleIds[roleName]})
 }
 
-async function setBotChannel(channelId) {
+async function setBotChannel(channelId, helpMessageDiscordIds) {
   exports.configs.insertOne({
     channel: 'bot',
-    discordId: channelId
+    discordId: channelId,
+    helpMessageDiscordIds: helpMessageDiscordIds
   })
 }
 
 async function getBotChannelId() {
-  return (await exports.configs.findOne({channel: 'bot'})).discordId
+  return await exports.configs.findOne({channel: 'bot'})
 }
 
 async function removeBotChannelId() {
-  return (await exports.configs.findOneAndDelete({channel: 'bot'})).discordId
+  return (await exports.configs.findOneAndDelete({channel: 'bot'})).value
 }
 
 exports.removeBotChannelId = removeBotChannelId

@@ -168,30 +168,42 @@ exports.playerCommands = function playerCommands(language) {
 				value: 'Показывает список игроков в группе с перерывом.'
 			},
 			{
-				name: '-break <hours>', 
-				value: 'Нужен перерыв? Отключает возможность звать тебя в игры на определённое количество часов. Команда работает только в личных сообщениях с ботом.'
+				name: '🔸-break <hours>', 
+				value: 'Нужен перерыв? Отключает возможность звать тебя в игры на определённое количество часов.'
 			},
 			{
 				name: '`<hours>`', 
 				value: 'Количество часов от 1 до 99.',
 			},
 			{
-				name: '-unbreak', 
+				name: '🔸-unbreak', 
 				value: 'Отменяет текущий перерыв.'
 			},
 			{
-				name: '-join', 
-				value: 'Вступить в группу. Команда работает только в личных сообщениях с ботом.'
+				name: '🔸-join', 
+				value: 'Вступить в группу.'
 			},
 			{
-				name: '-leave', 
-				value: 'Покинуть группу. Команда работает только в личных сообщениях с ботом.'
+				name: '🔸-leave', 
+				value: 'Покинуть группу.'
 			},
 			{
-				name: '-help', 
+				name: '🔸-help', 
 				value: 'Показывает список команд, которые можно использовать.'
 			},
-		]
+			{
+				name: '🔸-about', 
+				value: 'Выодит информацию о боте.'
+			},
+			{
+				name: '🔸-superabout', 
+				value: 'Выводит более детальную информацию о боте.'
+			},
+			
+		],
+		footer: {
+			text: '🔸 - команда доступна только в личных сообщениях с ботом.',
+		  },
 	  })
 	const en = new MessageEmbed({
 		color: '#51cf70',
@@ -270,7 +282,7 @@ exports.playerCommands = function playerCommands(language) {
 				value: 'Shows a list of players in a group with a break.'
 			},
 			{
-				name: '-break <hours>', 
+				name: '🔸-break <hours>', 
 				value: 'Need a break? Disables the ability to invite you to games for a specified number of hours. Command only works in private messages with a bot. '
 			},
 			{
@@ -278,22 +290,33 @@ exports.playerCommands = function playerCommands(language) {
 				value: 'The number of hours is from 1 to 99. ',
 			},
 			{
-				name: '-unbreak', 
+				name: '🔸-unbreak', 
 				value: 'Cancels the current break. '
 			},
 			{
-				name: '-join', 
-				value: 'Join to group. Command works only in dirrect messages.'
+				name: '🔸-join', 
+				value: 'Join to group. '
 			},
 			{
-				name: '-leave', 
-				value: 'Leave from group. Command works only in dirrect messages.'
+				name: '🔸-leave', 
+				value: 'Leave from group. '
 			},
 			{
-				name: '-help', 
-				value: 'Show list of commands you can use.'
+				name: '🔸-help', 
+				value: 'Show list of commands you can use. '
 			},
-		]
+			{
+				name: '🔸-about', 
+				value: 'Displays information about the bot. '
+			},
+			{
+				name: '🔸-superabout', 
+				value: 'Displays more detailed information about the bot. '
+			},
+		],
+		footer: {
+			text: '🔸 - the command is only available in private messages with bot.',
+		  },
 	  })
 	return returnMessage(language, en, ru);
 }
@@ -562,7 +585,7 @@ exports.about = function about(language) {
 			},
 			{
 				name: 'Разработчик? Интересно?', 
-				value: 'Если ты хочешь узнать, из чего я состою и как работаю, то можешь набрать команду `-superhelp`'
+				value: 'Если ты хочешь узнать, из чего я состою и как работаю, то можешь набрать команду `-superabout`.'
 			},
 		]
 	  })
@@ -577,7 +600,7 @@ exports.about = function about(language) {
 			},
 			{
 				name: 'Developer? Intresting?', 
-				value: 'If you want to know what I am made of and how I work, you can type the command `-superhelp` '
+				value: 'If you want to know what I am made of and how I work, you can type the command `-superabout`.'
 			},
 		]
 	  })
@@ -586,37 +609,6 @@ exports.about = function about(language) {
 }
 
 exports.superabout = function superabout(language) {
-	const en = new MessageEmbed({
-		color: '#b6cbd1',
-		title: "So, you're really interested", 
-		description: "I was developed by one... *pshh..*\n So, I'll figure it out here. This is `GeneralTao#5693`. This bot is my first more or less average project, in which I would like to gain experience in developing bots, programming in js. Of course, in order to get something useful at the end. I have been developing a bot, probably since the beginning of 2021.",               
-		fields: [
-			{
-				name: 'Programming language', 
-				value: 'As I already wrote, I wrote a bot on nodejs. So far, my project is devoid of normal style and comments, so it is useless to understand it yet.'
-			},
-			{
-				name: 'Data base', 
-				value: 'I use monngodb as a database. It stores player lists, notes, and configuration. So far, I use free 220 Kb. I think that\'s enough for the first time.'
-			},
-			{
-				name: 'Server', 
-				value: 'I bought a server on FirstByte for 55 rubles a month. Intel Xeon E5-2650, 512 MB RAM, 7 GB SSD, 7 TB traffic, Ubuntu 20.4. The cheapest server.'
-			},
-			{
-				name: 'Maps', 
-				value: 'Partially implemented by the card Manager. You can display a picture and information about the map in messages. A set of maps and MapCache.ini with their information are preloaded to the server.'
-			},
-			{
-				name: 'GitHub', 
-				value: 'The project can be found at the link on GitHub: https://github.com/GeneralTao2/nodejs-discord-rotr-bot .'
-			},
-			{
-				name: 'Contribution', 
-				value: 'So far, my project does not have a presentable appearance, so I do not ask for help in developing it yet.'
-			},
-		]
-	  })
 	const ru = new MessageEmbed({
 		color: '#b6cbd1',
 		title: "Так, ты реально заинтересовался", 
@@ -624,15 +616,15 @@ exports.superabout = function superabout(language) {
 		fields: [
 			{
 				name: 'Язык программирования', 
-				value: 'Как уже написал, написал бота на nodejs. Пока-что мой приоект лишен нормального стиля и комментариев, поэтому разбираться в нём пока бесполезно.'
+				value: 'Как уже написал, написал бота на nodejs. Пока-что мой проект лишен нормального стиля и комментариев, поэтому разбираться в нём пока бесполезно.'
 			},
 			{
 				name: 'База данных', 
-				value: 'Использую monngodb в качестве базы данных. Там хранятся списки игроков, пометки и конфигурация. Пока-что использую бесплатные 220 Кб. Думаю, на первое время хватит.'
+				value: 'Использую mongodb в качестве базы данных. Там хранятся списки игроков, пометки и конфигурация. Пока-что использую бесплатные 220 Кб. Думаю, на первое время хватит.'
 			},
 			{
 				name: 'Сервер', 
-				value: 'Купил сервер на FirstByte за 55 руб. в месяц. Intel Xeon E5-2650, 512 Мб RAM, 7 Гб SSD, трафик 7 Тб, Ubuntu 20.4. Самый дешёвый сервер.'
+				value: 'Купил сервер на FirstByte за 55 руб. в месяц. Intel Xeon E5-2650, 512 Мб RAM, 7 Гб SSD, трафик 7 Тб, Ubuntu 20.04. Самый дешёвый сервер.'
 			},
 			{
 				name: 'Карты', 
@@ -645,6 +637,37 @@ exports.superabout = function superabout(language) {
 			{
 				name: 'Помощь', 
 				value: 'Пока-что мой проект не имеет презентабельного вида, поэтому помощи в разработке не прошу.'
+			},
+		]
+	  })
+	  const en = new MessageEmbed({
+		color: '#b6cbd1',
+		title: "So, you're really interested", 
+		description: "I was developed by one... *pshh..*\n So, I'll figure it out here. This is `GeneralTao#5693`. This bot is my first more or less average project, in which I would like to gain experience in developing bots, programming in js. Of course, in order to get something useful at the end. I have been developing a bot, probably since the beginning of 2021.",               
+		fields: [
+			{
+				name: 'Programming language', 
+				value: 'As I already wrote, I wrote a bot on nodejs. So far, my project is devoid of normal style and comments, so it is useless to understand it yet.'
+			},
+			{
+				name: 'Data base', 
+				value: 'I use mongodb as a database. It stores player lists, notes, and configuration. So far, I use free 220 Kb. I think that\'s enough for the first time.'
+			},
+			{
+				name: 'Server', 
+				value: 'I bought a server on FirstByte for 55 rubles a month. Intel Xeon E5-2650, 512 MB RAM, 7 GB SSD, 7 TB traffic, Ubuntu 20.04. The cheapest server.'
+			},
+			{
+				name: 'Maps', 
+				value: 'Partially implemented by the card Manager. You can display a picture and information about the map in messages. A set of maps and MapCache.ini with their information are preloaded to the server.'
+			},
+			{
+				name: 'GitHub', 
+				value: 'The project can be found at the link on GitHub: https://github.com/GeneralTao2/nodejs-discord-rotr-bot .'
+			},
+			{
+				name: 'Contribution', 
+				value: 'So far, my project does not have a presentable appearance, so I do not ask for help in developing it yet.'
 			},
 		]
 	  })

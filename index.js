@@ -22,7 +22,7 @@ discord.client.on('ready', async () => {
     discord.roleIds['en'] = (await db.getRole('en')).discordId;
     discord.roleIds['ru'] = (await db.getRole('ru')).discordId;
     discord.roleIds['moderator'] = (await db.getRole('moderator')).discordId;
-    discord.channelId = await db.getBotChannelId();
+    discord.channelId = (await db.getBotChannelId()).discordId;
   } catch (error) {
     console.log(error);
   }
@@ -701,8 +701,15 @@ async function setRoleCommand(message, roleName) {
 
 async function setBotChannelCommand(message) {
   const channelId = message.channel.id;
-  db.setBotChannel(channelId);
   await discord.initCurrentChannel(channelId);
+  const helpMessageDiscordIds = []
+  const playerCommandsHelp = await discord.currentChennel.send(local.playerCommands('en'));
+  const moderatorCommands = await discord.currentChennel.send(local.moderatorCommands('en'));
+  helpMessageDiscordIds.push(playerCommandsHelp.id);
+  helpMessageDiscordIds.push(moderatorCommands.id);
+  await playerCommandsHelp.pin()
+  await moderatorCommands.pin()
+  db.setBotChannel(channelId, helpMessageDiscordIds);
   discord.currentChennel.send('Yee boy. Now it is my home!\nDon\'t forget to create moderator role by using `-moderator <player>...`.');
 }
 
@@ -714,8 +721,25 @@ async function leaveBotChannelCommand(message) {
     discord.currentChennel.send('Only moderator can send this command.');
     return;
   }
-  db.removeBotChannelId();
+  const cahnnelInfo = await db.removeBotChannelId();
+  if(cahnnelInfo) {
+    for(let i=0; i<cahnnelInfo.helpMessageDiscordIds.length; i++) {
+      const helpMessage = await discord.currentChennel.messages.fetch(cahnnelInfo.helpMessageDiscordIds[i]);
+      if(helpMessage) {
+        await helpMessage.unpin()
+        await helpMessage.delete()
+      }
+    }
+  }
   discord.channelId = undefined;
+}
+
+// ---------------------------------------------------------------- ABOUT ----------------
+
+async function aboutCommand(message) {
+  message.react('👌');
+  const lang = discord.getLanguageByUserId(message.author.id);
+  message.author.send(local.about(lang))
 }
 
 // ---------------------------------------------------------------- SUPER ABOUT ----------------
@@ -1073,13 +1097,16 @@ discord.client.on('message', async (message) => {
     if (message.content.match(/^-help$/)) {
       helpCommand(message);
     }
+    if (message.content.match(/^-about$/)) {
+      aboutCommand(message);
+    }
     if (message.content.match(/^-superabout$/)) {
       superaboutCommand(message);
     }
     return;
   }
 
-  if (message.channel.name != 'bot') {
+  if (message.channel.id != discord.channelId) {
     return;
   }
   if (message.mentions.users.array().length) {
