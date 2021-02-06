@@ -164,12 +164,32 @@ exports.playerCommands = function playerCommands(language) {
 				value: 'Показывает список забаненых в группе игроков.'
 			},
 			{
+				name: '-breaks', 
+				value: 'Показывает список игроков в группе с перерывом.'
+			},
+			{
+				name: '-break <hours>', 
+				value: 'Нужен перерыв? Отключает возможность звать тебя в игры на определённое количество часов. Команда работает только в личных сообщениях с ботом.'
+			},
+			{
+				name: '`<hours>`', 
+				value: 'Количество часов от 1 до 99.',
+			},
+			{
+				name: '-unbreak', 
+				value: 'Отменяет текущий перерыв.'
+			},
+			{
 				name: '-join', 
 				value: 'Вступить в группу. Команда работает только в личных сообщениях с ботом.'
 			},
 			{
 				name: '-leave', 
 				value: 'Покинуть группу. Команда работает только в личных сообщениях с ботом.'
+			},
+			{
+				name: '-help', 
+				value: 'Показывает список команд, которые можно использовать.'
 			},
 		]
 	  })
@@ -246,12 +266,32 @@ exports.playerCommands = function playerCommands(language) {
 				value: 'Show the list of banned players.'
 			},
 			{
+				name: '-breaks', 
+				value: 'Shows a list of players in a group with a break.'
+			},
+			{
+				name: '-break <hours>', 
+				value: 'Need a break? Disables the ability to invite you to games for a specified number of hours. Command only works in private messages with a bot. '
+			},
+			{
+				name: '`<hours>`', 
+				value: 'The number of hours is from 1 to 99. ',
+			},
+			{
+				name: '-unbreak', 
+				value: 'Cancels the current break. '
+			},
+			{
 				name: '-join', 
 				value: 'Join to group. Command works only in dirrect messages.'
 			},
 			{
 				name: '-leave', 
 				value: 'Leave from group. Command works only in dirrect messages.'
+			},
+			{
+				name: '-help', 
+				value: 'Show list of commands you can use.'
 			},
 		]
 	  })
@@ -513,27 +553,102 @@ exports.configCommands = function configCommands(language) {
 exports.about = function about(language) {
 	const ru = new MessageEmbed({
 		color: '#b6cbd1',
-		title: "Игроки", 
-		description: "Эти команды доступны всем игрокам в группе.",               
+		title: "~~О боте~~ (обо мне)", 
+		description: "Здравствуй, друг. Я - бот. Моя задача - облегчить сбор игроков в игры. Делается это посредством вызова специальной команды, о которой ты можешь узнать, набрав `-help` и последующей рассылки сообщений с приглошаниями. Для более комфортного использования моих услуг, были придуманы так же команды для админестрирования, чтобы злюки не спамили ботом всё и вся. Я всё ещё росту, поэтому сейчас нахожусь под наблюдением тестеров и разработчика.",               
 		fields: [
 			{
-				name: '-invite `<player>...`', 
-				value: 'Пригласить одного или несколькоих игроков в группу.'
+				name: 'Хочешь звать своих знакомых одной командой?', 
+				value: 'Для этого тебе надо приглосить своего друга ко мне. Просто набери `-invite <player>...` и он уже сам решит, принять или отклонить.'
+			},
+			{
+				name: 'Разработчик? Интересно?', 
+				value: 'Если ты хочешь узнать, из чего я состою и как работаю, то можешь набрать команду `-superhelp`'
 			},
 		]
 	  })
 	const en = new MessageEmbed({
 		color: '#b6cbd1',
-		title: "Players", 
-		description: "These commands can use any group member.",                  
+		title: "~~About bot~~ about me", 
+		description: "Hello Friend. I am a bot. My task is to facilitate the gathering of players into games. This is done by calling a special command, which you can find out about by typing `-help` and then sending messages with invitations. For a more comfortable use of my services, commands for administration were also invented, so that the spammers would not spam everything and everyone with the bot. I'm still growing, so I'm under the supervision of testers and a developer right now. ",               
 		fields: [
 			{
-				name: '-invite `<player>...`', 
-				value: 'Invite on or more players to group.'
+				name: 'Do you want to call your friends by one command? ', 
+				value: 'To do this, you need to invite your friend to me. Just type `-invite <player> ...` and it will decide whether to accept or reject. '
+			},
+			{
+				name: 'Developer? Intresting?', 
+				value: 'If you want to know what I am made of and how I work, you can type the command `-superhelp` '
 			},
 		]
 	  })
+
 	return returnMessage(language, en, ru);
+}
+
+exports.superabout = function superabout(language) {
+	const en = new MessageEmbed({
+		color: '#b6cbd1',
+		title: "So, you're really interested", 
+		description: "I was developed by one... *pshh..*\n So, I'll figure it out here. This is `GeneralTao#5693`. This bot is my first more or less average project, in which I would like to gain experience in developing bots, programming in js. Of course, in order to get something useful at the end. I have been developing a bot, probably since the beginning of 2021.",               
+		fields: [
+			{
+				name: 'Programming language', 
+				value: 'As I already wrote, I wrote a bot on nodejs. So far, my project is devoid of normal style and comments, so it is useless to understand it yet.'
+			},
+			{
+				name: 'Data base', 
+				value: 'I use monngodb as a database. It stores player lists, notes, and configuration. So far, I use free 220 Kb. I think that\'s enough for the first time.'
+			},
+			{
+				name: 'Server', 
+				value: 'I bought a server on FirstByte for 55 rubles a month. Intel Xeon E5-2650, 512 MB RAM, 7 GB SSD, 7 TB traffic, Ubuntu 20.4. The cheapest server.'
+			},
+			{
+				name: 'Maps', 
+				value: 'Partially implemented by the card Manager. You can display a picture and information about the map in messages. A set of maps and MapCache.ini with their information are preloaded to the server.'
+			},
+			{
+				name: 'GitHub', 
+				value: 'The project can be found at the link on GitHub: https://github.com/GeneralTao2/nodejs-discord-rotr-bot .'
+			},
+			{
+				name: 'Contribution', 
+				value: 'So far, my project does not have a presentable appearance, so I do not ask for help in developing it yet.'
+			},
+		]
+	  })
+	const ru = new MessageEmbed({
+		color: '#b6cbd1',
+		title: "Так, ты реально заинтересовался", 
+		description: "Меня разработал один... *пшш..*\nТак-с, тут я разберусь. На связи `GeneralTao#5693`. Этот бот - мой первый боле-менее средний проект, в котором я хотел бы получит опыт разработки ботов, программирования на js. Разумеется, чтобы в конце получить что-то полезное. Разрабатываю бота, наверное, с начала 2021 года. ",               
+		fields: [
+			{
+				name: 'Язык программирования', 
+				value: 'Как уже написал, написал бота на nodejs. Пока-что мой приоект лишен нормального стиля и комментариев, поэтому разбираться в нём пока бесполезно.'
+			},
+			{
+				name: 'База данных', 
+				value: 'Использую monngodb в качестве базы данных. Там хранятся списки игроков, пометки и конфигурация. Пока-что использую бесплатные 220 Кб. Думаю, на первое время хватит.'
+			},
+			{
+				name: 'Сервер', 
+				value: 'Купил сервер на FirstByte за 55 руб. в месяц. Intel Xeon E5-2650, 512 Мб RAM, 7 Гб SSD, трафик 7 Тб, Ubuntu 20.4. Самый дешёвый сервер.'
+			},
+			{
+				name: 'Карты', 
+				value: 'Частично реализован менеджер карт. Можно выводит картинку и информацию о карте в сообщения. На сервер предварительно загружен набор карт и MapCache.ini с их информацией.'
+			},
+			{
+				name: 'GitHub', 
+				value: 'Проект можно найти по ссылке на GitHub: https://github.com/GeneralTao2/nodejs-discord-rotr-bot .'
+			},
+			{
+				name: 'Помощь', 
+				value: 'Пока-что мой проект не имеет презентабельного вида, поэтому помощи в разработке не прошу.'
+			},
+		]
+	  })
+	  return returnMessage(language, en, ru);
 }
 
 
