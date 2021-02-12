@@ -26,7 +26,6 @@ discord.client.on('ready', async () => {
   } catch (error) {
     console.log(error);
   }
-
   console.log('Yeah, connected!');
   await discord.init();
   await initReactionsAfterRelog();
@@ -42,16 +41,34 @@ discord.client.on('guildCreate', async () => {
 async function initReactionsAfterRelog() {
   // Invitation
   db.invitedPlayersForEach(async (invitedPlayer) => {
-    const user = discord.getUserById(invitedPlayer.discordId);
-    const lastMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.messageId);
-    const msRemaining = invitedPlayer.createdAt.getTime() + threeDays - new Date().getTime();
-    await removeUpDownReactions(lastMessage);
-    upDownManager(lastMessage, user.id, msRemaining, () => {
-      addPlayerAfterInviting(user);
-    }, () => {
-      ignorePlayerAfterInviting(user);
-    });
+    try {
+      const user = discord.getUserById(invitedPlayer.discordId);
+      const msRemaining = invitedPlayer.createdAt.getTime() + threeDays - new Date().getTime();
+      if(invitedPlayer.inviationMessageId) {
+        const inviteMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.inviationMessageId);
+        await removeUpDownReactions(inviteMessage);
+        upDownManager(inviteMessage, user.id, msRemaining, () => {
+          addPlayerAfterInviting(user);
+        }, () => {
+          ignorePlayerAfterInviting(user);
+        });
+      } else {
+        const languageMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.languageMessageId);
+        const inviter = await discord.getUserById(invitedPlayer.inviterDiscordId)
+        await removeUpDownReactions(languageMessage, '🇷🇺', '🇬🇧');
+        upDownManager(languageMessage, user.id, msRemaining, async () => {
+          await discord.pinRoleById(user.id, 'ru')
+          sendInviteMassage(user, inviter)
+       }, async () => {
+          await discord.pinRoleById(user.id, 'en')
+          sendInviteMassage(user, inviter)
+        }, '🇷🇺', '🇬🇧');
+      }
+    } catch (error) {
+      console.log('Critical error happend!', error)
+    }
   });
+    
 
   // Gathering
   db.gathersForEach(async (gather) => {
@@ -74,10 +91,12 @@ async function initReactionsAfterRelog() {
 }
 
 
-async function invitePlayer(messageId, user) {
+async function invitePlayer(inviationMessageId, languageMessageId, user, inviterId) {
   return await db.addPlayerToInvitedList({
     discordId: user.id,
-    messageId: messageId,
+    inviterDiscordId: inviterId,
+    inviationMessageId: inviationMessageId,
+    languageMessageId: languageMessageId,
     tag: {
       name: user.username,
       discr: user.discriminator,
@@ -149,15 +168,20 @@ async function addPlayer(user) {
 }
 
 function getLocalContent(user, contentCB) {
-  const language = discord.getLanguageByUserId(user.id);
+  let language = discord.getLanguageByUserId(user.id);
+  if(!language) {
+    language = 'en'
+  }
   return contentCB(arguments, language);
 }
 
 async function sendMessageToUser(user, contentCB) {
   try {
-    const language = discord.getLanguageByUserId(user.id);
+    let language = discord.getLanguageByUserId(user.id);
+    if(!language) {
+      language = 'en'
+    }
     const content = contentCB(arguments, language);
-    discord.getLanguageByUserId(user.id);
     return await user.send(content);
   } catch (error) {
     if ((await db.removeAddedPlayerById(user.id)).value) {
@@ -210,17 +234,32 @@ async function invatePlayerCommand(message) {
       continue;
     }
 
-    const sendedMessage = await sendMessageToUser(user, local.invitation, message.author.tag);
-    if (!sendedMessage) {
-      return;
+    if(!discord.getLanguageByUserId(user.id)) {
+      const languageMessage = await user.send('Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\nIt\'s okay, this is not spam, I\'m from ROTR. First, which language should I write for you?. Press to corresponding emoji in the bottom.')
+      await invitePlayer(null, languageMessage.id, user, message.author.id);
+      upDownManager(languageMessage, user.id, threeDays, async () => {
+        await discord.pinRoleById(user.id, 'ru')
+        sendInviteMassage(user, message.author)
+      }, async () => {
+        await discord.pinRoleById(user.id, 'en')
+        sendInviteMassage(user, message.author)
+      }, '🇷🇺', '🇬🇧')
     }
-    invitePlayer(sendedMessage.id, user);
-    upDownManager(sendedMessage, user.id, threeDays, () => {
-      addPlayerAfterInviting(user);
-    }, () => {
-      ignorePlayerAfterInviting(user);
-    });
+
   }
+}
+
+async function sendInviteMassage(user, inviter) {
+  const sendedMessage = await sendMessageToUser(user, local.invitation, inviter.tag);
+  if (!sendedMessage) {
+    return;
+  }
+  db.putInvitationMessageId(sendedMessage.id, user.id)
+  upDownManager(sendedMessage, user.id, threeDays, () => {
+    addPlayerAfterInviting(user);
+  }, () => {
+    ignorePlayerAfterInviting(user);
+  });
 }
 
 // ---------------------------------------------------------------- REMOVE ----------------
@@ -333,10 +372,15 @@ async function getUserCommand(message) {
 
 async function getInvitedPlayersCommand(message) {
   message.react('👌');
-  const list = await db.invitedPlayersForEach(async (player) => {
+  let list = await db.invitedPlayersForEach(async (player) => {
     const user = discord.getUserById(player.discordId);
+    if(!user) {
+      db.removeInvitedPlayerById(player.discordId);
+      return null
+    }
     return user.tag;
   });
+  list = list.filter(cell => cell)
   let content = '';
   if (list.length === 0) {
     content = 'Empty.';
@@ -357,13 +401,18 @@ async function getInvitedPlayersCommand(message) {
 async function getAddedPlayersCommand(message) {
   // user.presence.status
   message.react('👌');
-  const list = await db.addedPlayersForEach(async (player) => {
+  let list = await db.addedPlayersForEach(async (player) => {
     const user = discord.getUserById(player.discordId);
+    if(!user) {
+      db.removeAddedPlayerById(player.discordId);
+      return null
+    }
     return {
       tag: user.tag,
       presence: discord.isOnlineById(user.id),
     };
   });
+  list = list.filter(cell => cell) 
   if (list.length === 0) {
     discord.currentChennel.send('Added plyers list is empty.');
     return;
@@ -402,10 +451,14 @@ async function getAddedPlayersCommand(message) {
 
 async function getBannedPlayersCommand(message) {
   message.react('👌');
-  const list = await db.bannedPlayersForEach(async (player) => {
+  let list = await db.bannedPlayersForEach(async (player) => {
     const user = discord.getUserById(player.discordId);
+    if(!user) {
+      return null
+    }
     return user.tag;
   });
+  list = list.filter(cell => cell)
   let content = '';
   if (list.length === 0) {
     content = 'Empty.';
@@ -483,11 +536,13 @@ async function makeModeratorCommand(message) {
 
     if (!await db.findAddedPlayerById(user.id)) {
       discord.currentChennel.send('Payer `' + user.tag +'` not found.');
+      continue
     }
     if (discord.isPlayerModerById(user.id)) {
       discord.currentChennel.send('Payer `' + user.tag +'` already is moderator.');
+      continue
     }
-    discord.pinModerRoleById(user.id);
+    discord.pinRoleById(user.id, 'moderator');
   }
 }
 
@@ -503,7 +558,7 @@ async function unmakeModeratorCommand(message) {
   for (let u=0; u<users.length; u++) {
     const user = users[u];
     if (discord.isPlayerModerById(user.id)) {
-      discord.unpinModerRoleById(user.id);
+      discord.unpinRoleById(user.id, 'moderator');
     } else {
       discord.currentChennel.send('Plyer `'+user.tag+'` isn\'t moderator.');
     }
@@ -538,7 +593,6 @@ async function showMapCommand(message) {
   if (match) {
     const map = await banner.getMapInfoByPlayerAndIndex(parseInt(match[1]), parseInt(match[2]));
     const attachment = new discord.MessageAttachment(map.buffer, 'map.png');
-    console.log(map.info.name);
     await discord.currentChennel.send(map.info.name+'\nSize: '+ map.info.size.x + 'x'+map.info.size.y, attachment);
   } else {
     discord.currentChennel.send('Wrong map number.');
@@ -572,7 +626,10 @@ async function leaveCommand(message) {
 
 async function helpCommand(message) {
   message.react('👌');
-  const lang = discord.getLanguageByUserId(message.author.id);
+  let lang = discord.getLanguageByUserId(message.author.id);
+  if(!lang) {
+    lang = 'en'
+  }
   message.author.send(local.playerCommands(lang));
   message.author.send(local.moderatorCommands(lang));
   if (await discord.isPlayerModerById(message.author.id)) {
@@ -628,7 +685,6 @@ async function unbreakCommand(message) {
   message.react('👌');
   const user = message.author;
   const breakInfo = await db.removeBreakById(user.id);
-  console.log(breakInfo);
   if (!breakInfo.value) {
     sendMessageToUser(user, local.missngBreak);
   }
@@ -638,13 +694,19 @@ async function unbreakCommand(message) {
 
 async function getBreaksCommand(message) {
   message.react('👌');
-  const list = await db.breaksForEach(async (player) => {
+  let list = await db.breaksForEach(async (player) => {
     const user = discord.getUserById(player.discordId);
+    if(!user) {
+      db.removeAddedPlayerById(player.discordId)
+      db.removeBreakById(player.discordId)
+      return null
+    }
     return {
       tag: user.tag,
       time: player.expireAt,
     };
   });
+  list = list.filter( cell => cell)
   let content = '';
   if (list.length === 0) {
     content = 'Empty.';
@@ -738,7 +800,10 @@ async function leaveBotChannelCommand(message) {
 
 async function aboutCommand(message) {
   message.react('👌');
-  const lang = discord.getLanguageByUserId(message.author.id);
+  let lang = discord.getLanguageByUserId(message.author.id);
+  if(!lang) {
+    lang = 'en'
+  }
   message.author.send(local.about(lang))
 }
 
@@ -746,7 +811,10 @@ async function aboutCommand(message) {
 
 async function superaboutCommand(message) {
   message.react('👌');
-  const lang = discord.getLanguageByUserId(message.author.id);
+  let lang = discord.getLanguageByUserId(message.author.id);
+  if(!lang) {
+    lang = 'en'
+  }
   message.author.send(local.superabout(lang))
 }
 
@@ -848,11 +916,15 @@ async function gatherPlayersCommand(message) {
   }
 
   if (success) {
-    const list = await db.addedPlayersForEach(async (player) => {
+    let list = await db.addedPlayersForEach(async (player) => {
       const user = discord.getUserById(player.discordId);
+      if(!user) {
+        db.removeAddedPlayerById(player.discordId)
+        return null
+      }
       return user;
     });
-
+    list = list.filter(cell => cell)
 
     const gatheredUserList = [];
     for (let i=0; i<list.length; i++) {
@@ -995,36 +1067,33 @@ async function sendInvitationToGathered(user, inviter, attachment, comment, time
 // ---------------------------------------------------------------- LEAVE ----------------
 
 const threeDays = 3*24*60*60*1000;
-function upDownManager(message, userId, ttl, upFunction, downFunction, endFunction) {
-  message.react('✅');
-  message.react('❎');
-  const upFilter = (reaction, user) => reaction.emoji.name === '✅' && user.id === userId;
-  const downFilter = (reaction, user) => reaction.emoji.name === '❎' && user.id === userId;
+function upDownManager(message, userId, ttl, upFunction, downFunction, ok = '✅', nok = '❎') {
+  message.react(ok);
+  message.react(nok);
+  const upFilter = (reaction, user) => reaction.emoji.name === ok && user.id === userId;
+  const downFilter = (reaction, user) => reaction.emoji.name === nok && user.id === userId;
   const upCollector = message.createReactionCollector(upFilter, {time: ttl});
   const downCollector = message.createReactionCollector(downFilter, {time: ttl});
   upCollector.on('collect', (r) => {
-    removeUpDownReactions(message);
+    removeUpDownReactions(message, ok, nok);
     message.react('👌');
     upFunction();
   });
   downCollector.on('collect', (r) => {
-    removeUpDownReactions(message);
+    removeUpDownReactions(message, ok, nok);
     downFunction();
   });
   downCollector.on('end', (collected) => {
-    removeUpDownReactions(message);
-    if (endFunction) {
-      endFunction();
-    }
+    removeUpDownReactions(message, ok, nok);
   });
 }
 
-async function removeUpDownReactions(message) {
-  if (message.reactions.cache.has('✅')) {
-    await message.reactions.cache.get('✅').users.remove();
+async function removeUpDownReactions(message, ok = '✅', nok = '❎') {
+  if (message.reactions.cache.has(ok)) {
+    await message.reactions.cache.get(ok).users.remove();
   }
-  if (message.reactions.cache.has('❎')) {
-    await message.reactions.cache.get('❎').users.remove();
+  if (message.reactions.cache.has(nok)) {
+    await message.reactions.cache.get(nok).users.remove();
   }
 }
 

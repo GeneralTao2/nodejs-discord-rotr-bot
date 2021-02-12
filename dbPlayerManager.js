@@ -219,6 +219,11 @@ async function removeBotChannelId() {
   return (await exports.configs.findOneAndDelete({channel: 'bot'})).value
 }
 
+async function putInvitationMessageId(messageId, userId)  {
+  exports.configs.updateOne({discordId: userId}, {'$set': {inviationMessageId: messageId}})
+}
+
+exports.putInvitationMessageId = putInvitationMessageId
 exports.removeBotChannelId = removeBotChannelId
 exports.setBotChannel = setBotChannel
 exports.getBotChannelId = getBotChannelId

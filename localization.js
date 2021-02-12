@@ -11,7 +11,7 @@ function returnMessage(language, en, ru) {
 		}
 }
 exports.invitation = function invitation(args, language) {
-	const ru = 'Привет! Я - менеджер сообщества ROTR BP. Моя главная задача - собирать людей на игры. **'+args[2]+'** пригласил тебя. Ты можешь принять или отклонить приглашение. Если ты примешь тогда сможешь собирать и быть собранным другими игроками.\nПроголосуй ✅ или ❎ чтобы принять или отказаться.'
+	const ru = 'Привет! Я - менеджер сообщества ROTR BP. Моя главная задача - собирать людей на игры. **'+args[2]+'** пригласил тебя. Ты можешь принять или отклонить приглашение. Если ты примешь, тогда сможешь собирать и быть собранным другими игроками.\nПроголосуй ✅ или ❎ чтобы принять или отказаться.'
 	const en = 'Hello! I am ROTR BP community player manager. My main goal is to gover players from ROTR discord network to game. \n**'+args[2]+'** invited you, so you can accept or refuce. If you accept you will be able to gather peaple and be gathered to games.\nVote ✅ or ❎ to accept or reject.'
 	return returnMessage(language, en, ru);
 }
@@ -48,7 +48,7 @@ exports.adding = function adding(args, language) {
 
 exports.rejection = function rejection(args, language) {
 	const ru = 'Очень жаль, но ничего страшного. Если передумаешь, то просто набери `-join`.'
-	const en = 'I\'m sorry, but it\'s okay. If you change your mind, just type ` - join`'
+	const en = 'I\'m sorry, but it\'s okay. If you change your mind, just type ` -join`'
 	return returnMessage(language, en, ru);
 }
 
@@ -97,16 +97,8 @@ exports.playerCommands = function playerCommands(language) {
 		description: "Эти команды доступны всем игрокам в группе.",               
 		fields: [
 			{
-				name: '-invite `<player>...`', 
-				value: 'Пригласить одного или несколькоих игроков в группу.'
-			},
-			{
-				name: '`<player>`', 
-				value: 'Упоминание о игроке в формате @никнейм.'
-			},
-			{
 				name: '-gather `<player_quantity>` `<map_number>` `<time>` `<comment>`', 
-				value: 'Собрать игроков в игру, отправив им приглошения.'
+				value: 'Собрать игроков в игру, отправив им приглашения.'
 			},
 			{
 				name: '`<player_quantity>`', 
@@ -115,17 +107,17 @@ exports.playerCommands = function playerCommands(language) {
 			},
 			{
 				name: '`<map_number>`', 
-				value: 'Порядковый намер карты из списка карт с определённым количеством игроков.',
+				value: 'Порядковый намер карты из списка карт с определённым количеством игроков, либо `-`.',
 				inline: true
 			},
 			{
 				name: '`<time>`', 
-				value: 'Время, которое собрание будет действительным. В минутах, от 2 до 60.',
+				value: 'Время, которое собрание будет действительным. В минутах, от 2 до 60, либо `-`.',
 				inline: true
 			},
 			{
 				name: '`<comment>`', 
-				value: 'Комментарий, который будет приложен к приглашению. От 3 до 256 символов.',
+				value: 'Комментарий, который будет приложен к приглашению. От 3 до 256 символов, либо `-`.',
 				inline: true
 			},
 			{
@@ -152,12 +144,20 @@ exports.playerCommands = function playerCommands(language) {
 				inline: true
 			},
 			{
+				name: '-invite `<player>...`', 
+				value: 'Пригласить одного или несколькоих игроков в группу для использования бота.'
+			},
+			{
+				name: '`<player>`', 
+				value: 'Упоминание о игроке в формате @никнейм.'
+			},
+			{
 				name: '-added', 
 				value: 'Показывает список добавленных в группу игроков.'
 			},
 			{
 				name: '-invited', 
-				value: 'Показывает список приглошённых в группу игроков.'
+				value: 'Показывает список приглашённых в группу игроков.'
 			},
 			{
 				name: '-banned', 
@@ -211,14 +211,6 @@ exports.playerCommands = function playerCommands(language) {
 		description: "These commands can use any group member.",                  
 		fields: [
 			{
-				name: '-invite `<player>...`', 
-				value: 'Invite on or more players to group.'
-			},
-			{
-				name: '`<player>`', 
-				value: 'Mention about player in format @nickname.'
-			},
-			{
 				name: '-gather `<player_quantity>` `<map_number>` `<time>` `<comment>`', 
 				value: 'Gather players to the game, sending them invitation message.'
 			},
@@ -229,17 +221,17 @@ exports.playerCommands = function playerCommands(language) {
 			},
 			{
 				name: '`<map_number>`', 
-				value: 'The sequential number of the map from the list of maps with a certain number of players.',
+				value: 'The sequential number of the map from `-maps` with a certain number of players, or `-`. You can find it using',
 				inline: true
 			},
 			{
 				name: '`<time>`', 
-				value: 'The time that the meeting will be valid. In minutes, from 2 to 60.',
+				value: 'The time that the meeting will be valid. In minutes, from 2 to 60, or `-`.',
 				inline: true
 			},
 			{
 				name: '`<comment>`', 
-				value: 'The comment that will be attached to the invitation. From 3 to 256 characters.',
+				value: 'The comment that will be attached to the invitation. From 3 to 256 characters, or `-`.',
 				inline: true
 			},
 			{
@@ -264,6 +256,14 @@ exports.playerCommands = function playerCommands(language) {
 				name: '`<map_number>`', 
 				value: 'The sequential number of the map from the list of maps with a certain number of players.',
 				inline: true
+			},
+			{
+				name: '-invite `<player>...`', 
+				value: 'Invite one or more players to group, for bot using.'
+			},
+			{
+				name: '`<player>`', 
+				value: 'Mention about player in format @nickname.'
 			},
 			{
 				name: '-added', 
@@ -338,7 +338,7 @@ exports.moderatorCommands = function moderatorCommands(language) {
 			},
 			{
 				name: '-cancel `<player>...`', 
-				value: 'Отменить приглошения в группу одного или нескольких игроков.'
+				value: 'Отменить приглашения в группу одного или нескольких игроков.'
 			},
 			{
 				name: '`<player>`', 
@@ -375,7 +375,7 @@ exports.moderatorCommands = function moderatorCommands(language) {
 				value: 'Упоминание о игроке в формате @никнейм.'
 			},
 			{
-				name: '-moder `<player>...`', 
+				name: '-moderator `<player>...`', 
 				value: 'Даёт одному или нескольким игрокам роль модератора бота.'
 			},
 			{
@@ -383,7 +383,7 @@ exports.moderatorCommands = function moderatorCommands(language) {
 				value: 'Упоминание о игроке в формате @никнейм.'
 			},
 			{
-				name: '-unmoder `<player>...`', 
+				name: '-unmoderator `<player>...`', 
 				value: 'Забирает у одного или нескольких игроков роль модератора бота.'
 			},
 			{
@@ -452,7 +452,7 @@ exports.moderatorCommands = function moderatorCommands(language) {
 				value: 'Mention about player in format @nickname.'
 			},
 			{
-				name: '-moder `<player>...`', 
+				name: '-moderator `<player>...`', 
 				value: 'Give for one or more players moderator role.'
 			},
 			{
@@ -460,7 +460,7 @@ exports.moderatorCommands = function moderatorCommands(language) {
 				value: 'Mention about player in format @nickname.'
 			},
 			{
-				name: '-unmoder `<player>...`', 
+				name: '-unmoderator `<player>...`', 
 				value: 'Take away from one or more players moderator role.'
 			},
 			{
@@ -489,7 +489,7 @@ exports.configCommands = function configCommands(language) {
 		fields: [
 			{
 				name: '-set_indexes', 
-				value: 'Проводит некоторую настройку базы данных. Обычно настраивается само, если бот был приглошён в сеть будучи онлайн. В противном случае необходимо вызвать эту команду.'
+				value: 'Проводит некоторую настройку базы данных. Обычно настраивается само, если бот был приглашён в сеть будучи онлайн. В противном случае необходимо вызвать эту команду.'
 			},
 			{
 				name: '-set_ru_role `<role>`', 
@@ -577,11 +577,11 @@ exports.about = function about(language) {
 	const ru = new MessageEmbed({
 		color: '#b6cbd1',
 		title: "~~О боте~~ (обо мне)", 
-		description: "Здравствуй, друг. Я - бот. Моя задача - облегчить сбор игроков в игры. Делается это посредством вызова специальной команды, о которой ты можешь узнать, набрав `-help` и последующей рассылки сообщений с приглошаниями. Для более комфортного использования моих услуг, были придуманы так же команды для админестрирования, чтобы злюки не спамили ботом всё и вся. Я всё ещё росту, поэтому сейчас нахожусь под наблюдением тестеров и разработчика.",               
+		description: "Здравствуй, друг. Я - бот. Моя задача - облегчить сбор игроков в игры. Делается это посредством вызова специальной команды, о которой ты можешь узнать, набрав `-help` и последующей рассылки сообщений с приглашаниями. Для более комфортного использования моих услуг, были придуманы так же команды для админестрирования, чтобы злюки не спамили ботом всё и вся. Я всё ещё росту, поэтому сейчас нахожусь под наблюдением тестеров и разработчика.",               
 		fields: [
 			{
 				name: 'Хочешь звать своих знакомых одной командой?', 
-				value: 'Для этого тебе надо приглосить своего друга ко мне. Просто набери `-invite <player>...` и он уже сам решит, принять или отклонить.'
+				value: 'Для этого тебе надо пригласить своего друга ко мне. Просто набери `-invite <player>...` и он уже сам решит, принять или отклонить.'
 			},
 			{
 				name: 'Разработчик? Интересно?', 

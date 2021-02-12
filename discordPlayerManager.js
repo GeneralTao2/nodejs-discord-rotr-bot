@@ -78,7 +78,7 @@ function getLanguageByUserId(id) {
     if(hasRoleByUserIdAndRoleId(id, roleIds['ru'])) {
         return 'ru'
     }
-    return 'en';
+    return null;
 }
 
 async function initCurrentChannel(channelId) {
@@ -131,6 +131,7 @@ async function getUserDMbyMessageId(userId, messageId) {
     if(!user.dmChannel) {
         await user.createDM()
     }
+    console.log(messageId)
     return await user.dmChannel.messages.fetch(messageId)
 }
 
@@ -168,24 +169,19 @@ function findRoleById(id) {
   return roleArray[0]
 }
 
-async function pinModerRoleById(id) {
-	const role = findRoleByName(botModeratorRoleData.name)
+async function pinRoleById(id, roleName) {
+    const role = findRoleById(exports.roleIds[roleName])
 	if(role) {
 		const member = getGuildMemberByUserId(id)
-        member.roles.add(role.id)
-        //roleIds['moderator'] = role.id
-	} else {
-
+        await member.roles.add(role.id)
 	}
 }
 
-function unpinModerRoleById(id) {
-	const role = findRoleByName(botModeratorRoleData.name)
+async function unpinRoleById(id, roleName) {
+	const role = findRoleById(exports.roleIds[roleName])
 	if(role) {
 		const member = getGuildMemberByUserId(id)
-		member.roles.remove(role.id)
-	} else {
-		return
+		await member.roles.remove(role.id)
 	}
 }
 
@@ -203,9 +199,9 @@ exports.createModerRole = createModerRole
 exports.getUserDMbyMessageId = getUserDMbyMessageId
 exports.isOnlineById = isOnlineById
 exports.isPlayerModerById = isPlayerModerById
-exports.unpinModerRoleById = unpinModerRoleById
+exports.unpinRoleById = unpinRoleById
 exports.findRoleByName = findRoleByName
-exports.pinModerRoleById = pinModerRoleById
+exports.pinRoleById = pinRoleById
 exports.getLastUserDMbyId = getLastUserDMbyId;
 exports.draw = draw; 
 exports.ErrorMessage = ErrorMessage;
