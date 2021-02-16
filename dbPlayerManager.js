@@ -23,7 +23,7 @@ async function getDocumentsByMatch(collection, match) {
 }
 
 async function addPlayerData(data) {
-  exports.addedPlayers.insertOne(data);
+  return await exports.addedPlayers.insertOne(data);
 }
 
 

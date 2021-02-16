@@ -340,80 +340,80 @@ const phrases = {
 		en: (args) => `Hello! I am ROTR BP community player manager. My main goal is to gover players from ROTR discord network to game. \n**${args[0]}** invited you, so you can accept or refuce. If you accept you will be able to gather peaple and be gathered to games.\nVote ✅ or ❎ to accept or reject.`
 	},
 	removeing: {
-		ru: (args) => `Игрок ${args[0]} удалил тебя из пользователей бота.`,
-		en: (args) => `Player ${args[0]} removed you from bot users.`
+		ru: (args) => `Игрок \`${args[0]}\` удалил тебя из пользователей бота.`,
+		en: (args) => `Player \`${args[0]}\` removed you from bot users.`
 	},
 	canceling: {
-		ru: `Приглашение было отменено.`,
-		en: `Your invitation was canceled.`
+		ru: (args) => `Приглашение было отменено.`,
+		en: (args) => `Your invitation was canceled.`
 	},
 	banning: {
-		ru: (args) => `Ты был забанен игроком ${args[0]}. Причина: ${args[1]}.`,
-		en: (args) => `You was banned by ${args[0]}. Reason: ${args[1]}.`
+		ru: (args) => `Ты был забанен игроком \`${args[0]}\`. Причина: \`${args[1]}\`.`,
+		en: (args) => `You was banned by \`${args[0]}\`. Reason: \`${args[1]}\`.`
 	},
 	unbanning: {
-		ru: (args) => `Ты был разбанен игроком ${args[0]}. Теперь ты можешь вступить к нам набрав \`-join\`.`,
-		en: (args) => `You was unbanned by ${args[0]}. Now you can join us, typing \`-join\`.`	
+		ru: (args) => `Ты был разбанен игроком \`${args[0]}\`. Теперь ты можешь вступить к нам набрав \`-join\`.`,
+		en: (args) => `You was unbanned by \`${args[0]}\`. Now you can join us, typing \`-join\`.`	
 	},
 	adding: {
-		ru: `Отлично, теперь ты вступил в наши ряды. Чтобы просмотреть набор комманд набери \`-help\`.`,
-		en: `Excellent, now you joined to us. To show my commands type \`-help\`.`	
+		ru: (args) => `Отлично, теперь ты вступил в наши ряды. Чтобы просмотреть набор комманд набери \`-help\`.`,
+		en: (args) => `Excellent, now you joined to us. To show my commands type \`-help\`.`	
 	},
 	rejection: {
-		ru: `Очень жаль, но ничего страшного. Если передумаешь, то просто набери \`-join\`.`,
-		en: `I\`m sorry, but it's okay. If you change your mind, just type \` -join\``
+		ru: (args) => `Очень жаль, но ничего страшного. Если передумаешь, то просто набери \`-join\`.`,
+		en: (args) => `I\'m sorry, but it's okay. If you change your mind, just type \` -join\``
 	},
 	addingTwice: {
-		ru: `Нельзя добавить себя дважды.`,
-		en: `You can't add yourself twice.`
+		ru: (args) => `Нельзя добавить себя дважды.`,
+		en: (args) => `You can't add yourself twice.`
 	},
 	wasInvitedToGame: {
-		ru: `Ты был приглашён в игру!`,
-		en: `You was invited to game!`
+		ru: (args) => `Ты был приглашён в игру!`,
+		en: (args) => `You was invited to game!`
 	},
 	noComment: {
-		ru: `Комментария нет.`,
-		en: `No comment.`
+		ru: (args) => `Комментария нет.`,
+		en: (args) => `No comment.`
 	},
 	gatherMessageFooter: {
-		ru: `Жми на ✅ или ❎ чтобы принять или отказаться. До`,
-		en: `Vote ✅ or ❎ to accept or cancel. Gathering is valid until`
+		ru: (args) => `Жми на ✅ или ❎ чтобы принять или отказаться. До`,
+		en: (args) => `Vote ✅ or ❎ to accept or cancel. Gathering is valid until`
 	},
 	gather: {
-		ru: `Собрание`,
-		en: `Gather`
+		ru: (args) => `Собрание`,
+		en: (args) => `Gather`
 	},
 	missngBreak: {
-		ru: `У тебя нет перерывов.`,
-		en: `You don't have breaks.`
+		ru: (args) => `У тебя нет перерывов.`,
+		en: (args) => `You don't have breaks.`
 	},
 	playerCommandName: {
-		ru: "Игроки",
-		en: "Players"
+		ru: (args) => "Игроки",
+		en: (args) => "Players"
 	},
 	playerCommandDescription: {
-		ru: "Эти команды доступны всем игрокам в группе.",
-		en: "These commands can use any group member."
+		ru: (args) => "Эти команды доступны всем игрокам в группе.",
+		en: (args) => "These commands can use any group member."
 	},
 	moderatorCommandName: {
-		ru: "Модераторы",
-		en: "Moderators"
+		ru: (args) => "Модераторы",
+		en: (args) => "Moderators"
 	},
 	moderatorCommandDescription: {
-		ru: "Эти команды доступны только игрокам с ролью `Bot Moderator`.",
-		en: "These commands can use only members that have `Bot Moderator` role."
+		ru: (args) => "Эти команды доступны только игрокам с ролью `Bot Moderator`.",
+		en: (args) => "These commands can use only members that have `Bot Moderator` role."
 	},
 	configCommandName: {
-		ru: "Конфигурации",
-		en: "Configurations"
+		ru: (args) => "Конфигурации",
+		en: (args) => "Configurations"
 	},
 	configCommandDescription: {
-		ru: "Эти команды доступны только игрокам с ролью `Bot Moderator`. Предназначены для первоначальной настройки бота после вступлнения в сеть.",
-		en: "These commands are only available to players with the `Bot Moderator` role. Designed for initial configuration of the bot after joining the network. "
+		ru: (args) => "Эти команды доступны только игрокам с ролью `Bot Moderator`. Предназначены для первоначальной настройки бота после вступлнения в сеть.",
+		en: (args) => "These commands are only available to players with the `Bot Moderator` role. Designed for initial configuration of the bot after joining the network. "
 	},
 	playerCommandFooter: {
-		ru: '🔸 - команда доступна только в личных сообщениях с ботом.',
-		en: '🔸 - the command is only available in private messages with bot.'
+		ru: (args) => '🔸 - команда доступна только в личных сообщениях с ботом.',
+		en: (args) => '🔸 - the command is only available in private messages with bot.'
 	},
 }
 

@@ -167,23 +167,24 @@ async function addPlayer(user) {
   });
 }
 
-function getLocalContent(user, phraze, ...args) {
+function getLocalContent(user, translatePhrase, ...args) {
   let language = discord.getLanguageByUserId(user.id);
   if(!language) {
     language = 'en'
   }
-  return local.translatePhrase(phraze, args, language);
+  return local.translatePhrase(translatePhrase, args, language);
 }
 
-async function sendMessageToUser(user, phraze, ...args) {
+async function sendMessageToUser(user, translatePhrase, ...args) {
   try {
     let language = discord.getLanguageByUserId(user.id);
     if(!language) {
       language = 'en'
     }
-    const content = local.translatePhrase(phraze, args, language);
+    const content = local.translatePhrase(translatePhrase, args, language);
     return await user.send(content);
   } catch (error) {
+    console.log(error)
     if ((await db.removeAddedPlayerById(user.id)).value) {
       discord.currentChennel.send('Player `'+user.tag+'` blocked me. Removing.');
     } else {
@@ -203,8 +204,12 @@ async function addPlayerAfterInviting(user) {
     console.log('Player '+user.tag+' already added.');
     return;
   }
-  addPlayer(user);
   db.removeInvitedPlayerById(user.id);
+  addPlayerProcess(user)
+}
+
+async function addPlayerProcess(user) {
+  addPlayer(user);
   sendMessageToUser(user, 'adding');
   discord.currentChennel.send('All right, player `'+user.tag+'` added.');
 }
@@ -233,20 +238,29 @@ async function invatePlayerCommand(message) {
       discord.currentChennel.send('Player `'+user.tag+'` already invited.');
       continue;
     }
-
-    if(!discord.getLanguageByUserId(user.id)) {
-      const languageMessage = await user.send('Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\nIt\'s okay, this is not spam, I\'m from ROTR. First, which language should I write for you?. Press to corresponding emoji in the bottom.')
-      await invitePlayer(null, languageMessage.id, user, message.author.id);
-      upDownManager(languageMessage, user.id, threeDays, async () => {
-        await discord.pinRoleById(user.id, 'ru')
-        sendInviteMassage(user, message.author)
-      }, async () => {
-        await discord.pinRoleById(user.id, 'en')
-        sendInviteMassage(user, message.author)
-      }, '🇷🇺', '🇬🇧')
+    if(!discord.getLanguageByUserId(user)) {
+      askLanguage(user, sendInviteMassage, message.author)
+    } else {
+      sendInviteMassage(user, message.author)
     }
 
   }
+}
+
+async function askLanguage(user, imojiPressCallback, inviter) {
+  const languageMessage = await user.send('Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\nIt\'s okay, this is not spam, I\'m from ROTR. First, which language should I write for you?. Press to corresponding emoji in the bottom.')
+  await invitePlayer(null, languageMessage.id, user, inviter.id);
+  upDownManager(languageMessage, user.id, threeDays, async () => {
+    await discord.pinRoleById(user.id, 'ru')
+    if(imojiPressCallback) {
+      imojiPressCallback(user, inviter)
+    }
+  }, async () => {
+    await discord.pinRoleById(user.id, 'en')
+    if(imojiPressCallback) {
+      imojiPressCallback(user, inviter)
+    }
+  }, '🇷🇺', '🇬🇧')
 }
 
 async function sendInviteMassage(user, inviter) {
@@ -568,6 +582,7 @@ async function unmakeModeratorCommand(message) {
 // ---------------------------------------------------------------- SHOW MAPS ----------------
 
 async function showMapsCommand(message) {
+  message.react('👌');
   const match = message.content.match(/^-maps ([2-8])$/);
   if (match) {
     const buffer = await banner.getMapCollageByPlayer(parseInt(match[1]));
@@ -585,6 +600,7 @@ async function showMapsCommand(message) {
 // ---------------------------------------------------------------- SHOW MAP ----------------
 
 async function showMapCommand(message) {
+  message.react('👌');
   if (!message.content.match(/^-map ([2-8])/)) {
     discord.currentChennel.send('Wrong players quantity.');
     return;
@@ -602,15 +618,19 @@ async function showMapCommand(message) {
 // ---------------------------------------------------------------- JOIN ----------------
 
 async function joinCommand(message) {
+  message.react('👌');
   const user = message.author;
   if (await db.findAddedPlayerById(user.id)) {
     sendMessageToUser(user, 'addingTwice');
     return;
   }
-  addPlayer(user);
-  sendMessageToUser(user, 'adding');
-  db.removeInvitedPlayerById(user.id);
-  discord.currentChennel.send('All right, player `'+user.tag+'` added.');
+
+  if(!discord.getLanguageByUserId(user.id)) {
+    askLanguage(user, addPlayerAfterInviting, user)
+  } else {
+    addPlayerProcess(user)
+  }
+
 }
 
 // ---------------------------------------------------------------- LEAVE ----------------
@@ -1116,7 +1136,6 @@ discord.client.on('message', async (message) => {
   if (message.author.bot) {
     return;
   }
-
   if (message.guild) {
     if (!discord.channelId) {
       if (message.content.match(/^-home/)) {
@@ -1133,26 +1152,21 @@ discord.client.on('message', async (message) => {
       }
     }
   }
-
   if (!discord.roleIds['moderator']) {
     discord.currentChennel.send('Cannot use bot commands without moderator role creating. Create using `-moderaotr <player>...` command.');
     return;
   }
-
   if (await db.findBannedPlayerById(message.author.id)) {
     return;
   }
-
   if (!message.guild) {
     if (message.content.match(/^-join$/)) {
       joinCommand(message);
     }
   }
-
   if (!await db.findAddedPlayerById(message.author.id)) {
     return;
   }
-
   if (!message.guild) {
     if (message.content.match(/^-leave$/)) {
       leaveCommand(message);
