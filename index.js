@@ -167,21 +167,21 @@ async function addPlayer(user) {
   });
 }
 
-function getLocalContent(user, contentCB) {
+function getLocalContent(user, phraze, ...args) {
   let language = discord.getLanguageByUserId(user.id);
   if(!language) {
     language = 'en'
   }
-  return contentCB(arguments, language);
+  return local.translatePhrase(phraze, args, language);
 }
 
-async function sendMessageToUser(user, contentCB) {
+async function sendMessageToUser(user, phraze, ...args) {
   try {
     let language = discord.getLanguageByUserId(user.id);
     if(!language) {
       language = 'en'
     }
-    const content = contentCB(arguments, language);
+    const content = local.translatePhrase(phraze, args, language);
     return await user.send(content);
   } catch (error) {
     if ((await db.removeAddedPlayerById(user.id)).value) {
@@ -205,7 +205,7 @@ async function addPlayerAfterInviting(user) {
   }
   addPlayer(user);
   db.removeInvitedPlayerById(user.id);
-  sendMessageToUser(user, local.adding);
+  sendMessageToUser(user, 'adding');
   discord.currentChennel.send('All right, player `'+user.tag+'` added.');
 }
 
@@ -250,7 +250,7 @@ async function invatePlayerCommand(message) {
 }
 
 async function sendInviteMassage(user, inviter) {
-  const sendedMessage = await sendMessageToUser(user, local.invitation, inviter.tag);
+  const sendedMessage = await sendMessageToUser(user, 'invitation', inviter.tag);
   if (!sendedMessage) {
     return;
   }
@@ -275,7 +275,7 @@ async function removePlayerCommand(message) {
     const user = users[u];
 
     if ((await db.removeAddedPlayerById(user.id)).value) {
-      sendMessageToUser(user, local.removeing, message.author.tag);
+      sendMessageToUser(user, 'removeing', message.author.tag);
     } else {
       discord.currentChennel.send('Player `' + user.tag +'` not found.');
     }
@@ -292,7 +292,7 @@ async function cancelPlayerInvitationCommand(message) {
 
     if (await db.findInvitedPlayerById(user.id)) {
       db.removeInvitedPlayerById(user.id);
-      sendMessageToUser(user, local.canceling);
+      sendMessageToUser(user, 'canceling');
     } else {
       discord.currentChennel.send('Payer `' + user.tag +'` not found.');
     }
@@ -332,7 +332,7 @@ async function banPlayerCommand(message) {
   db.removeAddedPlayerById(user.id);
   db.removeInvitedPlayerById(user.id);
   banPlayer(user, reason);
-  sendMessageToUser(user, local.banning, message.author.tag, reason);
+  sendMessageToUser(user, 'banning', message.author.tag, reason);
 }
 
 // ---------------------------------------------------------------- UNBAN ----------------
@@ -348,7 +348,7 @@ async function unbanPlayerCommand(message) {
     const user = users[u];
 
     if ((await db.removeBannedPlayerById(user.id)).value) {
-      sendMessageToUser(user, local.unbanning, message.author.tag);
+      sendMessageToUser(user, 'unbanning', message.author.tag);
     } else {
       discord.currentChennel.send('Payer `' + user.tag +'` not found.');
     }
@@ -604,11 +604,11 @@ async function showMapCommand(message) {
 async function joinCommand(message) {
   const user = message.author;
   if (await db.findAddedPlayerById(user.id)) {
-    sendMessageToUser(user, local.addingTwice);
+    sendMessageToUser(user, 'addingTwice');
     return;
   }
   addPlayer(user);
-  sendMessageToUser(user, local.adding);
+  sendMessageToUser(user, 'adding');
   db.removeInvitedPlayerById(user.id);
   discord.currentChennel.send('All right, player `'+user.tag+'` added.');
 }
@@ -618,7 +618,7 @@ async function joinCommand(message) {
 async function leaveCommand(message) {
   message.react('👌');
   const user = message.author;
-  sendMessageToUser(user, local.rejection);
+  sendMessageToUser(user, 'rejection');
   db.removeAddedPlayerById(user.id);
 }
 
@@ -630,10 +630,10 @@ async function helpCommand(message) {
   if(!lang) {
     lang = 'en'
   }
-  message.author.send(local.playerCommands(lang));
-  message.author.send(local.moderatorCommands(lang));
+  message.author.send(local.translateHelpEmbed('playerCommands', lang));
+  message.author.send(local.translateHelpEmbed('moderatorCommands', lang));
   if (await discord.isPlayerModerById(message.author.id)) {
-    message.author.send(local.configCommands(lang));
+    message.author.send(local.translateHelpEmbed('configCommands', lang));
   }
 }
 
@@ -686,7 +686,7 @@ async function unbreakCommand(message) {
   const user = message.author;
   const breakInfo = await db.removeBreakById(user.id);
   if (!breakInfo.value) {
-    sendMessageToUser(user, local.missngBreak);
+    sendMessageToUser(user, 'missngBreak');
   }
 }
 
@@ -765,8 +765,8 @@ async function setBotChannelCommand(message) {
   const channelId = message.channel.id;
   await discord.initCurrentChannel(channelId);
   const helpMessageDiscordIds = []
-  const playerCommandsHelp = await discord.currentChennel.send(local.playerCommands('en'));
-  const moderatorCommands = await discord.currentChennel.send(local.moderatorCommands('en'));
+  const playerCommandsHelp = await discord.currentChennel.send(local.translateHelpEmbed('playerCommands'));
+  const moderatorCommands = await discord.currentChennel.send(local.translateHelpEmbed('moderatorCommands'));
   helpMessageDiscordIds.push(playerCommandsHelp.id);
   helpMessageDiscordIds.push(moderatorCommands.id);
   await playerCommandsHelp.pin()
@@ -804,7 +804,7 @@ async function aboutCommand(message) {
   if(!lang) {
     lang = 'en'
   }
-  message.author.send(local.about(lang))
+  message.author.send(local.translateInfoEmbed('about'))
 }
 
 // ---------------------------------------------------------------- SUPER ABOUT ----------------
@@ -815,7 +815,7 @@ async function superaboutCommand(message) {
   if(!lang) {
     lang = 'en'
   }
-  message.author.send(local.superabout(lang))
+  message.author.send(local.translateInfoEmbed('superabout'))
 }
 
 
@@ -1035,7 +1035,7 @@ function setGatherUpdateInterval(message, inviterId, ttl) {
 async function sendInvitationToGathered(user, inviter, attachment, comment, time) {
   const embed = new discord.MessageEmbed({
     color: '#b6cbd1',
-    title: getLocalContent(user, local.gather),
+    title: getLocalContent(user, 'gather'),
     files: [
       attachment,
     ],
@@ -1043,11 +1043,11 @@ async function sendInvitationToGathered(user, inviter, attachment, comment, time
       url: 'attachment://help.png',
     },
     fields: [
-      {name: getLocalContent(user, local.wasInvitedToGame), value: comment === '-' ? getLocalContent(user, local.noComment) : comment},
+      {name: getLocalContent(user, 'wasInvitedToGame'), value: comment === '-' ? getLocalContent(user, 'wasInvitedToGame') : comment},
     ],
     timestamp: moment(new Date()).add(time, 'm').toDate(),
     footer: {
-      text: getLocalContent(user, local.gatherMessageFooter),
+      text: getLocalContent(user, 'wasInvitedToGame'),
     },
   });
 
@@ -1104,7 +1104,7 @@ async function ignorePlayerAfterInviting(user) {
   if (invitedPlayer) {
     db.removeInvitedPlayerById(userId);
     const userTag = user.username + '#' + user.discriminator;
-    sendMessageToUser(user, local.rejection);
+    sendMessageToUser(user, 'wasInvitedToGame');
     discord.currentChennel.send('Payer `' + userTag +'` rejected invitation.');
   }
 }
