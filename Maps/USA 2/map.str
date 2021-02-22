@@ -1,0 +1,21 @@
+MAP:USA02Open
+"Northern Kazakhstan. U.S. Forces in Full Retreat"
+End
+
+MAP:USA02Objective1Text
+"MISSION OBJECTIVE: \n
+ Ensure the escape of retreating U.S. forces \n
+ Do not let the GLA destroy more than 100 allied units"
+End
+
+MAP:USA02EyeDesignatorsArrived
+"Eye Designators have arrived from the south"
+End
+
+SCRIPT:FriendlyUnitsLost
+"Allied Units Lost:"
+END
+
+SCRIPT:WavesRemaining
+"Allied Waves Remaining:"
+END

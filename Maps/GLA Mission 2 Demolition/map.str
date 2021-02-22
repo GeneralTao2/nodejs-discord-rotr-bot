@@ -1,0 +1,51 @@
+Caption Intro
+"Operation: Volatile Era
+\nLocation: Amisbad Oil Fields, Iran"
+End
+
+Caption Objective 1
+"Objective 1:
+\nClear the area for base construction"
+End
+
+Caption Objective 2
+"Objective 2:
+\nGain $100,000 OR
+\nDestroy Kwai's Base."
+End
+
+Caption Objective 1 Complete
+"Objective Complete."
+End
+
+Caption Oil Choice
+"There are 2 ways to succeed here.
+\nGather $100,000 from the oil fields"
+End
+
+Caption Destroy Choice
+"Or:
+\nDestroy Kwai's main base."
+End
+
+Caption 50,000 Hint
+"Hint:
+\nGather $50,000 to unlock the Black Market."
+End
+
+Caption 50,000
+"We have gained $50,000.
+\nWe can re-open the Black Market."
+End
+
+Caption Oil Win
+"Mission Accomplished.
+\nWe have gathered $100,000.
+\nGeneral Kwai has suffered a great loss today!"
+End
+
+Caption Destroy Win
+"Mission Accomplished.
+\nKwai's base is destroyed.
+\nThe oil field is ours once again!"
+End

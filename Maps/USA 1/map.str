@@ -1,0 +1,70 @@
+MAP:USA01:Intro1
+"Year 2023
+\nUS Redeploys Military to the middle east to finish the GLA"
+End
+
+MAP:USA01:Intro2
+"Year 2024
+\nCyber testing begins in US bases"
+End
+
+MAP:USA01:Intro3
+"Year 2024
+\nGLA Bandits raid research facilities"
+End
+
+MAP:USA01:Intro4
+"Year 2025
+\nUS moves research to a secret mountain base"
+End
+
+MAP:USA01:Intro5
+"--POWER OFFLINE--
+\nEscort the vehicle to the power plant to restart power"
+End
+
+MAP:USA01:PowerRestarted
+"--POWER ONLINE--"
+End
+
+MAP:USA01:Obj02
+"We need supplies from the north!
+\nDefend the depot until reinforcements arrive"
+End
+
+MAP:USA01:Burton
+"Burton's team has arrived!
+\nWhere did the GLA get Chinese arms from?"
+End
+
+MAP:USA01:Obj03
+"Radar post is stealing US Cyber data!
+\nHead north and destroy the base before it's too late!"
+End
+
+MAP:USA01:FlameInfo
+"Call in an airstrike on that flame tank!"
+End
+
+MAP:USA01:Airstrike
+"There are too many hostiles! Call in an Airstrike!
+\n>>Airstrike Initiated<<"
+End
+
+MAP:USA01:Escape!
+"Aircraft Down!
+\nWe need to stop those trucks!"
+End
+
+MAP:USA01:GetTrucks
+"Stop those trucks before they get to the airport!!
+\nThere may be a path through the mountains!"
+End
+
+MAP:USA01:Clear
+"Clear the airport so we can capture the trucks!"
+End
+
+MAP:USA01:Win
+"They won't escape now!"
+End

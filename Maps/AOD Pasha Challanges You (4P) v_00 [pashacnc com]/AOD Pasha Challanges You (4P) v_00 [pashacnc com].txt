@@ -1,0 +1,45 @@
+Map Name: 	AOD Pasha Challanges You (4P) v_00
+Release Date: 	Feb 2019
+Author Name: 	Pasha
+Author Mail: 	Pasha@pashacnc.com
+Author Website:	http://www.pashacnc.com
+Max. Players:	4
+Game:		C&C Generals: Zero Hour
+Type of Map: 	Art Of Defense (AOD)
+Description: 	Pasha challanges you, do not lose your command center and try to survive on battlefield against GLA attacks.
+
+
+This AOD map for 1-4 players vs 1 AI (GLA), you can play even alone.
+AI must be GLA and placed at middle of map.
+
+There are 4 bases; AI does not attack to no human base. Do not spent your sources to defend no human player’s area.
+Players do not have options for difficulty of map as Easy, Medium and Hard Army.
+You are defeated if you lose your command center.
+
+AI is not attacking non-player areas and not attacking to defeated player areas. 
+There are 10 Ground Waves, 3 Air Strikes, 3 Amphibious Landing Attacks, 3 Brutal Pasha Tunnel Sneak Attacks and 1 Air Drop Attack. 
+Every attack is made by 3 alternative teams randomly and their units upgraded.
+This map is first time more than one GLASneakAttackTunnels at same time used on AOD map. Therefor we called it Pasha Tunnel.
+
+The attacks of enemy troops will come from the middle of the map. 
+The enemy air strikes will come by the sea. Who knows, where Amphibious Landings and Sneaks will come. 
+
+Pasha is very angry with the laser generals and set some limitations to make their life difficult.
+
+I thank I^Love^Mixery, Legionnaire who provided technical support and I would like to thank my colleagues who have been testing.
+
+WIN; 
+Players must survive on battlefield until "Time to VICTORY: 00:00".
+
+LOOSE;
+If a player is defeated if player lose Command center or if player cannot survive Until "Time To VICTORY" become "00:00".
+
+Please do not hesitate to contact with me about bugs and my mistakes on map. 
+
+“YOU CAN DOWNLOAD AOD MAPS FROM PASHACNC.COM”
+ 
+I wish you good luck and have fun Generals.
+Please sent your opinion and feedback about map.
+
+Pasha
+e-mail;Pasha@pashacnc.com

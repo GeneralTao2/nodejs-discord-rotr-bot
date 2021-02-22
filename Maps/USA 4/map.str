@@ -1,0 +1,39 @@
+MAP:USA02Open
+"Somewhere, somewhere. GLA controlling cyber tech"
+End
+
+SCRIPT:ALERTLEVEL
+"Alert level:"
+End
+
+MAP:USA02Objective1Text
+"MISSION OBJECTIVE:
+\nSneak past the enemy patrols and enter the Communications Center
+\nTry to stay hidden as much as possible and do not raise much attention"
+End
+
+MAP:USA02CommCenterCaptured
+": \n
+ All robots are under our control"
+End
+
+MAP:USA02Objective2Text
+"MISSION OBJECTIVE:
+\nDestroy the remaining GLA forces in the area"
+End
+
+MAP:USA02AlertLevelIncreased
+"WARNING:
+\nThe alert level has increased
+\nDo not reach alert level 5"
+End
+
+MAP:USA02AlertLevelMax
+"Alert level too high
+\nMISSION FAILED"
+End
+
+MAP:USA02TerminatorDead
+"Terminator is dead
+\nMISSION FAILED"
+End

@@ -12,7 +12,7 @@ async function getGatherByPlayerQuantityPointerAndUser(playerQuantity, pointer, 
 	const bannerHeight = 172;
 	
 	const canvas = createCanvas(bannerWidth, bannerHeight)
-	const mapInfos = await mapm.getMapInfosByPlayerQuantity(playerQuantity)
+	const mapInfos = await mapm.getMapInfo(mapInfo => mapInfo.playerStarts.length === playerQuantity)
 	if(pointer < 1 || pointer > mapInfos-1) {
 		return null
 	}
@@ -56,7 +56,7 @@ async function getGatherByPlayerQuantityPointerAndUser(playerQuantity, pointer, 
 	ctx.fillText(mapInfo.supplyPosition.length.toString(), mapTextMarginLeft, mapTextLineSpacing*3 + padding + mapTextMarginTop);
 	
 	ctx.drawImage(spawnImage, iconMarginLeft, mapTextLineSpacing*4 + padding + iconsMarginTop, iconSize, iconSize)
-	ctx.fillText(mapInfo.playerStrats.length.toString(), mapTextMarginLeft, mapTextLineSpacing*4 + padding + mapTextMarginTop)
+	ctx.fillText(mapInfo.playerStarts.length.toString(), mapTextMarginLeft, mapTextLineSpacing*4 + padding + mapTextMarginTop)
 	
 	const canvasAvatar = createCanvas(bannerHeight, bannerHeight)
 	const ctxAvatar = canvasAvatar.getContext('2d')
@@ -240,57 +240,74 @@ async function getGatherByUser(user) {
 
 
 
-async function getMapCollageByPlayer(playerQuantity) {
-	const mapInfos = await mapm.getMapInfosByPlayerQuantity(playerQuantity)
+async function getMapCollage(separator) {
+	const mapInfos = await mapm.getMapInfo(separator)
 	if(mapInfos.length === 0) {
 		return null
 	}
-	const collageSize = (Math.sqrt(mapInfos.length) | 0) + 1;
-	const canvas = createCanvas(128*collageSize, 128*collageSize)
-	const ctx = canvas.getContext('2d')
-	let mapXcaunter = 0;
-	let mapYcaunter = 0;
 
-	for(let i=0; i<mapInfos.length; i++) {
-		const x = mapXcaunter*128;
-		const y = mapYcaunter*128
-
-		const map = await loadImage('maked_maps/'+mapInfos[i].name+'.png')
-		ctx.drawImage(map, x, y)
-
-		const pointerSize = 32;
-		ctx.fillStyle = "rgba(0, 0, 0, 0.8)"
-		ctx.fillRect(x, y, pointerSize, pointerSize)
-
-		ctx.font = '16px sans-serif';
-		const textWidth = ctx.measureText((i+1).toString()).width;
-		const textHeight = 16;
-		ctx.fillStyle = "rgb(255, 255, 255)"
-		ctx.fillText((i+1).toString(), x + pointerSize/2 - textWidth/2, y + pointerSize/2 + textHeight/2);
-
-		mapXcaunter++
-		if(mapXcaunter == collageSize) {
-			mapXcaunter = 0
-			mapYcaunter++
+	let buffers = []
+	for(let map = 0; map < mapInfos.length; map+=100) {
+		let collageSize
+		let mapQuantity = mapInfos.length - map
+		if(mapQuantity <= 100) {
+			collageSize = (Math.sqrt(mapQuantity) | 0) + 1;
+		} else {
+			collageSize = 10
+			mapQuantity = 100
 		}
+		const canvas = createCanvas(128*collageSize, 128*collageSize)
+		const ctx = canvas.getContext('2d')
+		let mapXcaunter = 0;
+		let mapYcaunter = 0;
+		console.log(map, mapQuantity+map, )
+		for(let i=map; i<mapQuantity+map; i++) {
+			const x = mapXcaunter*128;
+			const y = mapYcaunter*128
+
+			const map = await loadImage('maked_maps/'+mapInfos[i].name+'.png')
+			ctx.drawImage(map, x, y)
+
+			const pointerSize = 32;
+			ctx.fillStyle = "rgba(0, 0, 0, 0.8)"
+			ctx.fillRect(x, y, pointerSize, pointerSize)
+
+			ctx.font = '16px sans-serif';
+			const textWidth = ctx.measureText((i+1).toString()).width;
+			const textHeight = 16;
+			ctx.fillStyle = "rgb(255, 255, 255)"
+			ctx.fillText((i+1).toString(), x + pointerSize/2 - textWidth/2, y + pointerSize/2 + textHeight/2);
+
+			mapXcaunter++
+			if(mapXcaunter == collageSize) {
+				mapXcaunter = 0
+				mapYcaunter++
+			}
+		}
+		buffers.push(canvas.toBuffer())
 	}
-	return canvas.toBuffer()
+	
+	return buffers
 }
 
-async function getMapInfoByPlayerAndIndex(playerQuantity, pointer) {
-	const mapInfo = (await mapm.getMapInfosByPlayerQuantity(playerQuantity))[pointer-1]
-	const canvas = createCanvas(128, 128)
-	const map = await loadImage('maked_maps/'+mapInfo.name+'.png')
-	const ctx = canvas.getContext('2d')
-	ctx.drawImage(map, 0, 0)
-	return {
-		buffer: canvas.toBuffer(),
-		info: mapInfo
+async function getMapBufferAndInfo(separator, mapNumber) {
+	const mapInfos = mapm.getMapInfo(separator)
+	if(mapInfos.length) {
+		const mapInfo = mapInfos[mapNumber]
+		const canvas = createCanvas(128, 128)
+		const map = await loadImage('maked_maps/'+mapInfo.name+'.png')
+		const ctx = canvas.getContext('2d')
+		ctx.drawImage(map, 0, 0)
+		return {
+			buffer: canvas.toBuffer(),
+			info: mapInfo
+		}
 	}
+	return null
 }
 
 exports.getGatherByUser = getGatherByUser
 exports.getGatherByPlayerQuantityAndUser = getGatherByPlayerQuantityAndUser;
-exports.getMapInfoByPlayerAndIndex = getMapInfoByPlayerAndIndex;
-exports.getMapCollageByPlayer = getMapCollageByPlayer;
+exports.getMapBufferAndInfo = getMapBufferAndInfo;
+exports.getMapCollage = getMapCollage;
 exports.getGatherByPlayerQuantityPointerAndUser = getGatherByPlayerQuantityPointerAndUser;

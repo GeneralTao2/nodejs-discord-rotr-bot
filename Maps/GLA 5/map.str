@@ -1,0 +1,15 @@
+MAP:GLAMap4_StrikeFear
+"We must strike fear into the Americans. This is our soil."
+END
+
+MAP:GLAMap4_Traitors
+"The traitors must suffer."
+END
+
+SCRIPT:GLAMap4_CiviliansKilled
+"Civilians Killed:"
+END
+
+SCRIPT:GLAMap4_CiviliansRescued
+"Civilians Evacuated:"
+END

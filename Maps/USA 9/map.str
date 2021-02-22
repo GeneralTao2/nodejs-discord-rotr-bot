@@ -1,0 +1,29 @@
+MAP:USA05Open
+"Northern Kazakhstan. U.S. Forces in Full Retreat"
+End
+
+MAP:USA05Objective1Text
+"MISSION OBJECTIVE: \n
+ Ensure the escape of retreating U.S. forces \n
+ Do not let the GLA destroy more than 100 allied units"
+End
+
+MAP:USA05ChinaCapturedRelay
+"The Chinese have captured the relay station. We need to retake it"
+End
+
+MAP:USA05PlayerCapturedRelay
+"We have captured the relay station. Defend it until the time runs out"
+End
+
+MAP:USA05RelaySucceeded
+"Relay succeeded"
+End
+
+MAP:USA05ChineseBaseLocated
+"We've located the Chinese base. Defeat them"
+End
+
+MAP:USA05AARevealed
+"Fixed anti-air defenses have been revealed"
+End

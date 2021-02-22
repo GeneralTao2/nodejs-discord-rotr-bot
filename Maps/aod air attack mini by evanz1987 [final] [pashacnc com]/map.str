@@ -1,0 +1,37 @@
+text01easy
+"Welcome to: Air Attack MINI ! AOD extreme version final by evanz1987.02/02/2014.
+\n 2 PLAYER DIFFICULTY = 10 MINS TO BUILD"
+END
+
+text01medium
+"Welcome to: Air Attack MINI ! AOD extreme version final by evanz1987.02/02/2014.
+\n MEDIUM DIFFICULTY = 6 MINS TO BUILD"
+END
+
+text01hard
+"Welcome to: Air Attack MINI! AOD extreme version final by evanz1987.02/02/2014.
+\n BRUTAL DIFFICULTY = 4 MINS TO BUILD
+\n Are you a really pro AOD player? XD"
+END
+
+wave01
+"WAVE 1/18
+\n GET READY!"
+END
+
+finalecoming
+"SHOWDOWN! you have 70 seconds to prepare for 5 AIR BOSSES!!"
+END
+
+finalwave
+"FINAL WAVE"
+END
+
+win01
+"Good Job! You have defeated Air Attack MINI ! AOD by evanz1987 !!   GG"
+END
+
+lose01
+"Haha! Nice try but you FAILED!! ..RE?
+\n MORE GATTLINGS NEXT TIME!"
+END

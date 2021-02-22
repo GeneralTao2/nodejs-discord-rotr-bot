@@ -1,0 +1,83 @@
+MAP:GLA08:Intro
+"Location
+\nasd blabla"
+END
+
+MAP:GLA08:Intro2
+"Our forces for this mission consist of two ferries loaded up with heavy vehicles,
+\none of which was captured on a heavily guarded port to the west
+\nWe are very shorthanded, we don't have enough crewmen to drive our tanks"
+END
+
+MAP:GLA08:Intro3
+"The south port area is controlled by GLA sympathizers
+\nWe must show them we are here to fight off the USA"
+END
+
+MAP:GLA08:Obj1
+"MISSION OBJECTIVE:
+\nDestroy the Cyborg Factory to gain support from GLA sympathizers"
+END
+
+MAP:GLA08:SympathizerCrewmen
+"You've brought the attention of our sympathizers by destroying that small outpost
+\nThey are sending crewmen to operate the vehicles in the ferry"
+END
+
+MAP:GLA08:SympathizerGifts
+"The sympathizers will regularly send us money and reinforcements."
+END
+
+MAP:GLA08:FirstGift
+"We have been given our first $5000 and Angry Mob at the Town Hall"
+END
+
+MAP:GLA08:AllGiftsGiven
+"Our sympathizers have nothing more to give us. But their help will not be forgotten"
+END
+
+MAP:GLA08:RescueWestFerry
+"MISSION OBJECTIVE #2:
+\nLiberate the captured ferry to the west from the US forces."
+END
+
+MAP:GLA08:WestFerryRescued
+"The west port is liberated. You have access to more forces as well as a GPS Scrambler"
+END
+
+MAP:GLA08:GoCaptureCommCenter
+"MISSION OBJECTIVE #3:
+\nCapture the enemy Communications Center to take control of the US outpost."
+END
+
+MAP:GLA08:CommCenterCaptured
+"We now control the Cybernetic outpost."
+END
+
+MAP:GLA08:CyberReinforcementsInfo
+"INCOMING TRANSMISSION:
+\nWe are picking up enemy radio signal that the US are preparing an attack on this outpost.
+\nPrepare to defend it, general!"
+END
+
+MAP:GLA08:CyberReinforcements
+"Enemy aircraft approaching from the South! Hold them off!"
+END
+
+MAP:GLA08:GroundReinf
+"Ground enemies are moving towards the outpost"
+END
+
+MAP:GLA08:DestroyRemaining
+"Defeat the remaining US forces in the area."
+END
+
+MAP:GLA08:NoUnitsRemaining
+"No units left to continue the mission
+\nMISSION FAILED"
+END
+
+MAP:GLA08:Lose
+"We've been wiped out of the area
+\nMISSION FAILED"
+END

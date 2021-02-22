@@ -1,0 +1,94 @@
+MAP:GLA01:Intro1
+"Late 2020
+\nGLA is crushed by the eastern dragon"
+End
+
+MAP:GLA01:Intro2
+"Early 2022
+\nUSA redeploys forces after retreat"
+End
+
+MAP:GLA01:Intro3
+"2023
+\nGLA retreats into central Africa, US in pursuit"
+End
+
+MAP:GLA01:Objective1
+"MISSION OBJECTIVE #1:
+\nWe have intel of a Chinese observation post to the west of our position
+\nTake control of it"
+End
+
+MAP:GLA01:Tracked
+"It seems we are being tracked by Spy Drones. This isn't good"
+End
+
+MAP:GLA01:Objective2
+"MISSION OBJECTIVE #2:
+\nDestroy all Spy Drones spying on our camp
+\nUse the Listening Outpost to detect them"
+End
+
+MAP:GLA01:Camp_Spy_Drones_Dead
+"Good. We are hidden from enemy sight"
+End
+
+MAP:GLA01:Objective3
+"MISSION OBJECTIVE #3:
+\nGo to this GLA base and free the sky from Spy Drones
+\nBeware of Chinese patrols"
+End
+
+MAP:GLA01:Spy_Drones_Dead
+"Excellent. GLA emissaries will arrive here soon"
+End
+
+MAP:GLA01:Emissaries_Arriving
+"GLA emissaries have arrived to meet up with local GLA representatives"
+End
+
+MAP:GLA01:Protect
+"Keep this base safe while the meeting is being held"
+End
+
+MAP:GLA01:USA_Spec_Ops
+"USA Spec Ops are entering GLA camps
+\nOrganise resistance and repel the filthy invaders
+\nDo not allow them to destroy these camps!"
+End
+
+MAP:GLA01:Chinooks_Too
+"Use Stingers to destroy the Chinooks!"
+End
+
+MAP:GLA01:Spec_Ops_Dead
+"Good work, our camps are free now"
+End
+
+MAP:GLA01:Escort_To_Tunnel
+"The meeting is over. Escort the emissaries to this tunnel"
+End
+
+MAP:GLA01:Pursuers_Discovered
+"Chinese forces are pursuing us. Hurry up, General!"
+End
+
+MAP:GLA01:Emissary_Dead
+"They have killed one of our emissaries
+\nMISSION FAILED"
+End
+
+MAP:GLA01:Stingers_Dead
+"We have no Stinger Troopers left
+\nMISSION FAILED"
+End
+
+MAP:GLA01:Rebels_Dead
+"All Rebels were killed. We cannot proceed with our mission
+\nMISSION FAILED"
+End
+
+MAP:GLA01:Tunnel_Dead
+"The tunnel was destroyed
+\nMISSION FAILED"
+End

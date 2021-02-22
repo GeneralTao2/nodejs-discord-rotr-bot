@@ -1,0 +1,113 @@
+SCRIPT:GoldenHordeTimer
+"Golden Horde Attacks in:"
+End
+
+Caption Intro 1
+"Operation: Iron Will
+\nLocation: Mongolian Plains"
+End
+
+Caption Intro 2
+"It is time.
+\nKwai's life ends today."
+End
+
+Caption Intro 3
+"The Industrial Plants are the only things he has left.
+\nEliminate them to draw him out."
+End
+
+Caption Intro 4
+"Deathstrike, in his Basillisk, has arrived to oversee the mission.
+\nProtect him at all costs."
+End
+
+Caption Objective 1
+"Objective 1:
+\nCapture or destroy the Industrial Plant to the south."
+End
+
+Caption Objective 2 and 3
+"Objectives 2 & 3:
+\nEliminate the remaining Industrial Plants
+\nand Destroy Kwai's Command Center."
+End
+
+Caption Objective Final
+"Final Objective:
+\nDefeat the Golden Horde and kill General Kwai."
+End
+
+Caption Tank Rush Warning
+"WARNING:
+\nThis land is perfect for Kwai's mass tank rushes.
+\nBe sure your forces are prepared to deal with them."
+End
+
+Caption Objective 1 Complete
+"Objective complete
+\nThe final Industrial Plants have been located.
+\nDestroy them."
+End
+
+Caption Kwai Center Located
+"Kwai has been located!
+\nDestroy his Command Center to exact our revenge!"
+End
+
+Caption Golden Horde Attacks
+"The Golden Horde is attacking!
+\nDestroy every last tank, General!"
+End
+
+Caption Deathstrike Attacked
+"Alert:
+\nDeathstrike is under attack!"
+End
+
+Caption Deathstrike Dead
+"Deathstrike is dead!
+\nYou have failed the GLA!
+\nMission failed."
+End
+
+Caption Golden Horde Intro 1
+"General Kwai:
+\n'You didn't really think I would command from that Centre did you?"
+End
+
+Caption Golden Horde Intro 2
+"Welcome to your death General.
+\nMy Golden Horde is unstoppable!
+\nYou have already lost!"
+End
+
+Caption Golden Horde Hint
+"It looks like we may have underestimated Kwai's cunning.
+\nBolster your forces quickly before he attacks!"
+End
+
+Caption GLA Arrives
+"General, mainline GLA reinforcements have arrived to assist you."
+End
+
+Caption Demo Arrives
+"General, Demolition reinforcements have arrived to assist you."
+End
+
+Caption Stealth Arrives
+"General, Stealth reinforcements have arrived to assist you."
+End
+
+Caption Toxin Arrives
+"General, Toxin reinforcements have arrived to assist you."
+End
+
+Caption If You Are Ready
+"General, select Deathstrike if you are ready to face Kwai now."
+End
+
+Caption Kwai Really Dead
+"It is done. Kwai is dead.
+\nWell done General."
+End

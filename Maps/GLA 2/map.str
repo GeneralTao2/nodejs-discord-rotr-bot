@@ -1,0 +1,97 @@
+MAP:GLA02:Intro0
+"Somewhere near the Syria/Iraq border.
+\nOperation 'Toxic Heist'"
+END
+
+MAP:GLA02:Intro1
+
+"General, your task is to rescue our chemicals specialist Ahmad,
+\nand then capture five chemical trucks."
+END
+
+
+MAP:GLA02:Intro2
+
+"You have been sent all resources available. Use them wisely."
+END
+
+MAP:GLA02:Ahmad_First
+"We must rescue Ahmad before it's too late."
+End
+
+MAP:GLA02:Factory_Warning
+
+"Be careful, general!
+\nFactory guards will alert the base and request reinforcements.
+\nif we get very close or attack them. We need to rescue Ahmad first!"
+END
+
+MAP:GLA02:Remind_MainObj
+"General, our objective is to get to the northeast as soon as possible!
+\nAhmad is not safe for long now that the USA knows about our presence!"
+END
+
+MAP:GLA02:Reinforce
+
+"Many brave warriors were imprisoned by the Americans.
+\nFind them and free them."
+END
+
+MAP:GLA02:Bring_VIP
+
+"Well done! Bring Ahmad to the evacuation zone."
+END
+
+MAP:GLA02:Ahmad_Captured
+"Excellent job!
+\nA buggy will arrive to pick him up soon."
+End
+
+MAP:GLA02:Northwest
+"Ahmad is finally rescued.
+\nYou must focus your attack to the northwest now.
+\nTake control of the area, capture the Chemical Trucks
+\nand bring them to the evacuation zone."
+End
+
+MAP:GLA02:Transport_To_Evac
+"We will transport Ahmad to the Evacuation Zone for his safety and fast arrival."
+End
+
+MAP:GLA02:Comanches_In_Way
+"Halt! We can't continue our ride. Enemy Thors are standing in our way.
+\nWe need to get these Thors out of the way. Find some anti-aircraft units."
+End
+
+MAP:GLA02:Use_Tunnel
+"Our allies dug in a tunnel for us! We'll thank them later.
+\nGet the trucks in there fast!"
+End
+
+MAP:GLA02:Wrong_Way
+"This is the wrong way! Go back and use the tunnel!"
+End
+
+MAP:GLA02:Go_Back
+"Do not enter the chemicals area yet. Ahmad must be rescued first.
+\nLet's not risk it!"
+End
+
+MAP:GLA02:Go_Around
+"General, keep going, but try to keep your distance. Go around."
+End
+
+MAP:GLA02:Bring_Trucks
+
+"Good. Bring all 5 trucks to the evacuation zone."
+END
+
+MAP:GLA02:Ahmad_Executed
+"Ahmad has been killed.
+\nOur mission is a failure."
+End
+
+MAP:GLA02:Truck_Dead
+"A chemical truck has been destroyed.
+\nOur mission is a failure."
+End

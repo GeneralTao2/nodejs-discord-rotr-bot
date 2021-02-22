@@ -1,0 +1,55 @@
+SCRIPT:intro
+"The ruler of the Dark Fortress has demanded that all people leave his land and will wipe out all who oppose him.  He warns that any attempt to use Super Weapons will be dealt with in kind.  Retaliation for using Generals Attacks will also not be pretty.  Upgrades for China players can be made at the Propaganda Center but whatever you do, move fast as the fortress only gets stronger with time."
+End
+
+SCRIPT:intro2
+"A Human player in the fortress position receives all fortress buildings for the faction they're playing at the beginning of the game.  This would include the Tech building for their faction, eight Barracks, four War and Air factories if applicable and over sixty Turrets and Artillery platforms.  This player does not get scripted teams or Avenger Enhanced Turrets like the AOD Fortress player but Super Weapon countermeasures are still in place.  Note:  The default Supply gatherers will need to be told to go to each supply center but should function normal after this."
+End
+
+SCRIPT:intro3
+"The player who controls the center section of the map will have many advantages.  Buildings up from grabs include four Oil Derricks, four Reinforcement Pads, four Boss War Factories, twenty Artillery Platforms and an Oil Refinery.  With bridge-only access, many buildable areas and four Supply Docks to keep you going this area is a great place to make a stand against stronger players."
+End
+
+Dark Fortress - By Drummin - drummin@cnclabs.com
+"Dark Fortress \nBy Drummin - drummin@cnclabs.com"
+End
+
+You're playing Dark Fortress - By Drummin
+"You're playing Dark Fortress - By Drummin\nVisit CNCLabs.com for map downloads."
+End
+
+Visit CNCLabs.com for map downloads and help with all your C&C Games.
+"Visit CNCLabs.com for map downloads and help with all your C&C Games."
+End
+
+So the player in the SE region would like to play with Super Weapons.
+"Fortress: \nSo the player in the SE region would like to play with Super Weapons. \nLet's see how he does without a Command Center."
+End
+
+If the player in the NE region likes his Super Weapons, so be it.
+"Fortress: \nIf the player in the NE region likes his Super Weapons, so be it. \nLet's see how his Command Center likes mine."
+End
+
+So the player in the NW would like to play with some BIG GUNS.
+"Fortress: \nSo the player in the NW would like to play with some BIG GUNS. \nLet's see how he likes mine."
+End
+
+The player in the SE region likes to play with Super Weapons, does he.
+"Fortress: \nThe player in the SE region likes to play with Super Weapons, does he. \nI think his Command Center looks like a nice target."
+End
+
+The player in the SE region was warned and will pay for their actions.
+"The player in the SE region was warned and will pay for their actions."
+End
+
+The player in the NE region likes to cheat huh.  Have him eat scuds.
+"The player in the NE region likes to cheat huh.  Have him eat scuds."
+End
+
+Generals attacks from the NW will not be tolerated. Counter with scuds.
+"Generals attacks from the NW will not be tolerated. Counter with scuds."
+End
+
+So the General in the SW thinks he's clever huh. Give him a scud bath.
+"So the General in the SW thinks he's clever huh. Give him a scud bath."
+End

@@ -1,0 +1,59 @@
+Caption Intro 1
+"Operation: Birds of Prey
+\nLocation: Victoria Falls."
+End
+
+Caption Intro 2
+"Good morning, General.
+\nI hope that wasn't too loud for you."
+End
+
+Caption Intro 3
+"A few hours ago, GLA forces captured our airbase here.
+\nWe believe they are attempting to create aircraft of their own."
+End
+
+Caption Intro 4
+"You must stop them.
+\nRetake or destroy the airbase
+\nand destroy any GLA forces you find."
+End
+
+Caption Objectives 1 and 2
+"Objectives 1 & 2:
+\nRecapture or destroy the US airbase.
+\nDestroy the GLA base."
+End
+
+
+Caption US Detected
+"We have been detected
+\nExpect heavy resistance from both bases."
+End
+
+Caption GLA USA Defeated Airbase recaptured
+"Objective complete
+\nWe have reclaimed the southern airbase."
+End
+
+Caption GLA USA Defeated Airbase destroyed
+"Objective complete
+\nThe southern airbase has been destroyed."
+End
+
+Caption GLA Main Base destroyed
+"Objective complete
+\nThe GLA base has been pacified."
+End
+
+Caption Lose
+"Mission Failed
+\nThe GLA have overpowered you.
+\nThe President will not be pleased."
+End
+
+Caption Win
+"Mission Accomplished
+\nNow, make haste to Cape Town.
+\nThe President is waiting for you."
+End

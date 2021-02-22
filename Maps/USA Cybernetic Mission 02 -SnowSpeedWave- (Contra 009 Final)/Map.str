@@ -1,0 +1,71 @@
+Snow1
+"Sir,We Have Found out about Sneg Ves Khiaks Base!"
+End
+
+Snow1.5
+"We need you to find more information in This HQ!"
+End
+
+Snow2
+"You need to get to this base immediately!!
+\nBefore this Apocalypse Device destroy the whole Area!"
+End
+
+Snow3
+"To disable all of those EMP Towers you need to:
+\nFind 3 Buildings Outside the Wall with Satellite(s) on them and Garrison or Capture Them.
+\nFind 2 Buildings Beyond the wall Capture the Chineese Outpost and Garrison 1 Satellited Building."
+End
+
+Snow4
+"After That get the Terminator in the Area of the HQ.
+\nGoodluck Sir!"
+End
+
+SubSnowStart
+"SubMissions!
+\n[Reinforcement X]Destory All Superweapons except Weather Storm Device and Nuclear Storm.
+\n[EnableSuperWeapon]Find the secret in the GLA War factorys Area that lead to the City.
+\n[Destory All EMP Towers]Find All Secret Super Units."
+End
+
+SubSnow1win
+"You Got the special ~Reinforcement X~"
+End
+
+SubSnow1lose
+"You Lost SubMission 1 [Reinforcement X]"
+End
+
+SubSnow2win
+"Strategic Command Uplink is Now Enabled!"
+End
+
+SubSnow3win
+"Those EMP Towers Are Destoryed Perfectly."
+End
+
+SubSnow3lose
+"No! We Couldn't Destory Those Damn EMP Towers."
+End
+
+SnowEnd1
+"Terminator:Well Here I go in.. 
+\nHuh?..There are information about CyberNet System in Here?"
+End
+
+SnowEnd2
+"Terminator:Wait.. It's A Trap!"
+End
+
+SnowEnd3
+"Unknown Bomber:Got ya!"
+End
+
+SCRIPT:SubSnow1
+"[Reinforcement X]"
+End
+
+SCRIPT:SubSnow3
+"[Destory All EMP Towers]!"
+End

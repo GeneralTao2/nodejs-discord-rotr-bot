@@ -1,0 +1,54 @@
+MAP:CHI02:BRIEFING
+"Escort the Nuclear Weapons out of the area, then defend the city while it is evacuated."
+End
+
+MAP:CHI02:ESCORT_BUNKER
+"Escort the Cargo Trucks out of the area."
+End
+
+MAP:CHI02:NUKE_EVACUATED_1
+"One bunker evacuated, 2 more to go. Reinforcements inbound!"
+End
+
+MAP:CHI02:NUKE_EVACUATED_2
+"Second bunker evacuated, one more to go. Reinforcements inbound!"
+End
+
+MAP:CHI02:NUKE_EVACUATED_3
+"All bunkers evacuated, more reinforcements inbound!"
+End
+
+MAP:CHI02:EVAC_DONE
+"All civilians have been evacuated from the city. Good Work General!"
+End
+
+MAP:CHI02:STORM_GIVE
+"General Tao has lent their support to rid USA out of the area."
+End
+
+MAP:CHI02:STORM_NOTE
+"General Tao's Nuclear Storm has been fired on the USA Fleet."
+End
+
+MAP:CHI02:BEACH_WARNING
+"WARNING: DO NOT GO ON THE EAST BEACH! USA BATTLESHIPS WILL OPEN FIRE!"
+End
+
+MAP:CHI02:HOWTO
+"Evacuate the bunkers by moving your units near them. Do not let the city go below 60%"
+End
+
+MAP:CHI02:10_KILLED
+"10 Percent of the city has been destroyed"
+End
+
+MAP:CHI02:20_KILLED
+"20 Percent of the city has been destroyed, defend it!"
+End
+
+MAP:CHI02:30_KILLED
+"30 Percent of the city has been destroyed, make your last stand!"
+
+MAP:CHI02:DEAD
+"You have lost a Cargo Truck. MISSION FAILED"
+END

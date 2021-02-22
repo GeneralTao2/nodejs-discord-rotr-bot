@@ -1,0 +1,40 @@
+INTRO
+"MISSION OBJECTIVE:
+\nInfiltrate the GLA base and capture the nuclear weapons bunker
+\nKill no more than 5 enemy structures"
+End
+
+BRIEF_2
+"Capture this GLA outpost for support on this mission"
+End
+
+BRIEF_3
+"Use their technology against them with Black Lotus"
+End
+
+OUTPOST
+"You have control of the outpost, now capture the nuclear bunker"
+End
+
+BUNKER_CAPTURED
+"The Intel has been secured. Proceed with your other objective.
+\nFind and destroy Hazael and Karakourt!"
+End
+
+ALL_OBJECTIVES_COMPLETED
+"All objectives completed. Escort Lotus to the airfield to the east for extraction"
+End
+
+OPTIONAL
+"Capture the Oil Derricks for extra resources"
+End
+
+SUPER_UNITS
+"New mission objective has been added:
+\nOur intel suggests that this place is a proving ground for Hazael and Karakourt
+\nFind them and destroy them"
+End
+
+SUPER_UNITS_DEAD
+"Great work, General! Proceed with your other objective. Garrison the nuclear bunker"
+End

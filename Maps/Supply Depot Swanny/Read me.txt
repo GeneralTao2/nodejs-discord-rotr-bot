@@ -1,0 +1,9 @@
+
+
+Copy and paste the map folder "Supply Depot Swanny" into the following location on your c drive:
+
+C:/Users/User name/My Documents/Command and Conquer Zero Hour Data/Maps
+
+This is a four player skirmish map.
+At the center of the map running from east to west is a massive supply depot and air strip.
+Look both left and right before crossing the train tracks or you could be squashed by a passing locomotive.

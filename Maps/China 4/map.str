@@ -1,0 +1,37 @@
+MAP:CHI04:US_Base_Caption
+"American Controlled Territory, China"
+End
+
+MAP:CHI04:Capture
+"Capture this radar station to disable the American defenses in the area"
+End
+
+MAP:CHI04:RadarStation_Destroyed
+"The radar station has been destroyed"
+End
+
+MAP:CHI04:RadarStation_Hint
+"HINT:
+\nIf we capture, then destroy the radar station, we can prevent them from restoring their power"
+End
+
+MAP:CHI04:Objective
+"MISSION OBJECTIVE:
+\nDestroy the Cybernetic base to the Northeast"
+End
+
+MAP:CHI04:Defenses_Down
+"Enemy defenses are out of power"
+End
+
+MAP:CHI04:Power_Restored
+"The Americans have captured the radar station and powered back their defenses"
+End
+
+MAP:CHI04:USA_Reinf
+"Enemy reinforcements approaching"
+End
+
+MAP:CHI04:USA_Reinf2
+"Another wave of reinforcements has arrived at the US base"
+End

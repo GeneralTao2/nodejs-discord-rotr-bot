@@ -1,0 +1,99 @@
+SCRIPT:DeathCounter
+"US units dead:"
+End
+
+Caption Objectives
+"Objective 1: Destroy the GLA Base.
+\nObjective 2: Lose no more than 10 US units."
+End
+
+Caption Mission Briefing 1
+"A civilian uprising is taking place throughout the Ivory Coast.
+\nThe locals have taken up arms against the GLA-appointed leaders
+\nand we are sending our special forces to assist them."
+End
+
+Caption Mission Briefing 2
+"We can use this opportunity to rebuild the US as the leading superpower.
+\nWe must convince our people that a new war with the GLA is necessary,
+\nso you must not fail."
+End
+
+Caption Mission Briefing Objective 1
+"\nObjective 1: Destroy the GLA base"
+End
+
+Caption Mission Briefing Objective 2
+"\nObjective 2: Lose no more than 20 US units"
+End
+
+Caption Mission Briefing Bonus Objective
+"\nHint: Liberate each village to recieve new units
+\n"
+End
+
+Caption Intro
+"Operation: Dreamstate
+\nLocation: Ivory Coast, West Africa"
+End
+
+Caption Intro 2
+"A militia has formed in this region to resist the GLA.
+\nif we assist them, we can gain a foothold in Africa."
+End
+
+Caption Intro 3
+"Destroy all GLA forces you find.
+\nYou may only use our Special Forces at this time."
+End
+
+Caption Intro 4
+"We must tread carefully.
+\nWe cannot allow more than 20 of our units to die."
+End
+
+Caption Dick Kickem
+"It's time to kick gum and chew ass,
+\nand I'm all outta ass!"
+End
+
+Caption Village 1 cleared
+"Village 1 liberated.
+\nMissile Defenders have arrived to assist you."
+End
+
+Caption Green Berets Hint
+"Hint:
+\nGreen Beret's grenade launchers can clear enemy garrisons."
+End
+
+Caption Village 2 cleared
+"Village 2 liberated.
+\nA militia APC will scout the next village."
+End
+
+Caption Merc Warning
+"Warning: Mercenaries detected.
+\nWe are sending you Pathfinders to take them out."
+End
+
+Caption Village 3 cleared
+"Village 3 liberated.
+\nThe town wall is heavily guarded.
+\nUse Enforcers to destroy them from distance."
+End
+
+Caption Carpet Bomber
+"Caution: Carpet Bomber incoming"
+End
+
+Caption Mission Aborted
+"Mission Aborted
+\nToo many of our units have died.
+\nYou have failed."
+End
+
+Caption Mission Accomplished
+"Mission Accomplished
+\nWe have gained a foothold in Africa."
+End

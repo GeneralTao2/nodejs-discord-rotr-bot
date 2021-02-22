@@ -1,0 +1,120 @@
+GLA:OperationTyphoon
+"Somewhere in the United States, 21.07.2022\n
+Operation 'Typhoon'"
+End
+
+SCRIPT:GLAMissionBrif1
+"Greetings, General! \n
+The time has come, and our forces stand ready.\n
+Now, we will strike the american bastards in the heart of their country."
+End
+
+SCRIPT:GLAMissionBrif2
+"But... They can still intercept our gifts. We can't allow them to do it.\n
+General, you must destroy experimental Strategic Defense Initiative cannons\n
+and phased array tracking radar that provides early warning..."
+End
+
+SCRIPT:GLAMissionBrif3
+"But first, you must check the western road, to be sure\n
+that path is clear for our SCUD launchers convoy.\n
+We must not fail, General. Good luck."
+End
+
+SCRIPT:GLAMissionObj1
+"Mission objective #1:\n
+Check the western road"
+End
+
+SCRIPT:GLAMissionObj2
+"Mission objective #2:\n
+Destroy phased array tracking radar and SDI cannons"
+End
+
+SCRIPT:GLAMissionVictory
+"Strategic Defense Initiative system has been totally destroyed.\n
+We are victorious, General!"
+End
+
+SCRIPT:GLAMissionLoseBase
+"Our base has been destoyed... You have failed us, general."
+End
+
+SCRIPT:GLAWedetected
+"General! \n We have been spotted by American forces! \n
+Your orders now are to destroy five targets before their reinforcements arrive."
+End
+
+SCRIPT:GLACobraPathClear
+"Good work, General!\n 
+East road has been cleared from enemy forces. Our heavy artillery reinforcements are inbound."
+End
+
+SCRIPT:GLACaptureRadarStation
+"We have spotted civilian radio station in the perimeter of the city.\n
+Capture it, and we will be able to send some air support for you."
+End
+
+SCRIPT:GLACapturedRadarStation
+"Radar station captured. Air support is under way to your base."
+End
+
+SCRIPT:GLASDICannonsdeadRA
+"Excellent work, General! American SDI cannons have been destroyed!\n
+Now, you must take out the SDI Radar, in the middle of the area."
+End
+
+SCRIPT:GLARadardeadSDIA
+"Great! SDI Main radar has been eliminated!\n
+Now, use SCUDs to destroy the SDI Cannons in the northern base."
+End
+
+SCRIPT:GLAEnemyScouts
+"General, our assumptions were wrong and this major part\n
+of the road is under control of the american scouts and their supply\n
+base garrison. Try to take them out, and we will be able to send you some help."
+End
+
+SCRIPT:OilDerrick
+"General, we spotted some oil derricks. Capture them to receive additional funds."
+End
+
+SCRIPT:USAReinforcments
+"General! American reinforcements are inbound!\n
+It's time to take out the targets while we still can!"
+End
+
+SCRIPT:GLAReinforcmentsB
+"General! Our reinforcements are arriving at the base.\n
+Use them, but beware of time!"
+End
+
+SCRIPT:USAAirfield
+"General, American air forces are using a civilian airstrip for landing, resupply and repair.\n
+Destroy it to lessen their attacks!"
+End
+
+SCRIPT:USAAirfieldDead
+"Airstrip destroyed. That will reduce the reinforcements they get. Good work, general!"
+End
+
+SCRIPT:SabotuersHint
+"HINT: Use Technicals to send Saboteurs to the enemy power plants to\n
+temporarily disable power production on all enemy bases.\n
+While power supply is down, use SCUDs to take out the SDI Cannons."
+End
+
+SCRIPT:GLAReinfInbound
+"Sector clear.\n
+General, our forces are entering the region from the West. Use them wisely.\n
+Remember: All SCUDs must survive until SDI Cannons are destroyed"
+End
+
+SCRIPT:CaveDetected
+"General, we spotted a local cave system.\n
+You can use it to quickly transport the forces through the region"
+End
+
+SCRIPT:USAReinfTimer
+"USA Reinforcements arrival:"
+End

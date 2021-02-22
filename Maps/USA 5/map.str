@@ -1,0 +1,119 @@
+USA3Intro_INFORMANT1
+"Those trucks carry toxin canisters."
+End
+
+USA3Intro_INFORMANT2
+"I must report this."
+End
+
+USA3Briefing1
+"Intel reports chemical weapons in this area."
+End
+
+USA3Briefing2
+"However, we've lost contact with our informant."
+End
+
+USA3Objective1
+"OBJECTIVE: Secure the nearby oilfield to supply our operation."
+End
+
+USA3Objective1_completed
+"The oilfield is secured. Good work, general."
+End
+
+USA3Objective2
+"OBJECTIVE: Secure nearby villages and search for the informant"
+End
+
+USA3Objective2_InformantTimer
+"It's only a matter of time before GLA finds our informant."
+End
+
+USA3Objective2_TimesUp
+"We're too late. GLA has found our informant."
+End
+
+USA3Objective2_NotFound
+"The village is secured, but there is no sign of our informant."
+End
+
+USA3Objective2_Found
+"The village is secured. There he is. Escort him to safety."
+End
+
+USA3Objective2_Escort
+"Escort our informant to the helipad for evacuation."
+End
+
+USA3Objective2_Completed
+"Our informant is safely evacuated. Well done, general."
+End
+
+USA3Objective3_ChemIntel1
+"Our informant has provided intel about chemical weapons."
+End
+
+USA3Objective3_ChemIntel2
+"There are 5 chemical bunkers in the area. Only 2 locations are confirmed."
+End
+
+USA3Objective_MoreIntel
+"There are two GLA radio stations. Secure them to gain more intel."
+End
+
+USA3Objective3
+"OBJECTIVE: Locate & capture all GLA chemical bunkers."
+End
+
+USA3Objective_Optional
+"OBJECTIVE (OPTIONAL): Capture GLA radio stations."
+End
+
+USA3Objective3_Captured1Bunker
+"A chemical bunker is captured. Proceed with the next one while we check it."
+End
+
+USA3Objective3_Captured2Bunkers
+"Good work, we've found the location of another two bunkers from documents here."
+End
+
+USA3Objective3_Captured4Bunkers
+"Nicely done, general. Now, we need to focus on the last bunker."
+End
+
+USA3Final_SupportPowerStrikes
+"It is heavily fortified here. Commencing support strikes!"
+End
+
+USA3Final_OmegaCannon
+"General Townes has given you a chance to try his Mobile Omega Cannon prototype."
+End
+
+USA3Final_Briefing
+"OBJECTIVE: Capture the last chemical bunker."
+End
+
+USA3Final_Ending
+"Excellent, general. HazMat team is being deployed to deal with this stuff."
+End
+
+USA3Objective_Radio1
+"Accessing GLA communication channels... enemy AA sites located."
+End
+
+USA3Objective_Radio2
+"We've found a safe passage for aircraft insertion. Reinforcements inbound."
+End
+
+USA3BaseLost
+"Key structures are lost."
+End
+
+USA3_Fortress_warning
+"Also, try avoiding Northeast Fortress for now. We'll deal with it later."
+End
+
+USA3_JetLost_warning
+"Be careful not to lose too many jets, reinforcement is limited."
+End

@@ -1,0 +1,90 @@
+SCRIPT:Coundown1
+"Time To Army First Attack :"
+End
+
+SCRIPT:Coundown2
+"Time to Army Attack 2 :"
+End
+
+SCRIPT:Coundown3
+"Time to Army Attack 3 :"
+End
+
+SCRIPT:Coundown4
+"Time to Army Attack 4 :"
+End
+
+SCRIPT:Coundown5
+"Time to Army Attack 5 :"
+End
+
+SCRIPT:Coundown6
+"Time to Army Attack 6 :"
+End
+
+SCRIPT:Coundown7
+"Time to Army Attack 7 :"
+End
+
+SCRIPT:Coundown8
+"Time to Army Attack 8 :"
+End
+
+SCRIPT:Coundown9
+"Time to Army Attack 9 :"
+End
+
+SCRIPT:Coundown10
+"Time to Death :"
+End
+
+SCRIPT:Coundown0
+"Time to END :"
+End
+
+SCRIPT:CoundownSon
+"Time to VICTORY :"
+End
+
+SCRIPT:CoundownA1
+"Time to Air Strike 1 :"
+End
+SCRIPT:CoundownA2
+"Time to Air Strike 2 :"
+End
+
+SCRIPT:CoundownA3
+"Time to Air Strike 3 :"
+End
+
+SCRIPT:CoundownP1
+"Time to Pasha Tunnel Attack 1 :"
+End
+
+SCRIPT:CoundownP2
+"Time to Pasha Tunnel Attack 2 :"
+End
+
+SCRIPT:CoundownP3
+"Time to Pasha Tunnel Attack 3 :"
+End
+
+SCRIPT:CoundownP4
+"What The Hell It is :"
+End
+
+SCRIPT:CoundownS1
+"Time to Run After Your Money ;)   :"
+End
+
+SCRIPT:CoundownS2
+"Time to Watch Your As.s ;)   :"
+End
+
+SCRIPT:CoundownS3
+"Time to Terrorist Attack  ;)   :"
+End
+
+SCRIPT:CoundownE
+"Time to Final ;)   :"
+End

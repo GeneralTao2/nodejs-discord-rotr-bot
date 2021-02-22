@@ -1,0 +1,122 @@
+;=============
+Patch Notes:V8 FINAL
+;=============
+
+;----------
+;Random Update
+;----------
+EASY GLA - will make players got extra money
+NORMAL GLA - yah NORMAL ;)
+HARD GLA - players have no Defenses
+
+New and Improved Failsafe (well host will warned if something is wrong in map)
+Removed tank paradrop from ue code (internal)
+Strings Updated
+New Buildings (Tech_GattlingBuilding)
+Add Some Code For Twist (Gas Stations Can Now Explode)
+Change the size of units for fun purposes
+New GP FOR China (enabled the emp and add chinaparadrop)
+
+If your men Dies they will give frenzy bonus to nearest teammates
+
+;----------
+;Units Update
+;----------
+New laser gun for BattleDrone
+
+Buffed The Damage of New Zombie Type
+Buffed The Damage of sentrydrone
+Fixed Burning one damage radius
+Fixed Boss sight ranges
+New Types Of Boss (You will see it ingame) ;) beware of that shit
+
+Boss More Health -- yah more health
+Scud Launcher is New Enemy Unit (to Reduce player standby mode ;P)
+Voice of Ranger Changed (No Redundancy of "Whats The Mission Sir")
+Pow Truck Voice Fixed
+New Unit Repair Drone Coded By Unknown Editor and edited by me to heal vehicles and drones too
+Voice of Humvee Changed
+Sentry Drone Have Increased TurretTurn Rate
+Sentry Drone is now Purposed to be anti minlet and anti burning one
+Sentry Drone Weapon Have More Range
+
+Weapon of Default Zombie is nerfed
+Burning one have increased damage and health
+Minlets are nerfed
+Default Zombie sink delay is decreased -- so they gone immediately
+Boss Shockwave Effect Decreased
+Sentry Drone Delay Fixed
+Default Zombie cant collide to units and vehicles -- to reduce ai traffic
+Sentry Drone cant collide to units and vehicles -- to reduce traffic
+Colonel Burton Doesnt Affected by too much Shock -- to fix out of bounds
+Red Guard Weapon Buffed
+Carpet Bomber Bomb Shock Increased
+
+;----------
+;Gameplay Update
+;----------
+Oil Bug Fixed
+Ingame Text Changed
+
+Physics are Half fixed
+No DamageFX between Infantry (they will not release any smoke fx when hit)
+ -- we need to use all codes to reduce lag
+ 
+New Objectives
+Something is removed -- its a secret
+Constant Rush Fixed
+
+;----------
+;Map Update
+;----------
+
+Fixed Reveal to Objectives (Requested by Skymix Long ago)
+Map is Redesigned
+New Placement of buildings
+New Textures
+Fixed Choke Points
+
+;----------
+;Unfixabled Bug
+;----------
+GP china paradrop image missing
+
+;=============
+Patch Notes:V7
+;=============
+Units:
+
+New Special Powers Where added for Players
+Cursor Guide from players can be seen by other players
+
+Humvee have new voice when attacking
+Humvee have turret model when upgraded with gattling
+Humvee can Stun enemy units if they where too many
+Redguard is effective in long range but i decreased their damage
+Ranger can Stun enemy if they where too many
+Spectre gunship is too reliable into moving enemy units
+Spectre Gunship weapon can release small amount of shock
+
+Enemy Units:
+Default Zombies have more health but decreased in their numbers to reduce lag in Mp Games
+Default Zombie weapon can release small amount of shock
+Motors are New Enemy Units
+IF Boss Killed by the player ... the boss will release Shockwave Effect
+Boss Can now walk to water and can climb cliffs now
+Minlets are New Enemy Units where have great armor and too fast .. can be killed by the sentry drone
+Burning one are New Enemy Units
+
+Map Misc:
+Barrels weapon can release small amount of shock
+Civilian Bunker have More Health
+Your Electricity is on your Secret Research Lab So you need to protect it
+Gatling Building have More health
+Reinforcement pad placed at the map
+Artillery Platform placed at the map
+New Building where added for 3rd objective
+
+
+Noticed Bug: will be fixed in beta 8
+Money Bug
+Physics
+Constant Release of Boss 

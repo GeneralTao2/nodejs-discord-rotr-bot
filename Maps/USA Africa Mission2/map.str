@@ -1,0 +1,127 @@
+SCRIPT:GLABackupTimer
+"GLA Reinforcements arriving in:"
+End
+
+Caption Intro 1
+"Operation: Jungle Jury
+\nLocation: Somewhere in central Africa"
+End
+
+Caption Intro 2
+"The rebels have located a GLA prison deep within the jungle.
+\nThey believe their leaders are being held here."
+End
+
+Caption Intro 3
+"All GLA Stinger Sites must be destroyed 
+\nso our evac chopper can arrive safely."
+End
+
+Caption Intro 4
+"Use our SEALS and Pathfinders to scout the jungle
+\nand find a way inside the complex.
+\nAt least one leader MUST survive."
+End
+
+Caption Objective 1 and 2
+"Objectives 1 & 2:
+\nDestroy all Stinger Sites
+\nand rescue the rebel leaders."
+End
+
+Caption Runner Warning
+"Warning:
+\nMercenary Runners detected.
+\nUse Humvees to take them out safely."
+End
+
+Caption Choice 1
+"The entrance to the prison is heavily guarded.
+\nWe can see two ways to break in."
+End
+
+Caption Choice 2
+"Option 1: 
+\nStorm the main gate.
+\nThis will no doubt alarm the GLA to call in back-up."
+End
+
+Caption Choice 3
+"Option 2: 
+\nSneak SEALs around the western wall.
+\nBeware of GLA vehicles in the facility."
+End
+
+Caption Choice 4
+"The choice is yours General."
+End
+
+Caption Storm the Gate
+"The GLA have called for back up.
+\nRescue the prisoners quickly!"
+End
+
+Caption Command Truck Hint
+"Hint:
+\nDestroy the Command Truck to prevent
+\nthe GLA from calling reinforcements."
+End
+
+Caption Command Truck Destroyed
+"The Command Truck is destroyed.
+\nGood work, General."
+End
+
+Caption GLA Backup Arrived
+"WARNING: GLA reinforcements have arrived!
+\nThey are heading straight for the rebel leaders!"
+End
+
+Caption Milita Freed
+"These Milita are willing to fight for us."
+End
+
+Caption Rocket Milita Freed
+"These Rocket Milita are willing to fight for us."
+End
+
+Caption Stinger Site Destroyed
+"Objective complete.
+\nAll Stinger Sites destroyed."
+End
+
+Caption Stinger Site Survives
+"We have located the rebel leaders.
+\nDestroy the remaining Stinger Sites."
+End
+
+Caption Evac En Route
+"Rebel leaders secure. Osprey en route."
+End
+
+Caption Leaders Evacuated
+"Objective Complete
+\nThe rebel leaders have been rescued."
+End
+
+Caption Objective 3 Intro
+"Our job isn't over yet.
+\nThe Mercenaries will continue to threaten the rebels
+\nif we don't wipe them out."
+End
+
+Caption Objective 3 Reminder
+"Objective 3:
+\nDestroy all Mercenary Barrack,
+\nArms Dealers and Hideouts."
+End
+
+Caption Mission Accomplished
+"All mercenary structures destroyed.
+\nMission accomplished."
+End
+
+Caption Leaders Dead
+"All rebel leaders have died.
+\nMission Failed"
+End

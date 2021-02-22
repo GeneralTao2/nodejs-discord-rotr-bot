@@ -1,0 +1,114 @@
+SCRIPT:ConvoyTimer
+"US convoy arrives in:"
+End
+
+Caption Sheppard Tribute
+"In memory of GDI General Sheppard (Eric Martin).
+\nThank you for helping to start all of this."
+End
+
+Caption Intro 1
+"Operation: Cyber Eagle
+\nLocation: Classified."
+End
+
+Caption Intro 2
+"Are you picking this up? Good.
+\nI know you need more deep background
+\but we're up against it."
+End
+
+Caption Intro 3
+"GLA forces have set up a blockade in this region.
+\nAn important US convoy is expected to arrive in a matter of minutes."
+End
+
+Caption Intro 4
+"Defend our new base until the convoy arrives.
+\nYou will need at least one dozer available to execute our plans.
+\nThat is all for now."
+End
+
+Caption Objective 1
+"Objective 1:
+\nOwn at least one US Command Center or Dozer
+\nwhen the convoy arrives."
+End
+
+Caption Objective 2
+"Objective 2:
+\nMeet with the remaining convoy team.
+\nThe W.A.S.P Hives MUST survive."
+End
+
+Caption Objective 3
+"Objective 3:
+\nBring all W.A.S.P Hives to your base."
+End
+
+Caption Objective 4
+"Objective 4:
+\nDestroy all GLA bases."
+End
+
+Caption Convoy Arrives
+"Convoy approaching.
+\nEnsure the path is clear for them, General."
+End
+
+Caption Bridge Blown
+"WARNING:
+\nThe GLA have blown the bridge!
+\nSend a team to rescue the convoy, quickly!"
+End
+
+Caption Convoy Rescued
+"We have made contact with the WASP convoy.
+\nYou must safely bring all 3 Hives to your to base."
+End
+
+Caption Objective 2 Complete
+"Objective complete.
+\nAll WASP Hives secured.
+\nConstruct the Drone Control Center to unleash our new toys."
+End
+
+Caption Built Drone Center
+"Drone Control Center online.
+\nUse our newest toys to destroy all GLA forces in the area."
+End
+
+Caption GLA Forest Defeated
+"The GLA base in the forest has been neutralised.
+\nGood job General."
+End
+
+Caption GLA City Defeated
+"The city has been cleansed of GLA influence.
+\nExcellent work."
+End
+
+Caption GLA Main Defeated
+"The main GLA base has been destroyed
+\nThe GLA are all but defeated here."
+End
+
+Caption Lose CC or Dozers
+"We have lost the means to build the Drone Center.
+\nMission failed"
+End
+
+Caption Lose WASP Defeat
+"Critical unit lost.
+\nMission failed"
+End
+
+Caption Lose Standard
+"We have lost everything.
+\nMission failed"
+End
+
+Caption Victory
+"Mission Accomplished
+\nThe new drones will make a great addition to our arsenal."
+End

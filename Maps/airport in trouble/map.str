@@ -1,0 +1,20 @@
+Intro1
+"Creator of this Map : Predator
+\n Redesigned By : Adriane[DeathScythe]"
+End
+
+hint1
+"Warning: The water level is dropping"
+End
+
+hint2
+"Warning: The water level is rising"
+End
+
+SCRIPT:WaterRise
+"The water level will rise in:"
+End
+
+SCRIPT:WaterDrop
+"The water level will drop in:"
+End

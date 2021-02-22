@@ -1,0 +1,92 @@
+MAP:GLA03:Intro
+"Hills, Afghanistan
+\nGLA in attempt to stop Chinese convoys"
+End
+
+MAP:GLA03:Objective
+"MISSION OBJECTIVE:
+\nLiberate the oasis town from the Chinese, and stop their convoy route
+\nOur allies will assist us in the mission."
+End
+
+MAP:GLA03:Factory_Get
+"The town has given you an abandoned factory and supplies for liberating them."
+End
+
+MAP:GLA03:Village
+"Our allies took control of a local village"
+End
+
+MAP:GLA03:Market
+"Our brothers established control of the local market.
+\nThey will be sending us 50% of the income they produce"
+End
+
+MAP:GLA03:AllyGLABase
+"Our fellows have liberated a small GLA base"
+End
+
+MAP:GLA03:AllyOilCapped
+"Our allies have captured an Oil Derrick. More money for us!"
+End
+
+MAP:GLA03:Convoy
+"Chinese convoys will soon head through this area from the North!
+\nPrepare your forces for ambush!"
+End
+
+MAP:GLA03:Convoy2
+"They are 10 minutes out, and appear to me 2 minutes apart.
+\nMeanwhile, our allies are pushing north."
+End
+
+MAP:GLA03:OfferBrief
+"Local GLA residents are selling brand new vehicles.
+\nGo meet them to the Northeast if you are interested."
+End
+
+MAP:GLA03:OfferInfo
+"The amount they asked us for is $15000.
+\nEnter through the gate if you wish to complete the deal."
+End
+
+MAP:GLA03:NoMoneyForDeal
+"You don't have enough money for the deal."
+End
+
+MAP:GLA03:DealDone
+"Money sent. Deal completed.
+\nAll vehicles are at your disposal as well as a Tunnel Network."
+End
+
+MAP:GLA03:1stConvoy
+"The first convoy is approaching! Do not let them slip past us!"
+End
+
+MAP:GLA03:Warnings
+"Warning! Another convoy is on the way!"
+End
+
+MAP:GLA03:Final_Convoy
+"This is the final convoy. Stop the Convoy Trucks!"
+End
+
+MAP:GLA03:MineClearers
+"The Chinese are using mine clearers to clear a path for their convoys!
+\nTeach them!"
+End
+
+MAP:GLA03:Rescue
+"Oh, thank you!
+\nChinese convoys will be escorting Nuclear Trucks through this area.
+\nThey will attempt to destroy our cause by bombing us out.
+\nIt will be a huge success if you capture their trucks and use them as our own!"
+End
+
+MAP:GLA03:Win
+"We have captured all Nuclear Trucks! Today is history for us, General!"
+End
+
+MAP:GLA03:Lose
+"A Chinese convoy has escaped. MISSION FAILED"
+End

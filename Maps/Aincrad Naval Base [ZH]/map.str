@@ -1,0 +1,20 @@
+Intro1
+"Creator of this Map : 
+\n Adriane [Deathscythe]"
+End
+
+hint1
+"Warning: The World Layout is changing"
+End
+
+hint2
+"Warning: The water level is rising"
+End
+
+SCRIPT:WaterRise
+"The World Layout will Change in:"
+End
+
+SCRIPT:WaterDrop
+"The World Layout will Change in:"
+End

@@ -1,0 +1,27 @@
+Brifing:01
+"Merhaba, Welcome to Pasha's New Generation R&D Zone \n or I should say Welcome to H.E.L.L !!!"
+End
+
+Brifing:02
+"Your mission (should you choose to accept it) is Defense of  R&D Zone \n SURVIVE !!! if you can"
+End
+
+Brifing:03
+"Your Mission Fails If R&D Facilities In R&D Zone Are Destroyed \n try to STAND !!! if you can"
+End
+
+Brifing:04
+"Quick defense required at ramps, capture EMPs and fill bunkers at back \n  NOOBS !!!"
+End
+
+Brifing:05
+"To win, You Have to kill all AI units on battlefield before Victorious Time : 00:00, General! \n don't be REDICULOUS !!! you can't SURVIVE"
+End
+
+Brifing:06
+"Map created by Pasha on June 2016 \n Pasha wishes you to have fun"
+End
+
+SCRIPT:CounterTime
+"Time To Victorious: "
+END

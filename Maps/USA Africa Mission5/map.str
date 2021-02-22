@@ -1,0 +1,111 @@
+SCRIPT:StarlifterTimer
+"President's Starlifter Arrives In:"
+End
+
+SCRIPT:ScudStormsRemain
+"Scud Storms Remaining:"
+End
+
+Caption Intro
+"Cape Town, Presidential state visit"
+End
+
+Caption Protect President
+"The President is in danger!
+\nWe are sending a Starlifter!"
+End
+
+Caption Starlifter Arrives
+"Starlifter has arrived.
+\nPrepare for evac."
+End
+
+Caption Plan B
+"That does it.
+\nGuide the President to the docks.
+\nHe will be evacuated by sea."
+End
+
+Caption Comanche
+"Use the Comanche to clear the way.
+\nThe others will hold off the GLA ambush."
+End
+
+Caption Docks Reached
+"We have made it to the docks.
+\nStandby for evac, beware of further ambushes."
+End
+
+Caption President Evacuates
+"Objective complete.
+\nThe President is safe.
+\nWe are giving you control of the airbase."
+End
+
+Caption Chinese Info
+"The Chinese have granted us access to their intellegence network.
+\nUpgrade these structures to keep track of GLA movements."
+End
+
+Caption Scud Storm Warning
+"WARNING: Multiple Scud Storms detected!
+\nThe GLA are planning to strike Cape Town with mulitple Scuds.
+\nThey MUST be eliminated!"
+End
+
+Caption Aurora Backup
+"A squad of our Aurora Bombers has arrived.
+\nUse them wisely, we cannot build more."
+End
+
+Caption 20 mins Remaining
+"Warning: 20 minutes remaining"
+End
+
+Caption 10 mins Remaining
+"Warning: 10 minutes remaining"
+End
+
+Caption 5 mins Remaining
+"Warning: 5 minutes remaining"
+End
+
+Caption 3 mins Remaining
+"Warning: 3 minutes remaining"
+End
+
+Caption 1 min Remaining
+"Warning: 1 minute remaining"
+End
+
+Caption Scud Storms Destroyed
+"Objective complete.
+\nAll Scud Storms eliminated!
+\nFinish off the GLA for good!"
+End
+
+Caption GLA Ambush Defeated
+"The GLA raiders have been defeated.
+\nThat should ease the pressure."
+End
+
+Caption GLA Airbase Defeated
+"The GLA Airbase is destroyed
+\nWe know have full air superiority."
+End
+
+Caption GLA Main Defeated
+"The Main GLA army is defeated
+\nOutstanding work!"
+End
+
+Caption Lose President
+"Mission Failed.
+The President is dead."
+End
+
+Caption Win
+"Mission Accomplished.
+\nThanks to you, the USA is back on the world stage.
+\nYou have done us proud, General."
+End

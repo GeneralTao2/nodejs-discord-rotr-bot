@@ -1,0 +1,434 @@
+SCRIPT:ThreatLevel
+"Our Threat Level:"
+End
+
+SCRIPT:CalenderCount
+"Days until invasion:"
+End
+
+Intro01
+"Mission: Border To Salvation
+\nLocation: Middle East, Saudistan
+\nArea: Near the Iraqi border"
+End
+
+Intro02
+"Welcome to Saudistan,
+\nLet's begin the briefing while our brothers get into position."
+End
+
+Intro03
+"This is the border between our Saudistan, and their Iraq.
+\nFor the past few months, the American Infidels have been establishing a heavy military presence
+\nnear the border. They claim this is to uphold peace, and deter local provocative Militias.
+\nHowever..."
+End
+
+Intro04
+"Recently an Iraqi defector brought documents that reveal the REAL reason for this build up.
+\nThe repulsive Infidels are preparing a base to house a massive unstoppable assault force.
+\nThey intend to use this force, to once and for all cleanish Saudistan of all who oppose them.
+\nOur brothers and families would be slaughtered...."
+End
+
+Intro05
+"We will and must prevent this!
+\nThe GLA has paraded these documents for the past weeks, and garnered massive support!
+\nWe have managed to unite all of Saudistan, against one common enemy.
+\nIt is time for the GLA to rise once again."
+End
+
+Intro06
+"This is the Infidel's main base.
+\nThey are still blind to our knowledge of their plans.
+\nThis will be our one and only advantage, and we must use it well."
+End
+
+Intro07
+"The Iraqi army holds a base here as well.
+\nThey are our brothers, but their souls have been corrupted by the manipulative Infidels.
+\nIf they will not lay down their arms, but choose to defy us,
+\nthen we must make an example of them."
+End
+
+Intro08
+"According to our Agents,
+\nThe Infidels have a nerve communications center in this area.
+\nOur Agents believe that they use it to keep in close contact with their forces abroad.
+\nThey can, and will surely use it to call in heavy reinforcements, if needed."
+End
+
+Intro09
+"It must be destroyed.
+\nThe Infidels have hidden it well, they surely know its importance too.
+\nFinding and neutralizing it, is a number one priority."
+End
+
+Intro10
+"Our brothers are ready to fight.
+\nWe will keep you informed with Intelligence and Field reports.
+\nGood luck General, we are counting on you!"
+End
+
+Hint_CalenderCountDown
+"Intelligence Report:
+\nAccording to the leaked documents, the enemy base will be fully operational in 43 days.
+\nThere is no time to waste, if we let them prepare unhindered, we are doomed.
+\nWe must assault them before our time is up."
+End
+
+Hint_StealthHint
+"Intelligence Report:
+\nOne of the more helpful Iraqi prisoners believes that it might be possible
+\nfor camouflaged units to cross the border unseen.
+\nIf we do this, we must be careful as to not get detected."
+End
+
+Hint_OutPosts
+"Intelligence Report:
+\nWe have placed Agents around the area to keep an eye out for the enemy.
+\nThey will keep us informed of enemy movement and events."
+End
+
+Hint_ThreatRating01
+"Intelligence Report:
+\nCaptured Iraqi soldiers tell us that the Americans run a high-ops Surveillance mission
+\non the border area. We cannot hide our presence from them for long. But,
+\nMilitias drive through this area with tanks daily."
+End
+
+Hint_ThreatRating02
+"To avoid unnecessary conflict, the Infidels has devised a Threat Rating chart,
+\nto assess the threat level of a given foe. Our Iraqi Agents have stolen such a chart.
+\nThis will allow us to monitor our perceived Threat Level. If we reach a 100, they attack.
+\nThe most important bits have been added to your Mission Briefings, General."
+End
+
+Hint_ThreatRating03
+"Intelligence Report:
+\nThe Infidels will also attack us if we cross the border, or attack them.
+\nWe must keep from such measures, until we are ready for them."
+End
+
+
+ThreatRating_Chart01
+"Threat rating chart:
+\nStructures - 10 Points
+\nDefenses - 5 Points
+\nMobile factories - 10 Points"
+End
+
+ThreatRating_Chart02
+"Vehicles(x2) - 6 Points
+\nInfantry(x2) - 5 Points
+\nAircraft - 6 Points
+\nUnarmed non-factory units (Workers, Radar Vans) are not considered a threat."
+End
+
+ThreatLevel_Warning
+"Intelligence Report:
+\nGLA Agents near the Infidel's base tell us that we're being perceived as a very high threat.
+\nIf we continue expanding, they will surely attack us."
+End
+
+Reinforcements_Report
+"Field Report:
+\nWe are far too invested in this to lose, General!
+\nAn attempt to scrounge together any remaining forces we have, has been made.
+\nThese forces are on their way, do not waste them, they are our last hope now!"
+End
+
+IntrusionTypeA
+"Warning:
+\nAgents near the Infidel's main base report that they are preparing an all out attack.
+\nTheir plans of an easy win have been thwarted, and they are hardly ready.
+\nDefiant Iraqis are already moving to attack us however. Make an example of them."
+End
+
+IntrusionTypeB
+"Warning:
+\nThe Infidels have spotted one of our camouflaged units!
+\nThey will not take this trespassing lightly, we must prepare for their attack.
+\nAgents report that the Iraqi border guards are already assaulting."
+End
+
+IntrusionTypeC
+"Warning:
+\nThe Infidels are preparing a counter attack,
+\ndefiant Iraqi forces are going to attack us as well!
+\nWe have faith in you, General."
+End
+
+IntrusionTypeD
+"Warning:
+\nWe have crossed the border, this means war.
+\nMake the Infidels pay, destroy them all!"
+End
+
+IntrusionTypeE
+"Warning:
+\nThis is not good, the Infidel's main base is now fully operational...
+\nOur one and only advantage has been lost, we have no chance of winning this.
+\nThe enemy is already assembling their invasion forces, preparing to rid us from our homeland."
+End
+
+SentryDroneDiscovered
+"Field Report:
+\nOur men have sighted abandoned Sentry Drones. The Infidels surely have more.
+\nBe careful, General."
+End
+
+Defeat01
+"How could you let them defeat us?!
+\nThe Infidels were barely ready for us. Yet they defeated us.
+\nWe are lucky that no more resources were poured into this failure."
+End
+
+Defeat02
+"The GLA has been severely handicapped by this miserable failure.
+\nWatch your back traitor, we will not forgive this."
+End
+
+Defeat01R2
+"NO!
+\nThis is impossible! How could you let them defeat us!?
+\nWe poured our every last resource into this operation."
+End
+
+Defeat02R2
+"Because of your failure, the GLA can never be prosperous!
+\nYou have wasted the lives and spirits of our brothers.
+\nWatch your back traitor, your days are numbered."
+End
+
+Victory01
+"You have done it General!
+\nThanks to your relentless effort, the GLA will rise again!
+\nFill yourself with joy General, for you have saved us all!"
+End
+
+Victory02
+"You have lead us to a great victory on this very day.
+\nSoon we shall free our brothers from the shackles of the Infidel!
+\nWith you as our leader, we cannot fail our course for freedom!
+\nSoon, all shall know of our glory."
+End
+
+LeoMech_Report
+"Intelligence Report:
+\nSome of our Agents report of a huge 4-legged machine, moving towards the infidels main base.
+\nWe lost all contact to them before they could reveal further details."
+End
+
+LeoMech_Destroyed
+"Field Report:
+\nThe Infidel's devilish machine lay in ashes.
+\nNothing can stop us now General, it is but a matter of time."
+End
+
+IRAQ_Evac
+"Field Report:
+\nWe have shattered the fragile moral of the defiant Iraqi soldiers.
+\nThey are trying to escape our wrath, by running for the hills."
+End
+
+SecretComCenter_Discovered
+"Field Report:
+\nWe have found the US Communication Center.
+\nQuickly, we must destroy it! Our brothers are ready to make the sacrifice."
+End
+
+SecretComCenter_Reminder
+"General, 
+\nThe US Communication Center has not yet been destroyed.
+\nWe must hurry, before they call in heavy reinforcements!"
+End
+
+SecretComCenter_Destroyed
+"Field Report:
+\nWe have succesfully destroyed the US Communication Center!
+\nThe Infidels are completely cut off from their friends, further inland.
+\nA cash reward has been payed to us by our generous 'Donors' "
+End
+
+AFComCenter_Discovered
+"Field Report:
+\nWe have discovered what appears to be a US Communication Center.
+\nIt is not the one we are looking for, but we must destroy it as well.
+\nTo succeed, we must severe ALL their out going links."
+End
+
+AFComCenter_Destroyed
+"Field Report:
+\nWe have severed yet another of the Hydra's many heads!
+\nSoon, the Infidels will be mute, and we shall conquer them!"
+End
+
+ArtilleryBarrage_Destroyed
+"Field Report: 
+\nThe Iraqi artillery position has been fully destroyed.
+\nWe should have more breathing space now, General."
+End
+
+ArtilleryIncoming
+"Warning: 
+\nIraqi artillery is taking aim!
+\nTake cover!"
+End
+
+ArtilleryIncomingFourth
+"Warning: 
+\nThe Iraqi artillery men are still persisting.
+\nAgents report that they are preparing another barrage."
+End
+
+Shaitanplansaquired
+"Field Report: 
+\nWhile scouring an old house, our men found blueprints for a most unusual defensive weapon system.
+\nOur finest architects are currently analyzing them."
+End
+
+Shaitancanbebuild
+"Field Report: 
+\nGeneral, our architects have finished analyzing the blueprints for the "Shaitan" defense system.
+\nOur workers have been instructed on how to build it. 
+\nIt is time to stop Infidel intrusions, once and for all."
+End
+
+DeathstrikeTechs_Acquired
+"Field Report: 
+\nOur brothers have found an abandoned Tunnel Network, it must be from the days of Deathstrike.
+\nUpon further investigation, they found blueprints for some of the passed leader's vehicles.
+\nWhen we have finished analyzing them, we will be able to build them at our own Arms Dealer!"
+End
+
+WorkerChem_String
+"Field Report: 
+\nOur men have found an architect previously loyal to Dr.Thrax.
+\nHe has deep knowledge of Dr.Thrax's specialized technology, he will help us utilize it."
+End
+
+WorkerDemo_String
+"Field Report: 
+\nOur soldiers ran across a lone peasant, eager to sell them explosives.
+\nThe peasant has revealed himself to be an old associate of General Juhziz, and is eager to help us."
+End
+
+WorkerStealth_String
+"Field Report: 
+\nAn ex-associate of Prince Kassad was found nearby an old supply compound.
+\nHe holds deep knowledge of the traitor's stealth technologies.
+\nAnd in turn for his treasonous life, he WILL help us use them."
+End
+
+CommandTruckDiscovered
+"Field Report: 
+\nWe have spotted the Iraqi's main command vehicle.
+\nIf it is destroyed, the Iraqis will be cut off and unable to request help.
+\nThis will severely demoralize their soldiers."
+End
+
+CommandTruckDestroyed
+"Field Report: 
+\nThe Iraqi command vehicle has been eliminated.
+\nAgents already report of Iraqi soldiers refusing to fight."
+End
+
+CommandTruckDestroyedALT
+"Field Report: 
+\nOur plan has failed! Destroying the command vehicle has backfired.
+\nAgents report that the puppet regime has authorized use of the Iraq Modernized Armor Core.
+\nDestroy these infantile Infidels, make an example of the defiant. Quell their last hope, General!"
+End
+
+ModernizedArmorCore
+"Field Report:
+\nThe Iraqi puppet regime has just authorized use of the Modernized Armor Core division.
+\nThese forces consist of dummed down American tanks, however their crews are very experienced.
+\nDestroy these forces, make an example of the defiant!"
+End
+
+ModernizedArmorCore_Repelled
+"Field Report:
+\nThe Modernized Armor Core is no more!
+\nAgents already report of many deserters among the Iraqi ranks.
+\nAnd their fighting capacity has been weakened. We have also received a donation from our donors."
+End
+
+JarmenKellTeam
+"Field Report: 
+\nJarmen Kell has managed to assemble some of our best agents, and snug deep behind enemy lines.
+\nHe is now in position, and is ready for your command.
+\nDo not let his effort be in vein, General."
+End
+
+BadAsses_Arrived
+"Field Report: 
+\nA squad of soldiers loyal to previously perished General 'Deathstrike' has arrived.
+\nThey have sworn allegiance to us, so that they may avenge their fallen leader."
+End
+
+BikerGang_Spawned
+"Field Report: 
+\nGeneral, a gang of bikers who sympathize with the GLA has decided to join us.
+\nThey are prepared to die for the cause, we must use them to our advantage."
+End
+
+CrawlingDeath_Report
+"Intelligence Report: 
+\nA rumor from local villagers across the border suggest an Alien invasion.
+\nOne of our Agents were unable to confirm or deny. We must be wary, General."
+End
+
+CrawlingDeath_ReportTwo
+"Field Report: 
+\nAn Agent near the border has followed up on the Alien invasion rumor,
+\nhe has seen the machines with his own eyes and report that they wear American unit markings.
+\nAnd that they are moving towards our base at slow phase. We must prepare!"
+End
+
+CrawlingDeath_Overcome
+"Field Report: 
+\nWe have destroyed the Infidel's hellish machines!
+\nIt is time to give the rest of them the same treatment."
+End
+
+NavyAirforce_Report
+"Warning: 
+\nAgents deep within enemy land report of US Navy Aircraft taking off.
+\nTheir current flight path will lead them straight to the border.
+\nWe must prepare to fend them off. They will be inbound, ETA 5 minutes"
+End
+
+NavyAirfoce_Aborted
+"Intelligence Report: 
+\nAgents within the Iraqi army report that the cowardly pilots of the Navy Airforce
+\nhave aborted their bombing raid, in fear of their lives.
+\nOur strategy to build many AA defenses has worked out, we will not see them anytime soon."
+End
+
+NavyAirforce_Defeated
+"Field Report: 
+\nWe have swatted the last Infidel pest out of the sky.
+\nIraqi Agents report that the Navy has aborted all further air raids. We got lucky, General."
+End
+
+MazarSighted
+"Field Report: 
+\nWe've spotted a vehicle used by the Iraqis that almost looks like Dr.Thrax's Qaraqurt tank. 
+\nBe wary, the Qaraqurt is a tough opponent."
+End
+
+MazarDestroyed
+"Field Report: 
+\nThe modified Qaraqurt has been annihilated. Our troops have analyzed the modifications made to it.
+\nIt has been fitted with a highly modern MGT system, allowing it to engage at very long ranges.
+\nThe vehicle is still tough, but the high load of missiles make it prone to ammo cookoffs."
+End
+
+Rank3_Break
+"Intelligence Report: 
+\nOur Agents behind enemy lines tell us that the Infidels are halting attacks for the time being.
+\nTheir reserves are exhausted, and they await further reinforcements.
+\nWe must use this breathing room to regroup and prepare for their next attack."
+End

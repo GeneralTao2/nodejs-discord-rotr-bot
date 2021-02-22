@@ -1,0 +1,46 @@
+levelname
+"Mission 5: Nuclear Cargo"
+End
+
+BRIEFING1
+"Defend your base until reinforcements arrive."
+End
+
+BRIEFING2
+"Secure the Southwestern village before reinforcements arrive."
+End
+
+BRIEFING3
+"Destroy the USA Airforce base in the Northeast."
+End
+
+BRIEFING_OBJECTIVE_2
+"Reinforcements have arrived. Destroy the U.S. base to the Northeast."
+End
+
+ARRIVE
+"Reinforcements have arrived."
+End
+
+HINT_1
+"HINT: Destroy the power plants to the Southeast and Northwest."
+End
+
+HINT_2
+"HINT: Destroy the Southwestern base to lessen enemy attacks."
+End
+
+HINT_3
+"HINT: You only get 12 Nuke Bomb Trucks, use them wisely."
+End
+
+HINT_4
+"HINT: Capture the Southeastern oilfield for more money."
+End
+
+HINT_5
+"HINT: Use anti-air mines against the B-4 Chimeras."
+
+POWER_OUT
+"The enemy base is out of power. Several tunnels around the map are available to you, General."
+End

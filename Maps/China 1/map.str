@@ -1,0 +1,86 @@
+MAP:CHI01:Objective
+"MISSION OBJECTIVE:
+\nIntel reports of a high-rank GLA officer in this area
+\nYou must capture him"
+End
+
+MAP:CHI01:Lotus_Deployed
+"Black Lotus is at your command for this mission. She must survive
+\nScout the area and confirm the presence of the target."
+End
+
+MAP:CHI01:TC_Arrived
+"A Troop Crawler has arrived from the west. The Field Engineer must survive"
+End
+
+MAP:CHI01:Officer_Captured
+"The officer is captured. Bring the truck to the extraction zone.
+\nBeware of mines"
+End
+
+MAP:CHI01:Officer_Evacuated
+"Officer has been evacuated safely. Troop Crawlers are available to your command."
+End
+
+MAP:CHI01:Objective2
+"MISSION OBJECTIVE #2:
+\nWe have intel of a recent US plane crash. It appears to had been carrying important tech.
+\nTake the Field Engineer to the crash site before someone recovers that tech!"
+End
+
+MAP:CHI01:USA_First
+"Bad news, General. The US have reached the crash site first.
+\nWe must deal with them with what we have"
+End
+
+MAP:CHI01:China_First
+"Good job, General. We reached the crash site first.
+\nSeveral bandits have been paid to slow the US down while we recover their tech"
+End
+
+MAP:CHI01:Tech_Recovered
+"Tech recovered. Head to the Southeast for extraction. There's an abandoned airstrip there"
+End
+
+MAP:CHI01:Entered_Airstrip
+"Good."
+End
+
+MAP:CHI01:PlaneNeedsFixing
+"This civilian plane needs some fixing to start up. The Engineer will take a look"
+End
+
+MAP:CHI01:PlaneFixingNotLong
+"It won't take long until the plane is ready to go"
+End
+
+MAP:CHI01:GLAAttacksAirstrip
+"The GLA aren't letting us escape. Protect the airstrip at all costs!"
+End
+
+MAP:CHI01:PlaneFixed
+"The plane was fixed. It's time to board"
+End
+
+MAP:CHI01:PlaneFixedButLotus
+"The plane was fixed. It's time to board. Take Black Lotus to the airstrip ASAP!"
+End
+
+MAP:CHI01:Win
+"Our job is done here! Great success, General!"
+End
+
+MAP:CHI01:LotusDead
+"Black Lotus is dead.
+\nMISSION FAILED"
+End
+
+MAP:CHI01:EngineerDead
+"Field Engineer is dead.
+\nMISSION FAILED"
+End
+
+MAP:CHI01:OfficerDead
+"The GLA officer is dead.
+\nMISSION FAILED"
+End

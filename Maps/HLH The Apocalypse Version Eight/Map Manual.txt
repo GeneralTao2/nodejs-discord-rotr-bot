@@ -1,0 +1,103 @@
+___________________________________
+Map Manual: Humanity's last Hope : The Apocalypse ; The Sequel or the Version 2 
+Final 4.1 -- 10,27,18 6:49PM
+___________________________________
+
+Legend:
+Part1 Installation
+Part2 Map Description
+Part3 Instruction How To Play
+Part4 Credits
+___________________________________
+The MapMaker = AdrianeYves Reyes
+Email Me = agentyves06@gmail.com
+___________________________________
+
+
+___________________________________
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Part 1:***Installation***
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Go to The Zip 
+Extract it to Documents\Command And Conquer Generals Zero Hour Data\Maps\Here
+Done...
+___________________________________
+
+
+
+___________________________________
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Part 2:Map Description: --
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+Map Story: 
+**This is Before The Attack The Canada SafeZone ** (where first map takes place)
+....
+We Are The Last Man standing in the area , You and your team with Gign Commanders (Colonel Burtons)
+need to survive the waves and destroy The  Specified 7 Targets
+... Before the Whole Reinforcement Battalion Got Arrived.
+
+Mission Objectives: You will see it in The Game """Pls Dont Ignore the Briefing Strings Pls"""
+Waves : 50 waves (if you didnt destroy the houses of zombies/and save vip.. it is infinite)
+
+
+___________________________________
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Part 3:**Instructions :How To Play**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<How To Play:SinglePlayer>
+[1.] Put The Gla in Slot Number 3
+[2.] You Can Play As China or Usa only
+[3.] Do Not Use *Gla or Other Factions* As Player
+... No More Done That
+
+In Select Your Position In Map-Part:
+Put Your Self in Slot(Any other Slots) in BottomLeft
+Except in Topright Position Where You need to put
+the Enemy 
+
+
+
+___________________________________
+<How To Play:Multiplayer>
+[1.] Put The Gla in Slot Number "3"
+[2.] You Can Play As China or Usa only
+
+[3.] Be Sure All Assets Where Added in other Player before Playing-
+Including:
+-Map.ini
+-Map.str
+-The .Map File
+-The .Tga File
+
+Or Else You Will cause A *mismatch to other players*
+
+[4.] Other Players Should Be In Slot Number "2,4,5"
+
+In Select Your Position In Map-Part:
+Put Your Allys in the Bottomleft Part within 4 slots 
+and then enemy should be in the topright part
+
+
+
+EASY GLA - will make players got extra money + auto tech capture
+NORMAL GLA - yah NORMAL ;)
+HARD GLA - players have no Defense + but extra money + auto tech capture
+
+___________________________________
+~~~~~~~~~~~~~~~~
+<Part 4:Credits>
+~~~~~~~~~~~~~~~~
+
+Thnx For Playing The Map -- Be Sure to Give me an Feedback
+ZH beta 7 Humanity's Last Hope : The Apocalypse @2018--AdrianeMapMaker--5,31,2018@
+
+Special Thanks To :
+Unknown Editor
+CnCHD
+Skymix rmt
+Super - G 
+And Who Played This Map
+___________________________________

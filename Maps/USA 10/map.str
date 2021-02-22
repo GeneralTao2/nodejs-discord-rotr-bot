@@ -1,0 +1,67 @@
+MAP:USAMap6_Name
+"Serpent Yard"
+End
+
+MAP:USAMap6_Obj01w
+"Good work. He's ours."
+End
+
+MAP:USAMap6_Obj01l
+"We have been defeated"
+End
+
+MAP:USAMap6_Obj03l
+"GLA Command Center has been destroyed. MISSION FAILED"
+End
+
+SCRIPT:USAMap6_Obj02
+"The enemy leaves after:"
+End
+
+MAP:USAMap6_Brf01
+"\nGeneral, Prince Kassad has fortified himself in this area. He is stealthed. Be careful"
+End
+
+MAP:USAMap6_Brf02
+"\nYou get an elite squad of general Townes. This strength will compensate for the enemy's suddenness to attack"
+End
+
+MAP:USAMap6_Brf03
+"General, Price Kassad won't stay here for long. You must capture his Command Center before it's too late!"
+End
+
+MAP:USAMap6_Brf04
+"Reinforcements have arrived. All resources are in your hands"
+End
+
+MAP:USAMap6_Brf05
+"Small enemy base will harass you. Destroy it. Good luck, general"
+End
+
+MAP:USAMap6_Event01
+"Blow up the gas station to slow down the escape of the enemy general"
+End
+
+MAP:USAMap6_Event02
+"Small enemy base is no more"
+End
+
+MAP:USAMap6_OutroLose01
+"\nMISSION FAILED"
+End
+
+MAP:USAMap6_OutroLose02
+"\nKassad has escaped"
+End
+
+MAP:USAMap6_Outro01
+"GLA is finally left without command on the Americas, they are divided and our mission is done"
+End
+
+MAP:USAMap6_Outro02
+"Now, it's time to restore our state"
+End
+
+MAP:USAMap6_Outro03
+"Congratulations!"
+End

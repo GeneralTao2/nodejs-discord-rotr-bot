@@ -1,0 +1,173 @@
+SPEC:TooltipParaDrop1
+"Drop minigunners in designated area
+\n
+\n Rank1: 3 minigunners
+\n Rank2: 5 minigunners"
+END
+
+CONTROLBAR:Infa_TooltipParaDrop1
+"Drop minigunners in designated area"
+END
+
+abandonedgat
+"General there are several Gattling Defense Out There
+\n Activate them by Entering a Infantry on Them"
+END
+
+failsafe1
+"The Map Is Uncorrectly Configured --
+\n Pls Read The 'Map Manual' Before Playing this Map
+\n Game Over General..."
+END
+
+truckhint
+"The Truck is Transferred to the Host
+\n NOW HOST USE IT - TAKE IT TO THE BASE"
+END
+
+intro1
+"Humanity's Last Hope : The Apocalypse (ZH)
+\n U.S. and China Gign Battalion Temporary HQ."
+END
+
+intro2
+"We Are The Last Man Standing In The Area
+\n Be Ready To Fight The Infected!!!"
+END
+
+intro3
+"We Need To Hold The Enemies Before They
+\n Kill All of Us"
+END
+
+SCRIPT:Counter
+"Wave:"
+END
+
+SCRIPT:IngameDeaths
+"Unit Deaths Overall:"
+END
+
+SCRIPT:Counter2
+"Presidents Trust:"
+END
+
+SCRIPT:Counter3
+"Intel Transfer Time:"
+END
+
+intro4
+"Main Objective:
+\n Hold The Waves ,Before They Get in To Your Base
+\n Reinforcement Team Is On The Way.
+\n Also Dont Lose The Presidents trust"
+END
+
+intro5
+"Secondary Objective:
+\n Dont Let All *Colonel* Dies , We Need Them in Other Mission"
+END
+
+hint
+"We Have Spotted a *Big* One Incoming
+\n Dont Let Him Gets Near To Our Base Commander"
+END
+
+hint2
+"We Spotted A Not Normal Giant En Closing 
+\n Shot Him Down"
+END
+
+hint3
+"Tertiary Objective:
+\n Deal with These 7 Targets
+\n They Spawn As *Endless* You Must Destroy Them"
+END 
+
+diec
+"Vip's Where Killed
+\n We Had Been Defeated"
+END
+
+hint4
+"Beware:
+\n A Not Normal Giant Creature Incoming ,This One will Completely ignores
+\n Anybody and Only Wants to Blow Our Base ."
+END
+
+hint5
+"Heavy Damage Will Only Kill It"
+END
+
+hint6
+"Reinforcements Has Arrived"
+END
+
+hint7
+"The Infested Airport Had Been Destroyed"
+END
+
+hint8
+"The Gla's Parking Garage's Had Been Destroyed"
+END
+
+hint9
+"The Infested Hospital Had Been Destroyed"
+END
+
+hint10
+"The Gla's Toxic lab Had Been Destroyed"
+END
+
+hint11
+"Use The Pow Trucks as Base Defenses
+\n They Can Kept 8 Units That Can Shoot Any Infected"
+END
+
+hint12
+"All Infested buildings had been wiped out ,Now Hold Your troops
+\n at the base and Prepare to be Extracted at any time"
+END
+
+hint13
+"General ,We have an intel of American Vip Scientist where stranded in this Area
+\n Go to The Front of The Lab And Save Them
+\n If they die we will lose Ton of Presidents trust"
+END
+
+hint14
+"Destroy The Enemy Units Guarding The Lab"
+END
+
+hint15
+"The VIP Truck is Transferred to the HOST!!
+\n NOW 'HOST' USE IT - TAKE IT TO THE BASE"
+END
+
+hint16
+"The Vip is now on the base Now protect it from bad situations 
+\n Until their Extraction Team Arrives"
+END
+
+CONTROLBAR:Infa_ToolTipChinaScienceInfantryParadrop
+"Drop Red Guards from the air ...\n\n
+ Rank 1: 5 Red Guards\n
+ Rank 2: 10 Red Guards\n
+ Rank 3: 20 Red Guards\n\n
+Deploy from: Command Center"
+End
+
+CONTROLBAR:ToolTipChinaScienceTankParadrop
+"Drop Humvees from the air ...\n\n
+ Rank 1: 2 Humvees\n
+ Rank 2: 4 Humvees\n
+Deploy from: Command Center"
+End
+
+CONTROLBAR:TooltipTankParaDrop
+"Drops Humvees by plane .\n\nCountdown Timer: 4:00"
+End
+
+CONTROLBAR:Infa_TooltipParaDrop
+"Drops Red Guards by plane .\n\nCountdown Timer: 4:00"
+End

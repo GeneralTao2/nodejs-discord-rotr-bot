@@ -1,0 +1,48 @@
+SCRIPT:GLAMap6Counter
+
+"Enemy units destroyed:"
+END
+
+
+SCRIPT:GLAMap6Detection
+
+"Detection countdown:"
+END
+
+
+SCRIPT:GLAMap6Factory
+
+"Destroy all enemy factories on the hill."
+END
+
+
+SCRIPT:GLAMap6Kill100
+
+"Destroy 100 vehicles to draw Guan Yu away from the targets."
+END
+
+
+SCRIPT:GLAMap6Warning
+
+"You've got 20 seconds to hide."
+END
+
+MAP:GLAMap6_FACTORY
+"Destroy all enemy factories on the hilltop."
+END
+
+MAP:GLAMap6_KILL100
+"Destroy 100 vehicles to draw the Guan Yus away from the targets."
+END
+
+SCRIPT:GLAMap6_KILLCOUNTER
+"Units Destroyed:"
+END
+
+SCRIPT:GLAMap6_DETECTION
+"Detection Countdown:"
+END
+
+MAP:GLAMap6_DETECTIONWARNING
+"You've got 20 seconds to hide."
+END

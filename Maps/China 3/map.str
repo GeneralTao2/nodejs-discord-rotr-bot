@@ -1,0 +1,35 @@
+MAP:CHI03:MISSION_NAME
+"Welcome, General.
+\nThe USA have settled in this Chinese land. Your mission is to fend them off
+\nfrom the area and destroy the radio station to the Southwest.
+\nDo not lose your Yan Wangs."
+End
+
+MAP:CHI03:TIP_SNEAK_ATTACK
+"Beware of hidden Omega Cannons."
+End
+
+MAP:CHI03:PATROL_HEAVIER
+"When you destroy a patrol, a heavier one will come soon."
+End
+
+MAP:CHI03:DESTROY_RADIO
+"Destroy the radio station to the Southwest to prevent reinforcements."
+End
+
+MAP:CHI03:YW1_DEAD
+"One of your Yanwangs has been destroyed. You only have 1 more."
+End
+
+MAP:CHI03:YW2_DEAD
+"Your 2nd Yanwang has been destroyed.
+\nMISSION FAILED"
+End
+
+MAP:CHI03:1_OVERLORD_KILLED
+"An Overlord has been destroyed."
+End
+
+MAP:CHI03:3_OVERLORDS_KILLED
+"All Overlords have been destroyed."
+End

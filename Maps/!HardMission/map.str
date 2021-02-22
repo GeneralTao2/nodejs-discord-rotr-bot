@@ -1,0 +1,19 @@
+MapName
+""
+End
+
+MapInfo01
+"Lost in Nowhere ..."
+End
+
+MapInfo02
+"Choose Your Side ..."
+End
+
+CONTROLBAR:Join
+"&Join !"
+End
+
+CONTROLBAR:ToolTipJoin
+"Click to Join the Team ..."
+End

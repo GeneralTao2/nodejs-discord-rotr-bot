@@ -369,7 +369,7 @@ const phrases = {
 	},
 	wasInvitedToGame: {
 		ru: (args) => `Ты был приглашён в игру!`,
-		en: (args) => `You was invited to game!`
+		en: (args) => `You were invited to the game!`
 	},
 	noComment: {
 		ru: (args) => `Комментария нет.`,

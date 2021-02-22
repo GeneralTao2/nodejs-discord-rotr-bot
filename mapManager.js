@@ -39,7 +39,7 @@ function escapeSpecialMatchCharacters(reg) {
 }
 
 
-async function getMapInfo(mapName) {
+async function makeMapInfo(mapName) {
   let mapNameASCII = stringToASCII(mapName);
   mapNameASCII = escapeSpecialMatchCharacters(mapNameASCII);
   let mapInfo = {
@@ -47,7 +47,7 @@ async function getMapInfo(mapName) {
     size: null,
     isMultiplayer: null,
     numPlayers: null,
-    playerStrats: [],
+    playerStarts: [],
     techPosition: [],
     supplyPosition: []
   }
@@ -77,7 +77,7 @@ async function getMapInfo(mapName) {
           }
           if(line.match(/Player_._Start/)) {
             const playerStartMatch = line.match(/[+-]?\d+(?:\.\d+)?/g).map(Number);
-            mapInfo.playerStrats.push({
+            mapInfo.playerStarts.push({
               x: playerStartMatch[1],
               y: playerStartMatch[2]
             })
@@ -144,9 +144,9 @@ async function makeImage(mapInfo) {
   ctx.drawImage(mapImage, x_pos, y_pos, x_size, y_size)
   const x_scale = x_size/mapInfo.size.x;
   const y_scale = y_size/mapInfo.size.y;
-  for(let i=0; i<mapInfo.playerStrats.length; i++) {
-    const x = mapInfo.playerStrats[i].x * x_scale + x_pos;
-    const y = (mapInfo.size.y - mapInfo.playerStrats[i].y) * y_scale + y_pos;
+  for(let i=0; i<mapInfo.playerStarts.length; i++) {
+    const x = mapInfo.playerStarts[i].x * x_scale + x_pos;
+    const y = (mapInfo.size.y - mapInfo.playerStarts[i].y) * y_scale + y_pos;
     ctx.drawImage(spawnImage, x-8, y-8, 20, 20)
   }
   for(let i=0; i<mapInfo.supplyPosition.length; i++) {
@@ -197,6 +197,18 @@ async function isMapNotGood(mapName) {
   return null
 } 
 
+function getMapInfo(separator) {
+  const mapInfos = JSON.parse(fs.readFileSync('Maps/MapCach.json'));
+  const mapInfoArr = mapInfos.filter(separator);
+  if(mapInfoArr.length === 1) {
+    return mapInfoArr[0]
+  } else if(mapInfoArr.length > 1) {
+    return mapInfoArr
+  } else {
+    return null
+  }
+}
+
 async function filterMaps() {
   const mapDirs = await fsPromises.readdir('Maps');
   for(let i=0; i<mapDirs.length; i++) {
@@ -214,6 +226,7 @@ async function makeAllImages() {
   if (!await fs.existsSync('maked_maps')){
     await fsPromises.mkdir('maked_maps');
   }
+  let mapInfos = []
   try {
     await filterMaps();
     const maps = await fsPromises.readdir('Maps');
@@ -221,14 +234,23 @@ async function makeAllImages() {
       if(maps[i] === "MapCache.ini") {
         continue
       }
-      let mapInfo = await getMapInfo(maps[i]);
+      let mapInfo = await makeMapInfo(maps[i]);
       mapInfo.name = maps[i]
+      if(mapInfo.size === null) {
+        await fsPromises.rmdir('Maps/'+maps[i], {recursive: true})
+        continue
+      }
+      mapInfos.push(mapInfo)
       const makedMap = await makeImage(mapInfo)
     }
   } catch(error) {
     console.log(error);
   }
+  fs.writeFile('Maps/MapCach.json', JSON.stringify(mapInfos), (error) => {
+    if (error) throw error;
+  });
 }
+
 
 async function getMaps() {
   return await fsPromises.readdir('Maps');
@@ -241,9 +263,9 @@ async function getMapInfosByPlayerQuantity(playerQuantity) {
     if(maps[i] === "MapCache.ini") {
       continue
     }
-    let mapInfo = await getMapInfo(maps[i]);
-    mapInfo.name = maps[i]
-    if(mapInfo.playerStrats.length === playerQuantity) {
+    let mapInfo = getMapInfo(maps[i]);
+    console.log(mapInfo.playerStarts)
+    if(mapInfo.playerStarts.length === playerQuantity) {
       separatedMapInfos.push(mapInfo);
     }
   }

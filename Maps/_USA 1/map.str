@@ -1,0 +1,74 @@
+MAP:USA01Open
+"Somewhere in the Arctic"
+End
+
+MAP:USA01Open2
+"INCOMING TRANSMISSION: \n
+ General, last couple of days Arctic became unknown terrain to us. \n
+ Strange energy is blocking all our satellites and drones. We have a reason \n 
+ to suspect that China might be building a secret base there. You need to investigate this"
+End
+
+MAP:USA01Objective1Text
+"MISSION OBJECTIVE: \n
+ Explore unknown terrain and find out what is emitting this huge \n
+ energy and preventing our advanced equipment from working properly"
+End
+
+MAP:USA01Objective1TextRepeat
+"MISSION OBJECTIVE: \n
+ Find the energy source"
+End
+
+MAP:SmallPartFound
+"General! Burton found something strange \n
+ This object doesn't look like anything we've seen from Chinese forces \n
+ Perhaps some experimental units?"
+End
+
+MAP:DeadBodyFound
+"General, this is extraordinary... it seems like we are facing real \n
+ extraterrestrial beings, but this is not the power source. \n
+ Our hazard team will investigate this body. Please proceed with your mission"
+End
+
+MAP:BigPartFound
+"This is certainly the second part of the crashed ship. \n
+ Looks like the whole fleet is dead. General, this ship is powered down. \n
+ Power source must be somewhere else"
+End
+
+MAP:ArtefactFound
+"General, you have found the energy source, some sort of Artefact \n
+ It seems like it belongs to alien technology"
+End
+
+MAP:InTheInterestOfTime
+"In the interest of time..."
+End
+
+MAP:ArtefactExamination
+"The artefact was brought to this small outpost \n
+ General, build a base and secure perimeter until scientists arrive. \n
+ We won't risk carrying this thing in chinook."
+End
+
+MAP:StarshipIncoming
+"Alert! General, ship identical to crashed one appears and it's moving \n
+ towards crash site. We will consider them as hostile"
+End
+
+MAP:AlienIncoming
+"A living alien creature has been deployed and it seems like it is searching \n
+ for artefact. It doesn't look good, prepare defenses!"
+End
+
+MAP:Attacked
+"We are being attacked! This creature is too powerful for our outpost. \n
+ General, escape immediately and bring the artefact to safety!"
+End
+
+MAP:Win
+"Good job, general... you escaped with artefact. \n
+ Bring it to our main base where we will protect it and do researches!"
+End

@@ -22,7 +22,11 @@ discord.client.on('ready', async () => {
     discord.roleIds['en'] = (await db.getRole('en')).discordId;
     discord.roleIds['ru'] = (await db.getRole('ru')).discordId;
     discord.roleIds['moderator'] = (await db.getRole('moderator')).discordId;
-    discord.channelId = (await db.getBotChannelId()).discordId;
+    if(configs.ltsChannelId) {
+      discord.channelId = configs.ltsChannelId
+    } else {
+      discord.channelId = (await db.getBotChannelId()).discordId;
+    }
   } catch (error) {
     console.log(error);
   }
@@ -585,10 +589,13 @@ async function showMapsCommand(message) {
   message.react('👌');
   const match = message.content.match(/^-maps ([2-8])$/);
   if (match) {
-    const buffer = await banner.getMapCollageByPlayer(parseInt(match[1]));
-    if (buffer) {
-      const attachment = new discord.MessageAttachment(buffer, 'map.png');
-      await discord.currentChennel.send('', attachment);
+    const buffers = await banner.getMapCollage(
+      mapInfo => mapInfo.playerStarts.length === parseInt(match[1]));
+    if(buffers.length) {
+      for(let i=0; i<buffers.length; i++) {
+        const attachment = new discord.MessageAttachment(buffers[i], `map${i.toString}.png`);
+        await discord.currentChennel.send('', attachment);
+      }
     } else {
       discord.currentChennel.send('Oh, dont\'t have such maps.');
     }
@@ -607,7 +614,9 @@ async function showMapCommand(message) {
   }
   const match = message.content.match(/^-map ([2-8]) ([0-9]{1,3})$/);
   if (match) {
-    const map = await banner.getMapInfoByPlayerAndIndex(parseInt(match[1]), parseInt(match[2]));
+    //const map = await banner.getMapInfoByPlayerAndIndex(parseInt(match[1]), parseInt(match[2]));
+    const map = await banner.getMapBufferAndInfo(
+      mapInfo => mapInfo.playerStarts.length === parseInt(match[1]), parseInt(match[2])-1)
     const attachment = new discord.MessageAttachment(map.buffer, 'map.png');
     await discord.currentChennel.send(map.info.name+'\nSize: '+ map.info.size.x + 'x'+map.info.size.y, attachment);
   } else {
@@ -651,8 +660,8 @@ async function helpCommand(message) {
     lang = 'en'
   }
   message.author.send(local.translateHelpEmbed('playerCommands', lang));
-  message.author.send(local.translateHelpEmbed('moderatorCommands', lang));
   if (await discord.isPlayerModerById(message.author.id)) {
+    message.author.send(local.translateHelpEmbed('moderatorCommands', lang));
     message.author.send(local.translateHelpEmbed('configCommands', lang));
   }
 }

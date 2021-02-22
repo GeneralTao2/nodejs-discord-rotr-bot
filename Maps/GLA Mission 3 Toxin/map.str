@@ -1,0 +1,83 @@
+SCRIPT:SoyuzTest1timer
+"Soyuz Anthrax Alpha Test Launch:"
+End
+
+SCRIPT:SoyuzTest2timer
+"Soyuz Anthrax Beta Test Launch:"
+End
+
+SCRIPT:SoyuzTest3timer
+"Soyuz Anthrax Gamma Test Launch:"
+End
+
+Caption Intro 1
+"Operation: Renew Toxicity
+\nLocation: Somewhere in Sudan"
+End
+
+Caption Intro 2
+"Thanks to our newly aquired funds,
+\nwe can complete a new arsenal of Soyuz missiles."
+End
+
+Caption Intro 3
+"Deathstrike himself is here to oversee the project.
+\nHis forces will defend the launch site."
+End
+
+Caption Intro 4
+"You will control the Toxin base to the north.
+\nProtect Deathstrike's missiles at ALL costs."
+End
+
+Caption Objective 1
+"Objective 1:
+\nProtect the Soyuz Missile Site"
+End
+
+Caption Objective 2
+"Objective 2:
+\nDestroy all enemy bases."
+End
+
+Caption Alapha Success
+"Test 1 successful.
+\nPreparing Anthrax Beta warhead..."
+End
+
+Caption Beta Success
+"Test 2 successful.
+\nPreparing Anthrax Gamma warhead..."
+End
+
+Caption Gamma Halt
+"WARNING:
+\nA second Chinese force has entered the battle!
+\nWe must abort the Gamma test!"
+End
+
+Caption Deathstrike Gift
+"Order from Deathstrike:
+\nUse the Scud Storm to wipe out the Chinese bases!"
+End
+
+Caption Soyuz Attacked
+"Alert:
+\nThe Soyuz Missile Site is under attack!"
+End
+
+Caption Soyuz Destroyed
+"Critical Structure Lost.
+\nYou have failed to protect the Soyuz Silo.
+\nMission failed."
+End
+
+Caption Kwai Destroyed
+"General Kwai has been defeated.
+\nAnother glorious victory for the GLA!"
+End
+
+Caption China Destroyed
+"We have destroyed the Chinese base.
+\nOur fallen brothers have been avenged!"
+End

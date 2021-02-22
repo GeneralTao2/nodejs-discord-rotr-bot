@@ -1,0 +1,33 @@
+SCRIPT:HackTimer
+"Battlefield control offline in:"
+End
+
+SCRIPT:HackEndTimer
+"Battlefield control online in:"
+End
+
+Caption Opening
+"The Chinese Premier has gathered his generals for one last defence."
+End
+
+Caption Command Airship
+"The generals cower in their airships.
+\nDestroy them to defeat China once and for all."
+End
+
+Caption China Warning
+"CAUTION: 
+\nThe Chinese will not surrender until the Premier
+\nand all of his generals are dead."
+End
+
+Caption Jin Warning
+"RED ALERT:
+\nJin is attempting to hack your battlefield command!
+\nDestroy his Internet Center to stop these attacks!"
+End
+
+Caption Objective
+"Objective:
+\nDestroy China's Command Airships."
+End
