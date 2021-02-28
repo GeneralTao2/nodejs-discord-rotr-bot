@@ -245,6 +245,7 @@ async function invatePlayerCommand(message) {
     if(!discord.getLanguageByUserId(user.id)) {
       askLanguage(user, sendInviteMassage, message.author)
     } else {
+      await invitePlayer(null, null, user, message.author)
       sendInviteMassage(user, message.author)
     }
 
