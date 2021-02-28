@@ -242,7 +242,7 @@ async function invatePlayerCommand(message) {
       discord.currentChennel.send('Player `'+user.tag+'` already invited.');
       continue;
     }
-    if(!discord.getLanguageByUserId(user)) {
+    if(!discord.getLanguageByUserId(user.id)) {
       askLanguage(user, sendInviteMassage, message.author)
     } else {
       sendInviteMassage(user, message.author)
