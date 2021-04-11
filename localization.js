@@ -115,162 +115,209 @@ exports.translateInfoEmbed = function translateInfoEmbed(embed, lang = 'en') {
     return infoEmbeds[embed][lang]
 }
 
-function commandField(group, command, lang = 'en', inline = false) {
-    return {
-		name: group[command]['command'],
-		value: group[command][lang],
-		inline: inline
+function commandField(command, lang = 'en', inline = false) {
+	let array = [
+		{
+			name: commands[command]['command'],
+			value: commands[command][lang],
+			inline: false
+		}
+	];
+	if(commands[command].args) {
+		for(const arg in commands[command].args) {
+			array.push(
+				{
+					name: commands[command]['args'][arg]['command'],
+					value:  commands[command]['args'][arg][lang],
+					inline: true
+				}
+			)
+		}
 	}
+    return array;
 }
 
-const moderatorCommands = {
+exports.commandHint = function commandHint(commandName, lang, error, args) {
+	return new MessageEmbed({
+		color: '#b37700',
+		title: phrases['hint'][lang](), 
+		description: phrases[error][lang](args) + '\n' + phrases['hintDescription'][lang](),               
+		fields: commandField(commandName, lang),
+	})
+}
+
+const commands = {
+	//==================== MODERATOR========================================================
 	remove: {
 		command: '-remove `<player>...`',
 		ru: "Удалить одного или нескольких игроков из группу.",
-		en: "Remove one or more players from group."
-	},
-	remove_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Remove one or more players from group.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	cancel: {
 		command: '-cancel `<player>...`',
 		ru: "Отменить приглашения в группу одного или нескольких игроков.",
-		en: "Cancel invitiation of one or more users."
-	},
-	cancel_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Cancel invitiation of one or more users.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			}
+		}
 	},
 	ban: {
 		command: '-ban `<player>` `<reason>`',
 		ru: "Забанить одного или нескольких игроков из группы. Игроки будут удалены из группы и не смогут в неё вступить.",
-		en: "Bun one or more players from group. Players will be also removed from group."
-	},
-	ban_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
-	},
-	ban_reason: {
-		command: '`<reason>`',
-		ru: "Причина бана игрока в текстовой форме. От 2 до 256 символов.",
-		en: "Ban reason of players. From 2 to 256 characters."
+		en: "Bun one or more players from group. Players will be also removed from group.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+			reason: {
+				command: '`<reason>`',
+				ru: "Причина бана игрока в текстовой форме. От 2 до 256 символов.",
+				en: "Ban reason of players. From 2 to 256 characters."
+			},
+		}
 	},
 	unban: {
 		command: '-unbun `<player>...`',
 		ru: "Разбанить одного или нескольких игроков.",
-		en: "Unbun one or more players."
-	},
-	unban_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Unbun one or more players.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	add: {
 		command: '-add `<player>...`',
 		ru: "Добавляет одного или несколько игроков в группу.",
-		en: "Add onw or more users to group."
-	},
-	add_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Add onw or more users to group.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	moderator: {
 		command: '-moderator `<player>...`',
 		ru: "Даёт одному или нескольким игрокам роль модератора бота.",
-		en: "Give for one or more players moderator role."
-	},
-	moderator_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Give for one or more players moderator role.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	unmoderator: {
 		command: '-unmoderator `<player>...`',
 		ru: "Забирает у одного или нескольких игроков роль модератора бота.",
-		en: "Take away from one or more players moderator role."
-	},
-	unmoderator_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Take away from one or more players moderator role.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	user: {
 		command: '-user `<player>`',
 		ru: "Выводит JSON объект пользователя",
-		en: "Outputs user JSON object."
+		en: "Outputs user JSON object.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			}
+		}
 	},
-	user_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
-	}
-}
 
-const playerCommand = {
+	//==================== PLAYER =========================================================
 	gather: {
 		command: '-gather `<player_quantity>` `<map_number>` `<time>` `<comment>`',
 		ru: "Собрать игроков в игру, отправив им приглашения.",
-		en: "Gather players to the game, sending them invitation message."
-	},
-	gather_player_quantity: {
-		command: '`<player_quantity>`',
-		ru: "Количество игроков на карте от 2 до 8, либо `-`, если `map_number` тоже `-`.",
-		en: "Player quantity on the map from 2 to 8, or `-`, if `map_number` also `-`."
-	},
-	gather_map_number: {
-		command: '`<map_number>`',
-		ru: "Порядковый намер карты из списка карт с определённым количеством игроков, либо `-`.",
-		en: "The sequential number of the map from `-maps` with a certain number of players, or `-`. You can find it using"
-	},
-	gather_time: {
-		command: '`<time>`',
-		ru: "Время, которое собрание будет действительным. В минутах, от 2 до 60, либо `-`.",
-		en: "The time that the meeting will be valid. In minutes, from 2 to 60, or `-`."
-	},
-	gather_comment: {
-		command: '`<comment>`',
-		ru: "Комментарий, который будет приложен к приглашению. От 3 до 256 символов, либо `-`.",
-		en: "The comment that will be attached to the invitation. From 3 to 256 characters, or `-`."
+		en: "Gather players to the game, sending them invitation message.",
+		args: {
+			player_quantity: {
+				command: '`<player_quantity>`',
+				ru: "Количество игроков на карте от 2 до 8, либо `-`, если `map_number` тоже `-`.",
+				en: "Player quantity on the map from 2 to 8, or `-`, if `map_number` also `-`."
+			},
+			map_number: {
+				command: '`<map_number>`',
+				ru: "Порядковый намер карты из списка карт с определённым количеством игроков, либо `-`.",
+				en: "The sequential number of the map from `-maps` with a certain number of players, or `-`. You can find it using"
+			},
+			time: {
+				command: '`<time>`',
+				ru: "Время, которое собрание будет действительным. В минутах, от 2 до 60, либо `-`.",
+				en: "The time that the meeting will be valid. In minutes, from 2 to 60, or `-`."
+			},
+			comment: {
+				command: '`<comment>`',
+				ru: "Комментарий, который будет приложен к приглашению. От 3 до 256 символов, либо `-`.",
+				en: "The comment that will be attached to the invitation. From 3 to 256 characters, or `-`."
+			},
+		}
 	},
 	maps: {
 		command: '-maps `<player_quantity>`',
 		ru: "Выводит коллаж из имеющихся карт на определённое количество игроков.",
-		en: "Displays a collage of available maps by certain number of players."
-	},
-	maps_player_quantity: {
-		command: '`<player_quantity>`',
-		ru: "Количество игроков на карте от 2 до 8.",
-		en: "Player quantity on the map from 2 to 8."
+		en: "Displays a collage of available maps by certain number of players.",
+		args: {
+			player_quantity: {
+				command: '`<player_quantity>`',
+				ru: "Количество игроков на карте от 2 до 8.",
+				en: "Player quantity on the map from 2 to 8."
+			},
+		}
 	},
 	map: {
 		command: '-map `<player_quantity>` `<map_number>`',
 		ru: "Выводит картинку и информацию о карте.",
-		en: "Dispay picture and information of map."
-	},
-	maps_player_quantity: {
-		command: '`<player_quantity>`',
-		ru: "Количество игроков на карте от 2 до 8.",
-		en: "Player quantity on the map from 2 to 8."
-	},
-	maps_map_number: {
-		command: '`<map_number>`',
-		ru: "Порядковый намер карты из списка карт с определённым количеством игроков.",
-		en: "The sequential number of the map from the list of maps with a certain number of players."
+		en: "Dispay picture and information of map.",
+		args: {
+			player_quantity: {
+				command: '`<player_quantity>`',
+				ru: "Количество игроков на карте от 2 до 8.",
+				en: "Player quantity on the map from 2 to 8."
+			},
+			map_number: {
+				command: '`<map_number>`',
+				ru: "Порядковый намер карты из списка карт с определённым количеством игроков.",
+				en: "The sequential number of the map from the list of maps with a certain number of players."
+			},
+		}
 	},
 	invite: {
 		command: '-invite `<player>...`',
 		ru: "Пригласить одного или несколькоих игроков в группу для использования бота.",
-		en: "Invite one or more players to group, for bot using."
-	},
-	invite_player: {
-		command: '`<player>`',
-		ru: "Упоминание о игроке в формате @никнейм.",
-		en: "Mention about player in format @nickname."
+		en: "Invite one or more players to group, for bot using.",
+		args: {
+			player: {
+				command: '`<player>`',
+				ru: "Упоминание о игроке в формате @никнейм.",
+				en: "Mention about player in format @nickname."
+			},
+		}
 	},
 	added: {
 		command: '-added',
@@ -331,8 +378,62 @@ const playerCommand = {
 		command: '🔸-superabout',
 		ru: "Выводит более детальную информацию о боте.",
 		en: "Displays more detailed information about the bot. "
+	},
+
+	//==================== CONFIGS ========================================================
+	set_indexes: {
+		command: "-set_indexes",
+		ru: "Проводит некоторую настройку базы данных. Обычно настраивается само, если бот был приглашён в сеть будучи онлайн. В противном случае необходимо вызвать эту команду.",
+		en: "Performs some configuration of the database. Usually it is configured on its own if the bot was invaded into the network while online. Otherwise, you must invoke this command. "
+	},
+	set_ru_role: {
+		command: "-set_ru_role `<role>`",
+		ru: "Регистрирует либо заменяет роль для русскоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.",
+		en: "Registers or replaces the role for Russian-speaking users. If missing, all messages will be in English. ",
+		args: {
+			role: {
+				command: "`<role>`",
+				ru: "Упоминание роли в формате @роль.",
+				en: "Mention role in format @role."
+			},
+		}
+	},
+	set_en_role: {
+		command: "-set_en_role `<role>`",
+		ru: "Регистрирует либо заменяет роль для англоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.",
+		en: "Registers or replaces a role for English speaking users. If missing, all messages will be in English.",
+		args: {
+			role: {
+				command: "`<role>`",
+				ru: "Упоминание роли в формате @роль.",
+				en: "Mention role in format @role."
+			},
+		}
+	},
+	set_moderator_role: {
+		command: "-set_moderator_role `<role>`",
+		ru: "Заменяет роль для модераторов. Регистрация возможна только автору бота.",
+		en: "Replaces the role for moderators. Registration is possible only for the author of the bot.",
+		args: {
+			role: {
+				command: "`<role>`",
+				ru: "Упоминание роли в формате @роль.",
+				en: "Mention role in format @role."
+			},
+		}
+	},
+	home: {
+		command: "-home",
+		ru: "Прикрепляет бота к определённому текстовому каналу, где им можно пользоваться. Возможно только если у бота нет зарегистрированного текстовго канала.",
+		en: "Attaches the bot to a specific text channel where it can be used. This is possible only if the bot does not have a registered text channel."
+	},
+	evict: {
+		command: "-evict",
+		ru: "Открепляет бота от текстовго канала. После вызова команды бота можно вновь прикрепить к какому-то текстовому каналу.",
+		en: "Detaches the bot from the text channel. After calling the command, the bot can be reattached to some text channel."
 	}
 }
+
 
 const phrases = {
 	invitation: {
@@ -358,6 +459,10 @@ const phrases = {
 	adding: {
 		ru: (args) => `Отлично, теперь ты вступил в наши ряды. Чтобы просмотреть набор комманд набери \`-help\`.`,
 		en: (args) => `Excellent, now you joined to us. To show my commands type \`-help\`.`	
+	},
+	titleRejection: {
+		ru: (args) => `Печаль`,
+		en: (args) => `Sadness`
 	},
 	rejection: {
 		ru: (args) => `Очень жаль, но ничего страшного. Если передумаешь, то просто набери \`-join\`.`,
@@ -415,55 +520,172 @@ const phrases = {
 		ru: (args) => '🔸 - команда доступна только в личных сообщениях с ботом.',
 		en: (args) => '🔸 - the command is only available in private messages with bot.'
 	},
+	onlyGuidChannel: {
+		ru: (args) => `Команда может быть вызвана только на сервере, в текстовом канале.`,
+		en: (args) => `Command can be invoked only in server, in text channel.`
+	},
+	onlyPrivateChannel: {
+		ru: (args) => `Команда может быть вызвана только в личных сообщениях с ботом.`,
+		en: (args) => `Command can be invoked only in personal messages with bot.`
+	},
+	userAdded: {
+		ru: (args) => `Ты не вступил в группу бота, поэтому не можешь вызвать команду. Чтобы увступить напиши \`-join\` мне в личные сообщения.`,
+		en: (args) => `You haven't joined the bot group, so you can't invoke the command. To join, write \`-join\` to me in private messages.`
+	},
+	userNotAdded: {
+		ru: (args) => `Эту команду может вызывать только игрок, не находящийся в группе бота.`,
+		en: (args) => `Only not added player can invoke this command.`
+	},
+	userInvited: {
+		ru: (args) => `Только приглашённые в группу бота игроки могут вызвать эту команду`,
+		en: (args) => `Only players invited to the bot group can call this team.`
+	},
+	userNotInvited: {
+		ru: (args) => `Только не приглашённые в группу бота игроки могут вызвать эту команду`,
+		en: (args) => `Only players not invited to the bot group can call this command.`
+	},
+	userBot: {
+		ru: (args) => `Эту команду могут вызвать только боты.`,
+		en: (args) => `Only bots can invoke this command.`
+	},
+	userNotBot: {
+		ru: (args) => `Эту команду не могут вызывать боты.`,
+		en: (args) => `Bots can not invoke this command.`
+	},
+	userBanned: {
+		ru: (args) => `Эту команду могут вызвать только забаненные игроки.`,
+		en: (args) => `Only banned players can invoke this command.`
+	},
+	userNotBanned: {
+		ru: (args) => `Эту команду могут вызвать только не забаненные игроки.`,
+		en: (args) => `Only not banned players can invoke this command.`
+	},
+	userModerator: {
+		ru: (args) => `Эту команду могут вызвать только модераторы.`,
+		en: (args) => `Only moderators can invoke this command.`
+	},
+	userNotModerator: {
+		ru: (args) => `Эту команду не могут вызвать модераторы.`,
+		en: (args) => `Moderators can not invoke this command.`
+	},
+	userSuperuser: {
+		ru: (args) => `Эту команду могут вызвать только суперпользователь.`,
+		en: (args) => `Only superuser can invoke this command.`
+	},
+	userNotSuperuser: {
+		ru: (args) => `Эту команду может вызвать суперпользователь.`,
+		en: (args) => `Superuser can not invoke this command.`
+	},
+	targetAdded: {
+		ru: (args) => `Эта команда может быть произведена только над добавленными игрокам. Игрок \`${args[0]}\` не добавлен.`,
+		en: (args) => `This command can only be performed on the added players. Player \`${args[0]}\` not added.`
+	},
+	targetNotAdded: {
+		ru: (args) => `Эта команда не может быть произведена над добавленными игрокам. Игрок \`${args[0]}\` добавлен.`,
+		en: (args) => `This command cannot be performed on the added players. Player \`${args[0]}\` added.`
+	},
+	targetInvited: {
+		ru: (args) => `Эта команда может быть произведена только над приглашенными игрокам. Игрок \`${args[0]}\` не приглашён.`,
+		en: (args) => `This command can only be performed on the invited players. Player \`${args[0]}\` not invited.`
+	},
+	targetNotInvited: {
+		ru: (args) => `Эта команда не может быть произведена над приглашенными игрокам. Игрок \`${args[0]}\` приглашён.`,
+		en: (args) => `This command cannot be performed on the invited players. Player \`${args[0]}\` invited.`
+	},
+	targetBot: {
+		ru: (args) => `Эта команда может быть произведена только над ботами. Игрок \`${args[0]}\` не бот.`,
+		en: (args) => `This command can only be performed on the bot. Player \`${args[0]}\` is not bot.`
+	},
+	targetNotBot: {
+		ru: (args) => `Эта команда не может быть произведена над ботами. Игрок \`${args[0]}\` бот.`,
+		en: (args) => `This command cannot be performed on the bot. Player \`${args[0]}\` is bot.`
+	},
+	targetBanned: {
+		ru: (args) => `Эта команда может быть произведена только над забаненными игрокам. Игрок \`${args[0]}\` не забанен.`,
+		en: (args) => `This command can only be performed on the banned players. Player \`${args[0]}\` not banned.`
+	},
+	targetNotBanned: {
+		ru: (args) => `Эта команда не может быть произведена над приглашенными игрокам. Игрок \`${args[0]}\` забанен.`,
+		en: (args) => `This command cannot be performed on the banned players. Player \`${args[0]}\` banned.`
+	},
+	targetModerator: {
+		ru: (args) => `Эта команда может быть произведена только над модераторами. Игрок \`${args[0]}\` не модератор.`,
+		en: (args) => `This command can only be performed on the moderators. Player \`${args[0]}\` is not moderator.`
+	},
+	targetNotModerator: {
+		ru: (args) => `Эта команда не может быть произведена над модераторами игрокам. Игрок \`${args[0]}\` модератор.`,
+		en: (args) => `This command cannot be performed on the moderators. Player \`${args[0]}\` is moderator.`
+	},
+	userSuperuser: {
+		ru: (args) => `Эта команда может быть произведена только над суперпользователь. Игрок \`${args[0]}\` не суперпользователь.`,
+		en: (args) => `This command can only be performed on the superuser. Player \`${args[0]}\` is not superuser.`
+	},
+	userNotSuperuser: {
+		ru: (args) => `Эта команда не может быть произведена над суперпользователем. Игрок \`${args[0]}\` суперпользователь.`,
+		en: (args) => `This command cannot be performed on the superuser. Player \`${args[0]}\` is moderator.`
+	},
+	hint: {
+		ru: (args) => `Подсказка`,
+		en: (args) => `Hint`
+	},
+	hintDescription: {
+		ru: (args) => `Вот описание команды:`,
+		en: (args) => `Here is description of command:`
+	},
+	hintArgAbsence: {
+		ru: (args) => `Где аргументы? А ну ка..`,
+		en: (args) => `Where are arguments? Add them!`
+	},
+	hintManyPlayers: {
+		ru: (args) => `Слишком много игроков. ...Или ты спамер?!`,
+		en: (args) => `Too many players. ...Or ara you spammer?!`
+	},
+	hintArgsNotEnough: {
+		ru: (args) => `Недостаточно аргументов. Давай ещё больше!`,
+		en: (args) => `Not enough arguments. Give me more!`
+	},
+	hintWrongArg: {
+		ru: (args) => `Неверный ${args[0]} аргумент.`,
+		en: (args) => `Wrong ${args[0]} argument.`
+	},
+	hintWrongAndRequiredArg: {
+		ru: (args) => `Аргумент ${args[0]} не может быть использован, если отсутствует аргумент ${args[1]}.`,
+		en: (args) => `Argument ${args[0]} can't be used, beacouse argument ${args[1]} is abscent.`
+	},
+	errorBlocked: {
+		ru: (args) => `Игрок \`${args[0]}\` заблокировал меня. Почему бы и мне его не заблокировать?).`,
+		en: (args) => `Player \`${args[0]}\` have blocked me. So, I will block him to)..`
+	},
+	titleBadAccess: {
+		ru: (args) => `Плохой доступ`,
+		en: (args) => `Bad access`
+	},
+	titleBadPlayer: {
+		ru: (args) => `Плохой игрок`,
+		en: (args) => `Bad player`
+	},
+	langConfirmation: {
+		ru: (args) => `Error`,
+		en: (args) => `Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\nI\'m from ROTR. First, which language should I write for you?. Press to corresponding emoji in the bottom.`
+	},
+	titleLangConfirmation: {
+		ru: (args) => `Error`,
+		en: (args) => `Подтверждение языка | Language confirmation`
+	},
+	systemInviteRejection: {
+		ru: (args) => `Error`,
+		en: (args) => `Player \`${args[0]}\` rejected invitation to gruop.`
+	},
+	titleInvitation: {
+		ru: (args) => `Есть кто дома?`,
+		en: (args) => `Anyone home?`
+	},
+	titleBadChannel: {
+		ru: (args) => `Плохой канал`,
+		en: (args) => `Bad channel`
+	},
 }
 
-const configCommands = {
-	set_indexes: {
-		commands: "-set_indexes",
-		ru: "Проводит некоторую настройку базы данных. Обычно настраивается само, если бот был приглашён в сеть будучи онлайн. В противном случае необходимо вызвать эту команду.",
-		en: "Performs some configuration of the database. Usually it is configured on its own if the bot was invaded into the network while online. Otherwise, you must invoke this command. "
-	},
-	set_ru_role: {
-		commands: "-set_ru_role `<role>`",
-		ru: "Регистрирует либо заменяет роль для русскоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.",
-		en: "Registers or replaces the role for Russian-speaking users. If missing, all messages will be in English. "
-	},
-	set_ru_role_role: {
-		commands: "`<role>`",
-		ru: "Упоминание роли в формате @роль.",
-		en: "Mention role in format @role."
-	},
-	set_en_role: {
-		commands: "-set_en_role `<role>`",
-		ru: "Регистрирует либо заменяет роль для англоязычных пользователей. В случае отсутсвия все сообщения будут на английском языке.",
-		en: "Registers or replaces a role for English speaking users. If missing, all messages will be in English."
-	},
-	set_en_role_role: {
-		commands: "`<role>`",
-		ru: "Упоминание роли в формате @роль.",
-		en: "Mention role in format @role."
-	},
-	set_moderator_role: {
-		commands: "-set_moderator_role `<role>`",
-		ru: "Заменяет роль для модераторов. Регистрация возможна только автору бота.",
-		en: "Replaces the role for moderators. Registration is possible only for the author of the bot."
-	},
-	set_moderator_role_role: {
-		commands: "`<role>`",
-		ru: "Упоминание роли в формате @роль.",
-		en: "Mention role in format @role."
-	},
-	home: {
-		commands: "-home",
-		ru: "Прикрепляет бота к определённому текстовому каналу, где им можно пользоваться. Возможно только если у бота нет зарегистрированного текстовго канала.",
-		en: "Attaches the bot to a specific text channel where it can be used. This is possible only if the bot does not have a registered text channel."
-	},
-	evict: {
-		commands: "-evict",
-		ru: "Открепляет бота от текстовго канала. После вызова команды бота можно вновь прикрепить к какому-то текстовому каналу.",
-		en: "Detaches the bot from the text channel. After calling the command, the bot can be reattached to some text channel."
-	}
-}
 
 const infoEmbeds = {
 	about: {
@@ -564,76 +786,87 @@ const infoEmbeds = {
 	}
 }
 
+exports.ruleMessagesSet = ruleMessagesSet = {
+	user: {
+		added: 'userAdded',
+		notAdded: 'userNotAdded',
+		invited: 'userInvited',
+		notInvited: 'userNotInvited',
+		bot: 'userBot',
+		notBot: 'userNotBot',
+		banned: 'userBanned',
+		notBanned: 'userNotBanned',
+		moderator: 'userModerator',
+		notModerator: 'userNotModerator',
+		superuser: 'userSuperuser',
+		notSuperuser: 'userNotSuperuser',
+	},
+	target: {
+		added: 'targetAdded',
+		notAdded: 'targetNotAdded',
+		invited: 'targetInvited',
+		notInvited: 'targetNotInvited',
+		bot: 'targetBot',
+		notBot: 'targetNotBot',
+		banned: 'targetBanned',
+		notBanned: 'targetNotBanned',
+		moderator: 'targetModerator',
+		notModerator: 'targetNotModerator',
+		superuser: 'targetSuperuser',
+		notSuperuser: 'targetNotSuperuser',
+	}
+}
+
 const helpEmbeds = {
 	playerCommands: (lang) => new MessageEmbed({
 		color: '#51cf70',
-		title: phrases['playerCommandName'][lang], 
-		description: phrases['playerCommandDescription'][lang],               
-		fields: [
-			commandField(playerCommand, 'gather', lang),
-			commandField(playerCommand, 'gather_player_quantity', lang, true),
-			commandField(playerCommand, 'gather_map_number', lang, true),
-			commandField(playerCommand, 'gather_time', lang, true),
-			commandField(playerCommand, 'gather_comment', lang, true),
-			commandField(playerCommand, 'maps', lang),
-			commandField(playerCommand, 'maps_player_quantity', lang),
-			commandField(playerCommand, 'map', lang),
-			commandField(playerCommand, 'maps_player_quantity', lang, true),
-			commandField(playerCommand, 'maps_map_number', lang, true),
-			commandField(playerCommand, 'invite', lang),
-			commandField(playerCommand, 'invite_player', lang),
-			commandField(playerCommand, 'invited', lang),
-			commandField(playerCommand, 'breaks', lang),
-			commandField(playerCommand, 'break', lang),
-			commandField(playerCommand, 'breack_hours', lang),
-			commandField(playerCommand, 'unbreak', lang),
-			commandField(playerCommand, 'join', lang),
-			commandField(playerCommand, 'leave', lang),
-			commandField(playerCommand, 'help', lang),
-			commandField(playerCommand, 'about', lang),
-			commandField(playerCommand, 'superabout', lang),
-		],
+		title: phrases['playerCommandName'][lang](), 
+		description: phrases['playerCommandDescription'][lang](),               
+		fields: [].concat(
+			commandField('gather', lang),
+			commandField('maps', lang),
+			commandField('map', lang),
+			commandField('invite', lang),
+			commandField('invited', lang),
+			commandField('breaks', lang),
+			commandField('break', lang),
+			commandField('unbreak', lang),
+			commandField('join', lang),
+			commandField('leave', lang),
+			commandField('help', lang),
+			commandField('about', lang),
+			commandField('superabout', lang),
+		),
 		footer: {
-			text: phrases['playerCommandFooter'][lang],
+			text: phrases['playerCommandFooter'][lang](),
 		  },
 	  }),
 	moderatorCommands: (lang) => new MessageEmbed({
 		color: [212, 102, 59],
-		title: phrases['moderatorCommandName'][lang], 
-		description: phrases['moderatorCommandDescription'][lang],               
-		fields: [
-			commandField(moderatorCommands, 'remove', lang),
-			commandField(moderatorCommands, 'remove_player', lang),
-			commandField(moderatorCommands, 'cancel', lang),
-			commandField(moderatorCommands, 'cancel_player', lang),
-			commandField(moderatorCommands, 'ban', lang),
-			commandField(moderatorCommands, 'ban_player', lang, true),
-			commandField(moderatorCommands, 'ban_reason', lang, true),
-			commandField(moderatorCommands, 'unban', lang),
-			commandField(moderatorCommands, 'unban_player', lang),
-			commandField(moderatorCommands, 'add', lang),
-			commandField(moderatorCommands, 'add_player', lang),
-			commandField(moderatorCommands, 'moderator', lang),
-			commandField(moderatorCommands, 'moderator_player', lang),
-			commandField(moderatorCommands, 'user', lang),
-			commandField(moderatorCommands, 'user_player', lang),
-		],
+		title: phrases['moderatorCommandName'][lang](), 
+		description: phrases['moderatorCommandDescription'][lang](),               
+		fields: [].concat(
+			commandField('remove', lang),
+			commandField('cancel', lang),
+			commandField('ban', lang),
+			commandField('unban', lang),
+			commandField('add', lang),
+			commandField('moderator', lang),
+			commandField('user', lang),
+		),
 	}),
 	configCommands: (lang) => new MessageEmbed({
 		color: '#a80000',
-		title: phrases['configCommandName'][lang], 
-		description: phrases['configCommandName'][lang],               
-		fields: [
-			commandField(configCommands, 'set_indexes', lang),
-			commandField(configCommands, 'set_ru_role', lang),
-			commandField(configCommands, 'set_ru_role_role', lang),
-			commandField(configCommands, 'set_en_role', lang),
-			commandField(configCommands, 'set_en_role_role', lang),
-			commandField(configCommands, 'set_moderator_role', lang, true),
-			commandField(configCommands, 'set_moderator_role_role', lang, true),
-			commandField(configCommands, 'home', lang),
-			commandField(configCommands, 'evict', lang),
-		],
+		title: phrases['configCommandName'][lang](), 
+		description: phrases['configCommandName'][lang](),               
+		fields: [].concat(
+			commandField('set_indexes', lang),
+			commandField('set_ru_role', lang),
+			commandField('set_en_role', lang),
+			commandField('set_moderator_role', lang, true),
+			commandField('home', lang),
+			commandField('evict', lang),
+		),
 	})
 }
 
