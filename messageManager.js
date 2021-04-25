@@ -92,7 +92,7 @@ exports.sendCommandHint = async function sendCommandHint(user, commandName, targ
     }
 }
 
-function getLang(user) {
+exports.getLang = function getLang(user) {
     let language = discord.getLanguageByUserId(user.id);
     if(!language) {
       language = 'en'

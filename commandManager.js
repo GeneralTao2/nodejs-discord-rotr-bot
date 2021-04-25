@@ -9,6 +9,160 @@ const messagem = require('./messageManager')
 const commandsf = require('./commands')
 
 exports.commands = {
+    gather: {
+        args: [
+                {
+                    type: 'int',
+                    min: 2,
+                    max: 8,
+                    optional: true
+                },
+                {
+                    type: 'int',
+                    min: 1,
+                    max: 500,
+                    optional: true,
+                    dependences: [
+                        0
+                    ]
+                },
+                {
+                    type: 'int',
+                    min: 3,
+                    max: 500,
+                    optional: true
+                },
+                {
+                    type: 'string',
+                    min: 3,
+                    max: 256,
+                    optional: true
+                }
+        ],
+        rules: {
+            bot: null,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.gatherPlayersCommand
+    },
+    cancel: {
+        args: [
+                {
+                    type: 'player',
+                    number: 64,
+                    bot: false,
+                    banned: null,
+                    added: false,
+                    invited: true,
+                    superuser: false,
+                    moderator: false,
+                    name: 'target'
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.cancelPlayerInvitationCommand
+    },
+    banned: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.getBannedPlayersCommand
+    },
+    ban: {
+        args: [
+                {
+                    type: 'player',
+                    number: 1,
+                    bot: null,
+                    banned: false,
+                    added: null,
+                    invited: null,
+                    superuser: false,
+                    moderator: false,
+                    name: 'target'
+                },
+                {
+                    type: 'string',
+                    min: 3,
+                    max: 256,
+                    optional: true
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.banPlayerCommand
+    },
+    unban: {
+        args: [
+                {
+                    type: 'player',
+                    number: 1,
+                    bot: null,
+                    banned: true,
+                    added: null,
+                    invited: null,
+                    superuser: false,
+                    moderator: false,
+                    name: 'target'
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.unbanPlayerCommand
+    },
+    invited: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.getInvitedPlayersCommand
+    },
     invite: {
         args: [
                 {
@@ -61,38 +215,88 @@ exports.commands = {
         },
         func: commandsf.removePlayerCommand
     },
-    gather: {
+    getUser: {
         args: [
                 {
-                    type: 'int',
-                    min: 2,
-                    max: 8,
-                    optional: true
-                },
-                {
-                    type: 'int',
-                    min: 1,
-                    max: 500,
-                    optional: true,
-                    dependences: [
-                        0
-                    ]
-                },
-                {
-                    type: 'int',
-                    min: 3,
-                    max: 500,
-                    optional: true
-                },
-                {
-                    type: 'string',
-                    min: 3,
-                    max: 256,
-                    optional: true
+                    type: 'player',
+                    number: 1,
+                    bot: null,
+                    banned: null,
+                    added: null,
+                    invited: null,
+                    superuser: null,
+                    moderator: null,
+                    name: 'target'
                 }
         ],
         rules: {
-            bot: null,
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.getUserCommand
+    },
+    makemoderator: {
+        args: [
+                {
+                    type: 'player',
+                    number: 1,
+                    bot: false,
+                    banned: false,
+                    added: true,
+                    invited: false,
+                    superuser: null,
+                    moderator: false,
+                    name: 'target'
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: true,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.makeModeratorCommand
+    },
+    unmakemoderator: {
+        args: [
+                {
+                    type: 'player',
+                    number: 1,
+                    bot: false,
+                    banned: false,
+                    added: true,
+                    invited: false,
+                    superuser: null,
+                    moderator: true,
+                    name: 'target'
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: true,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.unmakeModeratorCommand
+    },
+    added: {
+        args: [],
+        rules: {
+            bot: false,
             banned: false,
             added: true,
             invited: false,
@@ -101,8 +305,287 @@ exports.commands = {
             channel: 'common',
             name: 'user'
         },
-        func: null
-    }
+        func: commandsf.getAddedPlayersCommand
+    },
+    add: {
+        args: [
+                {
+                    type: 'player',
+                    number: 1,
+                    bot: false,
+                    banned: false,
+                    added: false,
+                    invited: null,
+                    superuser: null,
+                    moderator: null,
+                    name: 'target'
+                }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.addCommand
+    },
+    
+    maps: {
+        args: [
+            {
+                type: 'int',
+                min: 2,
+                max: 8,
+                optional: true
+            },
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.showMapsCommand
+    },
+    map: {
+        args: [
+            {
+                type: 'int',
+                min: 2,
+                max: 8,
+                optional: true
+            },
+            {
+                type: 'int',
+                min: 1,
+                max: 500,
+                optional: true
+            },
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.showMapCommand
+    },
+    join: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: false,
+            invited: null,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.joinCommand
+    },
+    leave: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: null,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.leaveCommand
+    },
+    help: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: null,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.helpCommand
+    },
+    makemaps: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: null,
+            moderator: true,
+            superuser: null,
+            channel: 'comman',
+            name: 'user'
+        },
+        func: commandsf.makeMapsCommand
+    },
+    breaks: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'cummon',
+            name: 'user'
+        },
+        func: commandsf.getBreaksCommand
+    },
+    break: {
+        args: [
+            {
+                type: 'int',
+                min: 2,
+                max: 999,
+                optional: true
+            },
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.breakCommand
+    },
+    unbreak: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.unbreakCommand
+    },
+    set_index: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.setIndexesCommand
+    },
+    set_en_role: {
+        args: [
+            {
+                type: 'role',
+                optional: false
+            }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.setEnRoleCommand
+    },
+    set_ru_role: {
+        args: [
+            {
+                type: 'role',
+                optional: false
+            }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.setRuRoleCommand
+    },
+    set_moderator_role: {
+        args: [
+            {
+                type: 'role',
+                optional: false
+            }
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.setModeratorRoleCommand
+    },
+    evict: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.leaveBotChannelCommand
+    },
+    home: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: true,
+            superuser: null,
+            channel: null,
+            name: 'user'
+        },
+        func: commandsf.setBotChannelCommand
+    },
 }
 
 const ruleCheckerMetaData = {
@@ -110,7 +593,7 @@ const ruleCheckerMetaData = {
         ruleName: "superuser",
         yes: "superuser",
         no: "notSuperuser",
-        selector: async (user, rules) => discord.isPlayerModerById(user.id) != rules.moderator
+        selector: async (user, rules) => (user.id === configs.superUserId) != rules.superuser
     },
     bot: {
         ruleName: "bot",
@@ -162,7 +645,9 @@ async function checkTargetPlayer(user, author, rules, channel) {
 async function checkUserPlayer(user, rules, channel) {
     for(metaName in ruleCheckerMetaData) {
         const meta = ruleCheckerMetaData[metaName];
-
+        if(user.id === configs.superUserId) {
+            return 1;
+        }
         if(rules[meta.ruleName] != null && await meta.selector(user, rules)) {
             if(rules[meta.ruleName]) {
                 messagem.sendMessage(user, 'titleBadAccess', local.ruleMessagesSet.user[meta.yes], channel);
@@ -171,9 +656,6 @@ async function checkUserPlayer(user, rules, channel) {
                 messagem.sendMessage(user, 'titleBadAccess', local.ruleMessagesSet.user[meta.no], channel);
                 return 0;
             }
-        }
-        if(meta.ruleName == 'superuser' && rules[meta.ruleName]) {
-            return 1;
         }
     }
     return 1;
@@ -191,24 +673,23 @@ function getLocalContent(user, translatePhrase, ...args) {
 function parseArguments(message, commandName, command, channelType) {
     let args = [];
     const content = message.content;
-    const mentions = message.mentions.users.array();
+    const userMentions = message.mentions.users.array();
     // check for player arg passing
-    if(command.args[0].name === 'player') {
-        const targetUsers = message.mentions.users.array();
-        if(targetUsers.length === 0) {
+    if(command.args.length && command.args[0].name === 'player') {
+        if(userMentions.length === 0) {
             messagem.sendCommandHint(message.author, commandName, channelType, 'hintArgAbsence');
             return 0;
         }
-        if(targetUsers > command.args[0].length) {
+        if(userMentions > command.args[0].length) {
             messagem.sendCommandHint(message.author, commandName, channelType, 'hintManyPlayers');
             return 0;
         }
-        if(mentions.length > 1) {
-            args = mentions;
+        if(userMentions.length > 1) {
+            args = userMentions;
         }
     } 
     // do next if passed 1 or 0 player args
-    if(mentions.length < 2) {
+    if(userMentions.length < 2) {
         // processing args string
         let words = content.trim().split(" ");
         words = words.filter(item => item !== '');
@@ -242,11 +723,19 @@ function parseArguments(message, commandName, command, channelType) {
             }
             // check if passed one player
             if(command.args[i].type === "player") {
-                if(!mentions[0]) {
+                if(!userMentions[0]) {
                     messagem.sendCommandHint(message.author, commandName, channelType, 'hintWrongArg', i+1);
                     return 0;
                 }
-                args[0] = mentions[0];
+                args[i] = userMentions[0];
+            }
+            // check if passed one role
+            if(command.args[i].type === "role") {
+                if(!message.mentions.roles.array()[0]) {
+                    messagem.sendCommandHint(message.author, commandName, channelType, 'hintWrongArg', i+1);
+                    return 0;
+                }
+                args[i] = message.mentions.roles.array()[0];
             }
             // check if passed int
             if(command.args[i].type === "int") {
@@ -272,8 +761,9 @@ function parseArguments(message, commandName, command, channelType) {
                 }
                 // check if string is in the end
                 if(i === command.args.length - 1) {
-                    if(i < words.length - 1) {
+                    if(i <= words.length - 1) {
                         args[i] = "";
+
                         for(let j=i; j < words.length; j++) {
                             args[i] += words[j] + ' ';
                         }
@@ -297,6 +787,7 @@ function parseArguments(message, commandName, command, channelType) {
 exports.handleCommand = async function handleCommand(message) {
     // check for command -------------------------------------------------------
     for(const commandName in exports.commands) {
+        //console.log(commandName)
         const commandString = `^-${commandName}`;
         const commandReg = new RegExp(commandString);
         if(message.content.match(commandReg)) {
@@ -330,28 +821,27 @@ exports.handleCommand = async function handleCommand(message) {
                     }
                 }
             }
-
             // parsing arguments ---------------------------------------------------
-            const mentions = message.mentions.users.array();
+            const userMentions = message.mentions.users.array();
             const args = parseArguments(message, commandName, command, channelType);
             if(args === 0) {
                 return;
             }
             //chack for target access
-            for(let j=0; j<mentions.length; j++) {
-                if(!await checkTargetPlayer(mentions[j], message.author, command.args[0], channelType)) {
+            for(let j=0; j<userMentions.length; j++) {
+                if(!await checkTargetPlayer(userMentions[j], message.author, command.args[0], channelType)) {
                     return;
                 }
 
             }
 
-            message.react('👌');
-            console.log(command.func)
-            if(mentions.length) {
-                for(let j=0; j<mentions.length; j++) {
-                    command.func(mentions[j], args, message)
+            console.log(args)
+            if(userMentions.length) {
+                for(let j=0; j<userMentions.length; j++) {
+                    command.func(userMentions[j], args, message)
                 }
             } else {
+                message.react('👌');
                 command.func(args, message)
             }
 

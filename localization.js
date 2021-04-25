@@ -106,6 +106,9 @@ exports.superabout = function superabout(language) {
 exports.translatePhrase = function translatePhrase(phrase, data, lang = 'en') {
     return phrases[phrase][lang](data)
 }
+exports.EnRuPhrase = function translatePhrase(phrase, data) {
+    return phrases[phrase]['en'](data) + ' | '+ phrases[phrase]['ru'](data)
+}
 
 exports.translateHelpEmbed = function translateHelpEmbed(embed, lang = 'en') {
     return helpEmbeds[embed](lang)
@@ -190,9 +193,9 @@ const commands = {
 		}
 	},
 	unban: {
-		command: '-unbun `<player>...`',
+		command: '-unban `<player>...`',
 		ru: "Разбанить одного или нескольких игроков.",
-		en: "Unbun one or more players.",
+		en: "Unban one or more players.",
 		args: {
 			player: {
 				command: '`<player>`',
@@ -520,7 +523,7 @@ const phrases = {
 		ru: (args) => '🔸 - команда доступна только в личных сообщениях с ботом.',
 		en: (args) => '🔸 - the command is only available in private messages with bot.'
 	},
-	onlyGuidChannel: {
+	onlyGuildChannel: {
 		ru: (args) => `Команда может быть вызвана только на сервере, в текстовом канале.`,
 		en: (args) => `Command can be invoked only in server, in text channel.`
 	},
@@ -530,7 +533,7 @@ const phrases = {
 	},
 	userAdded: {
 		ru: (args) => `Ты не вступил в группу бота, поэтому не можешь вызвать команду. Чтобы увступить напиши \`-join\` мне в личные сообщения.`,
-		en: (args) => `You haven't joined the bot group, so you can't invoke the command. To join, write \`-join\` to me in private messages.`
+		en: (args) => `You have not joined the bot group, so you can't invoke the command. To join, write \`-join\` to me in private messages.`
 	},
 	userNotAdded: {
 		ru: (args) => `Эту команду может вызывать только игрок, не находящийся в группе бота.`,
@@ -616,13 +619,13 @@ const phrases = {
 		ru: (args) => `Эта команда не может быть произведена над модераторами игрокам. Игрок \`${args[0]}\` модератор.`,
 		en: (args) => `This command cannot be performed on the moderators. Player \`${args[0]}\` is moderator.`
 	},
-	userSuperuser: {
+	targetSuperuser: {
 		ru: (args) => `Эта команда может быть произведена только над суперпользователь. Игрок \`${args[0]}\` не суперпользователь.`,
 		en: (args) => `This command can only be performed on the superuser. Player \`${args[0]}\` is not superuser.`
 	},
-	userNotSuperuser: {
+	targetNotSuperuser: {
 		ru: (args) => `Эта команда не может быть произведена над суперпользователем. Игрок \`${args[0]}\` суперпользователь.`,
-		en: (args) => `This command cannot be performed on the superuser. Player \`${args[0]}\` is moderator.`
+		en: (args) => `This command cannot be performed on the superuser. Player \`${args[0]}\` is superuser.`
 	},
 	hint: {
 		ru: (args) => `Подсказка`,
@@ -666,7 +669,7 @@ const phrases = {
 	},
 	langConfirmation: {
 		ru: (args) => `Error`,
-		en: (args) => `Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\nI\'m from ROTR. First, which language should I write for you?. Press to corresponding emoji in the bottom.`
+		en: (args) => `Всё нормально, это не спам, я из ROTR. Во-первых, на каком языке мне тебе лучше писать? Нажми на соответствующее эмодзи внизу.\n\nI\'m from ROTR. First, which language should I write for you? Press to corresponding emoji in the bottom.`
 	},
 	titleLangConfirmation: {
 		ru: (args) => `Error`,
@@ -676,6 +679,10 @@ const phrases = {
 		ru: (args) => `Error`,
 		en: (args) => `Player \`${args[0]}\` rejected invitation to gruop.`
 	},
+	systemInviteAcception: {
+		ru: (args) => `Error`,
+		en: (args) => `Player \`${args[0]}\` added to gruop.`
+	},
 	titleInvitation: {
 		ru: (args) => `Есть кто дома?`,
 		en: (args) => `Anyone home?`
@@ -683,6 +690,90 @@ const phrases = {
 	titleBadChannel: {
 		ru: (args) => `Плохой канал`,
 		en: (args) => `Bad channel`
+	},
+	titleBegin: {
+		ru: (args) => `Давай же начнём!`,
+		en: (args) => `Let's begin!`
+	},
+	titleCanceling: {
+		ru: (args) => `Упс..`,
+		en: (args) => `Oops..`
+	},
+	titleBan: {
+		ru: (args) => `Очень плохо`,
+		en: (args) => `Vary bad`
+	},
+	moderRoleCreated: {
+		ru: (args) => `Error`,
+		en: (args) => `Role <@&${args[0]}> created for moderaor.`
+	},
+	noSushMap: {
+		ru: (args) => `Мда, похоже, у меня нет такой карты.`,
+		en: (args) => `Oh, I dont\'t have so map.`
+	},
+	haveBreak: {
+		ru: (args) => `У тебя уже есть время перерыва: \`${args[0]}\`.`,
+		en: (args) => `You alredy have break time: \`${args[0]}\`.`
+	},
+	indexLogs: {
+		ru: (args) => `Error`,
+		en: (args) => args[0]
+	},
+	roleChanged: {
+		ru: (args) => `Error`,
+		en: (args) => `Role <@&${args[0]}> changed to <@&${args[1]}>.`
+	},
+	roleRegistered: {
+		ru: (args) => `Error`,
+		en: (args) => `Role registrated.`
+	},
+	toHome: {
+		ru: (args) => `Error`,
+		en: (args) => `Yee boy. Now it is my home!\nDon't forget to create moderator role by using \`-moderator <player>...\`.`
+	},
+	dontHaveHome: {
+		ru: (args) => `Error`,
+		en: (args) => `Man, I event don't have home.`
+	},
+	haveHome: {
+		ru: (args) => `Error`,
+		en: (args) => `Man, I already have home. But actually to have two homes is not so bad :)`
+	},
+	fromHome: {
+		ru: (args) => `Error`,
+		en: (args) => `Oh no!... But although, will you give me the new home? Just use \`-home\`.`
+	},
+	notInPersonal: {
+		ru: (args) => `Лучше набрать эту команду на канале сервера.`,
+		en: (args) => `Better enter this command in the server channel.`
+	},
+	alreadyGathered: {
+		ru: (args) => `Ты уже собрал игроков. Подожди \`${args[0]}:${args[0]}\` минут.`,
+		en: (args) => `You already gathered players. Wait \`${args[0]}:${args[0]}\` minutes.`
+	},
+	sameGather: {
+		ru: (args) => `Кто-то уже создал такое-же собрание.`,
+		en: (args) => `The same gather already exists.`
+	},
+	gatheredPlayers: {
+		ru: (args) => `Собираемые игроки`,
+		en: (args) => `Gathered players`
+	},
+	state: {
+		ru: (args) => `Состояние`,
+		en: (args) => `State`
+	},
+	gatherPrew: {
+		ru: (args) => `Твое собрание будет выглядеть так:`,
+		en: (args) => `Your invitation will look like`
+	},
+	vote: {
+		ru: (args) => `Нажми ✅ или ❎ чтобы продолжить или отменить.`,
+		en: (args) => `Vote ✅ or ❎ to continue or cancel.`
+	},
+	leaved: {
+		ru: (args) => `Error`,
+		en: (args) => `Player \`${args[0]}\` left from bot group.`
 	},
 }
 

@@ -200,6 +200,7 @@ async function isMapNotGood(mapName) {
 function getMapInfo(separator) {
   const mapInfos = JSON.parse(fs.readFileSync('Maps/MapCach.json'));
   const mapInfoArr = mapInfos.filter(separator);
+  //console.log(mapInfoArr)
   if(mapInfoArr.length === 1) {
     return mapInfoArr[0]
   } else if(mapInfoArr.length > 1) {

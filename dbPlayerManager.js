@@ -220,9 +220,14 @@ async function removeBotChannelId() {
 }
 
 async function putInvitationMessageId(messageId, userId)  {
-  exports.configs.updateOne({discordId: userId}, {'$set': {inviationMessageId: messageId}})
+  return await exports.invitedPlayers.updateOne({discordId: userId}, {'$set': {inviationMessageId: messageId}})
 }
 
+async function putLanguageMessageId(messageId, userId)  {
+  return await exports.invitedPlayers.updateOne({discordId: userId}, {'$set': {languageMessageId: messageId}})
+}
+
+exports.putLanguageMessageId = putLanguageMessageId
 exports.putInvitationMessageId = putInvitationMessageId
 exports.removeBotChannelId = removeBotChannelId
 exports.setBotChannel = setBotChannel

@@ -284,6 +284,7 @@ async function getMapCollage(separator) {
 				mapYcaunter++
 			}
 		}
+		//console.log(canvas.toBuffer())
 		buffers.push(canvas.toBuffer())
 	}
 	
@@ -292,6 +293,9 @@ async function getMapCollage(separator) {
 
 async function getMapBufferAndInfo(separator, mapNumber) {
 	const mapInfos = mapm.getMapInfo(separator)
+	if(mapNumber > mapInfos.length - 1) {
+		return null
+	}
 	if(mapInfos.length) {
 		const mapInfo = mapInfos[mapNumber]
 		const canvas = createCanvas(128, 128)
