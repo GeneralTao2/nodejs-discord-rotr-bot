@@ -100,8 +100,7 @@ exports.tabString = (j, listLenth) => {
 
 // place backslash before every discord special character 
 exports.backSlashTag = (tag) => {
-	console.log(tag)
-	tag = tag.replaceAll(/_/g, "\\_")
+	tag = tag.replace(/_/g, "\\_")
 	return tag;
 }
 
