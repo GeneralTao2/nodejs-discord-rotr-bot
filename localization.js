@@ -310,6 +310,23 @@ const commands = {
 			},
 		}
 	},
+	download: {
+		command: '-download `<player_quantity>` `<map_number>`',
+		ru: "Отправляет архив с картой для скачивания.",
+		en: "Send archive with map for downloading.",
+		args: {
+			player_quantity: {
+				command: '`<player_quantity>`',
+				ru: "Количество игроков на карте от 2 до 8.",
+				en: "Player quantity on the map from 2 to 8."
+			},
+			map_number: {
+				command: '`<map_number>`',
+				ru: "Порядковый намер карты из списка карт с определённым количеством игроков.",
+				en: "The sequential number of the map from the list of maps with a certain number of players."
+			},
+		}
+	},
 	invite: {
 		command: '-invite `<player>...`',
 		ru: "Пригласить одного или несколькоих игроков в группу для использования бота.",
@@ -917,6 +934,7 @@ const helpEmbeds = {
 			commandField('gather', lang),
 			commandField('maps', lang),
 			commandField('map', lang),
+			commandField('download', lang),
 			commandField('invite', lang),
 			commandField('invited', lang),
 			commandField('breaks', lang),
