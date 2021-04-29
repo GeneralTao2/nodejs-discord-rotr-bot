@@ -105,6 +105,16 @@ async function invitedPlayersForEach(callback) {
   return array
 }
 
+exports.forEach = async (players, callback) => {
+  const cursor = players.find({});
+  let array = [];
+  while(await cursor.hasNext()) {
+    const doc = await cursor.next()
+    array.push(await callback(doc))
+  }
+  return array
+}
+
 async function addedPlayersForEach(callback) {
   const cursor = exports.addedPlayers.find({});
   let array = [];

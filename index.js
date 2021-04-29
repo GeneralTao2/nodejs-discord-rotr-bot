@@ -2,6 +2,9 @@ const db = require('./dbPlayerManager');
 const discord = require('./discordPlayerManager');
 const configs = require('./configs');
 const command = require('./commandManager');
+const vote = require('./voteManager');
+const gatherc = require('./gatherCommandTools')
+
 // GeneralTao#5693
 // ======================================================================== CONNECTION ============
 
@@ -30,8 +33,11 @@ discord.client.on('ready', async () => {
 	console.log('Yeah, connected!');
 	await discord.init();
 	await initReactionsAfterRelog();
+	filterAddedPLayers();
 
-	//await discord.currentChennel.send('-evict')
+
+
+	//await discord.currentChennel.send('-download 2 2')
 	//await discord.currentChennel.send('-home')
 });
 
@@ -39,6 +45,18 @@ discord.client.on('guildCreate', async () => {
 	await db.checkIndex();
 });
 
+const threeDays = 3 * 24 * 60 * 60 * 1000;
+const oneDay = 24 * 60 * 60 * 1000;
+function filterAddedPLayers() {
+	setInterval(async () => {
+		db.forEach(db.addedPlayers, (doc) => {
+			const user = discord.getUserById(doc.discordId);
+			if(!user) {
+				db.removeAddedPlayerById(user.id);
+			}
+		})
+	}, oneDay);
+}
 
 async function initReactionsAfterRelog() {
 	// Invitation
@@ -48,8 +66,8 @@ async function initReactionsAfterRelog() {
 			const msRemaining = invitedPlayer.createdAt.getTime() + threeDays - new Date().getTime();
 			if (invitedPlayer.inviationMessageId) {
 				const inviteMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.inviationMessageId);
-				await removeUpDownReactions(inviteMessage);
-				upDownManager(inviteMessage, user.id, msRemaining, () => {
+				await vote.removeUpDownReactions(inviteMessage);
+				vote.upDownManager(inviteMessage, user.id, msRemaining, () => {
 					addPlayerAfterInviting(user);
 				}, () => {
 					ignorePlayerAfterInviting(user);
@@ -58,8 +76,8 @@ async function initReactionsAfterRelog() {
 				//console.log(invitedPlayer)
 				const languageMessage = await discord.getUserDMbyMessageId(invitedPlayer.discordId, invitedPlayer.languageMessageId);
 				const inviter = await discord.getUserById(invitedPlayer.inviterDiscordId)
-				await removeUpDownReactions(languageMessage, '🇷🇺', '🇬🇧');
-				upDownManager(languageMessage, user.id, msRemaining, async () => {
+				await vote.removeUpDownReactions(languageMessage, '🇷🇺', '🇬🇧');
+				vote.upDownManager(languageMessage, user.id, msRemaining, async () => {
 					await discord.pinRoleById(user.id, 'ru')
 					sendInviteMassage(user, inviter)
 				}, async () => {
@@ -74,17 +92,17 @@ async function initReactionsAfterRelog() {
 
 
 	// Gathering
-	db.gathersForEach(async (gather) => {
+	db.gathersForEach(async (gather) => {  
 		const inviter = discord.getUserById(gather.discordId);
 		const msRemaining = gather.expireAt.getTime() - new Date().getTime();
 		const gatherMessage = await discord.currentChennel.messages.fetch(gather.messageId);
-		setGatherUpdateInterval(gatherMessage, gather.discordId, msRemaining);
+		gatherc.setGatherUpdateInterval(gatherMessage, gather.discordId, msRemaining);
 		for (let i = 0; i < gather.invitedPlayer.length; i++) {
 			const user = await discord.getUserById(gather.invitedPlayer[i].discordId);
 			const directMessage = await discord.getUserDMbyMessageId(
 				gather.invitedPlayer[i].discordId, gather.invitedPlayer[i].messageId);
-			await removeUpDownReactions(directMessage);
-			upDownManager(directMessage, user.id, msRemaining, () => {
+			await vote.removeUpDownReactions(directMessage); 
+			vote.upDownManager(directMessage, user.id, msRemaining, () => {
 				db.updateGatherData(inviter.id, user.id, '✅');
 			}, () => {
 				db.updateGatherData(inviter.id, user.id, '❎');

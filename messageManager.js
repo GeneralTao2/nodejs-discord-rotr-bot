@@ -4,7 +4,7 @@ const local = require('./localization');
 
 
 exports.sendMessageToUser = async function sendMessageToUser(user, title, phrase, ...args) {
-    const lang = getLang(user);
+    const lang = exports.getLang(user);
 
     const embed = new discord.MessageEmbed({
 		color: '#b37700',
@@ -23,7 +23,7 @@ exports.sendMessageToUser = async function sendMessageToUser(user, title, phrase
 }
 
 exports.sendMessageToChannel = async function sendMessageToChannel(user, title, phrase, ...args) {
-    const lang = getLang(user);
+    const lang = exports.getLang(user);
 
     const embed = new discord.MessageEmbed({
 		color: '#b37700',
@@ -35,7 +35,7 @@ exports.sendMessageToChannel = async function sendMessageToChannel(user, title, 
 }
 
 exports.sendMessage = async function sendMessage(user, title, phrase, target, ...args) {
-    const lang = getLang(user);
+    const lang = exports.getLang(user);
 
     const embed = new discord.MessageEmbed({
 		color: '#b37700',
@@ -72,7 +72,7 @@ exports.sendSystemMessage = async function sendSystemMessage(phrase, ...args) {
 }
 
 exports.sendCommandHint = async function sendCommandHint(user, commandName, target, error, ...args) {
-    const language = getLang(user);
+    const language = exports.getLang(user);
 
     const embed = local.commandHint(commandName, language, error, args);
     switch(target) {

@@ -215,7 +215,7 @@ exports.commands = {
         },
         func: commandsf.removePlayerCommand
     },
-    getUser: {
+    user: {
         args: [
                 {
                     type: 'player',
@@ -585,6 +585,33 @@ exports.commands = {
             name: 'user'
         },
         func: commandsf.setBotChannelCommand
+    },
+    download: {
+        args: [
+            {
+                type: 'int',
+                min: 2,
+                max: 8,
+                optional: true
+            },
+            {
+                type: 'int',
+                min: 1,
+                max: 500,
+                optional: true
+            },
+        ],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'common',
+            name: 'user'
+        },
+        func: commandsf.downloadMap
     },
 }
 

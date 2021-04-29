@@ -8,8 +8,10 @@ const moment = require('moment');
 const commandm = require('./commandManager');
 const dbinserter = require('./dbinserter')
 const messagem = require('./messageManager')
-const {loadImage} = require('canvas')
-const fs = require('fs')
+const vote = require('./voteManager');
+const gather = require('./gatherCommandTools')
+const columnm = require('./columnManager')
+const zipdir = require('zip-dir');
 
 exports.invatePlayerCommand = async function invatePlayerCommand(user, args, message) {
 	await dbinserter.invitePlayer(null, null, user, message.author.id);
@@ -241,42 +243,20 @@ exports.showMapCommand = async function showMapCommand(args, message) {
 		map.info.name + '\nSize: ' + map.info.size.x + 'x' + map.info.size.y, attachment);
 }
 
-exports.getAddedPlayersCommand = async function getAddedPlayersCommand(user, args, message) {
-	let list = await db.addedPlayersForEach(async (player) => {
-		const user = discord.getUserById(player.discordId);
-		if (!user) {
-			db.removeAddedPlayerById(player.discordId);
-			return null
-		}
-		return {
-			tag: user.tag,
-			presence: discord.isOnlineById(user.id),
-		};
-	});
-	list = list.filter(cell => cell)
-	if (list.length === 0) {
-		discord.currentChennel.send('Added plyers list is empty.');
-		return;
-	}
-	let onlineContent = '';
-	let onlinePointer = 1;
-	let offlineContent = '';
-	let offlinePointer = 1;
-	for (let i = 0; i < list.length; i++) {
-		if (list[i].presence) {
-			onlineContent += '`' + onlinePointer.toString() + '.` ' + list[i].tag + '\n';
-			onlinePointer++;
-		} else {
-			offlineContent += '`' + offlinePointer.toString() + '.` ' + list[i].tag + '\n';
-			offlinePointer++;
-		}
-	}
-	if (onlineContent === '') {
-		onlineContent = 'Empty.';
-	}
-	if (offlineContent === '') {
-		offlineContent = 'Empty.';
-	}
+exports.getAddedPlayersCommand = async function getAddedPlayersCommand(args, message) {
+	const onlinePlayerClusters = await columnm.getPlayerColumn(db.addedPlayers, 
+		(user) => discord.isOnlineById(user.id) );
+
+	const offlinePlayerClusters = await columnm.getPlayerColumn(db.addedPlayers, 
+		(user) => !discord.isOnlineById(user.id) );
+
+	const fields = columnm.clasters2fields({
+		array: onlinePlayerClusters, 
+		title: ":green_circle: online",
+	}, {
+		array: offlinePlayerClusters,
+		title: ":black_circle: offline"
+	} );
 	discord.currentChennel.send({
 		embed: {
 			color: '#74af67',
@@ -287,32 +267,15 @@ exports.getAddedPlayersCommand = async function getAddedPlayersCommand(user, arg
 			thumbnail: {
 				url: 'attachment://added_icon_grey.png',
 			},
-			fields: [
-				{ name: ':green_circle: online', value: onlineContent, inline: true },
-				{ name: ':black_circle: offline', value: offlineContent, inline: true },
-			],
+			fields: fields,
 		},
 	});
 }
 
-exports.getInvitedPlayersCommand = async function getInvitedPlayersCommand(user, args, message) {
-	let list = await db.invitedPlayersForEach(async (player) => {
-		const user = discord.getUserById(player.discordId);
-		if (!user) {
-			db.removeInvitedPlayerById(player.discordId);
-			return null
-		}
-		return user.tag;
-	});
-	list = list.filter(cell => cell)
-	let content = '';
-	if (list.length === 0) {
-		content = 'Empty.';
-	} else {
-		for (let i = 0; i < list.length; i++) {
-			content += '`' + (i + 1).toString() + '.` ' + list[i] + '\n';
-		}
-	}
+exports.getInvitedPlayersCommand = async function getInvitedPlayersCommand(args, message) {
+	const invitedClusters = await columnm.getPlayerColumn(db.invitedPlayers, 
+		(user) => user, 40);
+
 	discord.currentChennel.send({
 		embed: {
 			color: '#468fbc',
@@ -323,28 +286,15 @@ exports.getInvitedPlayersCommand = async function getInvitedPlayersCommand(user,
 			thumbnail: {
 				url: 'attachment://invited_icon_grey.png',
 			},
-			description: content,
+			description: invitedClusters[0],
 		}
 	});
 }
 
-exports.getBannedPlayersCommand = async function getBannedPlayersCommand(user, args, message) {
-	let list = await db.bannedPlayersForEach(async (player) => {
-		const user = discord.getUserById(player.discordId);
-		if (!user) {
-			return null
-		}
-		return user.tag;
-	});
-	list = list.filter(cell => cell)
-	let content = '';
-	if (list.length === 0) {
-		content = 'Empty.';
-	} else {
-		for (let i = 0; i < list.length; i++) {
-			content += (i + 1).toString() + '. ' + list[i] + '\n';
-		}
-	}
+exports.getBannedPlayersCommand = async function getBannedPlayersCommand(args, message) {
+	const bannedClusters = await columnm.getPlayerColumn(db.invitedPlayers, 
+		(user) => user, 40);
+
 	discord.currentChennel.send({
 		embed: {
 			color: '#d5952f',
@@ -355,9 +305,22 @@ exports.getBannedPlayersCommand = async function getBannedPlayersCommand(user, a
 			thumbnail: {
 				url: 'attachment://banned_icon_grey.png',
 			},
-			description: content,
+			description: bannedClusters[0],
 		}
 	});
+}
+
+exports.downloadMap = async function downloadMap(args, message) {
+	const mapInfos = await mapm.getMapInfo(
+		mapInfo => mapInfo.playerStarts.length === args[0]);
+	if(mapInfos.length < args[1]) {
+		messagem.sendMessageToChannel(message.author, 'titleCanceling', 'noSushMap');
+		return;
+	}
+	const mapInfo = mapInfos[args[1] - 1]
+	const buffer = await zipdir(`Maps/${mapInfo.name}`);
+	const attachment = new discord.MessageAttachment(buffer, `${mapInfo.name}.zip`);
+	discord.currentChennel.send(attachment);
 }
 
 
@@ -406,46 +369,24 @@ exports.gatherPlayersCommand = async function gatherPlayersCommand(args, message
 		return;
 	}
 
-	let list = await db.addedPlayersForEach(async (player) => {
-		const user = discord.getUserById(player.discordId);
-		if (!user) {
-			db.removeAddedPlayerById(player.discordId)
-			return null
-		}
-		return user;
+	const userList = await columnm.getPlayers(db.addedPlayers, 
+		async (user) => !(await db.findBreakById(user.id)) && discord.isOnlineById(user.id));
+	//const userList = [discord.getUserById('798964404447739994'),]
+	const userColumn = await columnm.getColumn(userList);
+	const userListLength = userList.length;
+	const emojiList = new Array(userListLength).fill(':arrows_counterclockwise:');
+	const emojiColumn = await columnm.getEmojiColumn(emojiList);
+	const clasters = columnm.clasters2fields({
+		array: userColumn,
+		title: local.EnRuPhrase('gatheredPlayers')
+	}, {
+		array: emojiColumn,
+		title: local.EnRuPhrase('state')
 	});
-	list = list.filter(cell => cell)
-
-	const gatheredUserList = [];
-	for (let i = 0; i < list.length; i++) {
-		if (list[i].id === user.id) {
-			continue;
-		}
-		if (await db.findBreakById(list[i].id)) {
-			continue;
-		}
-		if (discord.isOnlineById(list[i].id)) {
-			gatheredUserList.push(list[i]);
-		}
-	}
-
-	const gatheredListLenth = gatheredUserList.length.toString().length;
-	let onlineContent = '';
-	let states = '';
-	for (let i = 0; i < gatheredUserList.length; i++) {
-		let iString = (i + 1).toString() + '.';
-		const iStringLength = iString.length;
-		for (let j = iStringLength; j < gatheredListLenth + 1; j++) {
-			iString += ' ';
-		}
-		states += '`' + iString + '` :arrows_counterclockwise:\n';
-		onlineContent += '`' + iString + '` ' + gatheredUserList[i].tag + '\n';
-	}
-
-	if (onlineContent === '') {
-		discord.currentChennel.send('No players to gather.');
-		return;
-	}
+	clasters.push({ 
+		name: local.EnRuPhrase('gatherPrew'), 
+		value: comment ? comment : local.EnRuPhrase('noComment') 
+	});
 
 	const attachment = new discord.MessageAttachment(gatherBanner.buffer, 'help.png');
 	const embed = new discord.MessageEmbed({
@@ -457,18 +398,14 @@ exports.gatherPlayersCommand = async function gatherPlayersCommand(args, message
 		image: {
 			url: 'attachment://help.png',
 		},
-		fields: [
-			{ name: local.EnRuPhrase('gatheredPlayers'), value: onlineContent, inline: true },
-			{ name: local.EnRuPhrase('state'), value: states, inline: true },
-			{ name: local.EnRuPhrase('gatherPrew'), value: comment ? comment : local.EnRuPhrase('noComment') },
-		],
+		fields: clasters,
 		timestamp: moment(new Date()).add(time, 'm').toDate(),
 		footer: {
 			text: local.EnRuPhrase('vote'),
 		},
 	});
 	const gatherMessage = await discord.currentChennel.send(embed);
-	upDownManager(gatherMessage, user.id, 2 * 60 * 1000, async () => {
+	vote.upDownManager(gatherMessage, user.id, 2 * 60 * 1000, async () => {
 		const gatherDataByUserId = await db.findGatherById(user.id);
 		if (gatherDataByUserId) {
 			const m = (gatherDataByUserId.expireAt.getTime() - new Date().getTime()) / 60000;
@@ -486,70 +423,18 @@ exports.gatherPlayersCommand = async function gatherPlayersCommand(args, message
 
 		message.react('👌');
 		const gatherInvitationMessageIdList = [];
-		for (let i = 0; i < gatheredUserList.length; i++) {
+		for (let i = 0; i < userListLength; i++) {
 			gatherInvitationMessageIdList
-				.push(await sendInvitationToGathered(gatheredUserList[i], user, attachment, comment, time));
+				.push(await gather.sendInvitationToGathered(userList[i], user, attachment, comment, time));
 		}
-		dbinserter.gather(gatherMessage.id, user, gatheredUserList, gatherInvitationMessageIdList, time, playerQuantity,
+		dbinserter.gather(gatherMessage.id, user, userList, gatherInvitationMessageIdList, time, playerQuantity,
 			gatherBanner.mapInfo ? gatherBanner.mapInfo.name : null);
-		setGatherUpdateInterval(gatherMessage, user.id, time * 60 * 1000);
+		gather.setGatherUpdateInterval(gatherMessage, user.id, time * 60 * 1000);
 	}, () => {
 		gatherMessage.react('🙅🏼‍♀️');
 	});
 }
 
-function setGatherUpdateInterval(message, inviterId, ttl) {
-	const interval = setInterval(async () => {
-		const newGatherData = await db.findGatherById(inviterId);
-		const gatheredListLenth = newGatherData.invitedPlayer.length.toString().length;
-		let newStates = '';
-		for (let i = 0; i < newGatherData.invitedPlayer.length; i++) {
-			let iString = (i + 1).toString() + '.';
-			const iStringLength = iString.length;
-			for (let j = iStringLength; j < gatheredListLenth + 1; j++) {
-				iString += ' ';
-			}
-			newStates += '`' + iString + '` ' + newGatherData.invitedPlayer[i].accept + '\n';
-		}
-		message.embeds[0].fields[1].value = newStates;
-		message.embeds[0].image = {
-			url: 'attachment://help.png',
-		};
-		message.edit(message.embeds[0]);
-	}, 3000);
-	setTimeout(() => {
-		clearInterval(interval);
-	}, ttl);
-}
-
-async function sendInvitationToGathered(user, inviter, attachment, comment, time) {
-	const lang = messagem.getLang(user)
-	const embed = new discord.MessageEmbed({
-		color: '#b6cbd1',
-		title: local.translatePhrase('gather', lang),
-		files: [
-			attachment,
-		],
-		image: {
-			url: 'attachment://help.png',
-		},
-		fields: [
-			{ name: local.translatePhrase('wasInvitedToGame', lang), value: comment ? comment : local.translatePhrase('noComment', lang) },
-		],
-		timestamp: moment(new Date()).add(time, 'm').toDate(),
-		footer: {
-			text: local.translatePhrase('vote', lang),
-		},
-	});
-
-	const message = await user.send(embed);
-	upDownManager(message, user.id, time * 60 * 1000, () => {
-		db.updateGatherData(inviter.id, user.id, '✅');
-	}, () => {
-		db.updateGatherData(inviter.id, user.id, '❎');
-	});
-	return message.id;
-}
 
 
 
@@ -572,52 +457,9 @@ function monoLengthTime(h, m, s) {
 }
 
 
-async function askLanguage(user, imojiPressCallback, inviter) {
-	const languageMessage = await messagem.sendMessageToUser(user, 'titleLangConfirmation', 'langConfirmation')
-	await db.putLanguageMessageId(languageMessage.id, user.id)
-	upDownManager(languageMessage, user.id, threeDays, async () => {
-		await discord.pinRoleById(user.id, 'ru')
-		if (imojiPressCallback) {
-			imojiPressCallback(user, inviter)
-		}
-	}, async () => {
-		await discord.pinRoleById(user.id, 'en')
-		if (imojiPressCallback) {
-			imojiPressCallback(user, inviter)
-		}
-	}, '🇷🇺', '🇬🇧')
-}
 
 const threeDays = 3 * 24 * 60 * 60 * 1000;
-function upDownManager(message, userId, ttl, upFunction, downFunction, ok = '✅', nok = '❎') {
-	message.react(ok);
-	message.react(nok);
-	const upFilter = (reaction, user) => reaction.emoji.name === ok && user.id === userId;
-	const downFilter = (reaction, user) => reaction.emoji.name === nok && user.id === userId;
-	const upCollector = message.createReactionCollector(upFilter, { time: ttl });
-	const downCollector = message.createReactionCollector(downFilter, { time: ttl });
-	upCollector.on('collect', (r) => {
-		removeUpDownReactions(message, ok, nok);
-		message.react('👌');
-		upFunction();
-	});
-	downCollector.on('collect', (r) => {
-		removeUpDownReactions(message, ok, nok);
-		downFunction();
-	});
-	downCollector.on('end', (collected) => {
-		removeUpDownReactions(message, ok, nok);
-	});
-}
 
-async function removeUpDownReactions(message, ok = '✅', nok = '❎') {
-	if (message.reactions.cache.has(ok)) {
-		await message.reactions.cache.get(ok).users.remove();
-	}
-	if (message.reactions.cache.has(nok)) {
-		await message.reactions.cache.get(nok).users.remove();
-	}
-}
 
 
 async function ignorePlayerAfterInviting(user) {
@@ -636,7 +478,7 @@ async function sendInviteMassage(user, inviter) {
 		return;
 	}
 	await db.putInvitationMessageId(sendedMessage.id, user.id)
-	upDownManager(sendedMessage, user.id, threeDays, () => {
+	vote.upDownManager(sendedMessage, user.id, threeDays, () => {
 		addPlayerAfterInviting(user);
 	}, () => {
 		ignorePlayerAfterInviting(user);
@@ -660,4 +502,20 @@ async function addPlayerProcess(user) {
 	dbinserter.addPlayer(user);
 	messagem.sendMessageToUser(user, 'titleBegin', 'adding');
 	messagem.sendSystemMessage('systemInviteAcception', user.tag)
+}
+
+async function askLanguage(user, imojiPressCallback, inviter) {
+	const languageMessage = await messagem.sendMessageToUser(user, 'titleLangConfirmation', 'langConfirmation')
+	await db.putLanguageMessageId(languageMessage.id, user.id)
+	upDownManager(languageMessage, user.id, threeDays, async () => {
+		await discord.pinRoleById(user.id, 'ru')
+		if (imojiPressCallback) {
+			imojiPressCallback(user, inviter)
+		}
+	}, async () => {
+		await discord.pinRoleById(user.id, 'en')
+		if (imojiPressCallback) {
+			imojiPressCallback(user, inviter)
+		}
+	}, '🇷🇺', '🇬🇧')
 }
