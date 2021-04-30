@@ -1,7 +1,8 @@
 const configs = require('./configs')
 
-const dbName = "test";
-const MongoClient = require('mongodb').MongoClient;
+const dbName = configs.dbName
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 const uri = "mongodb+srv://admin:"+configs.mongodbPassword+"@rotr.4v0xs.mongodb.net/"+dbName+"?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 

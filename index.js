@@ -4,24 +4,49 @@ const configs = require('./configs');
 const command = require('./commandManager');
 const vote = require('./voteManager');
 const gatherc = require('./gatherCommandTools')
+const commands = require('./commands')
 
 // GeneralTao#5693
 // ======================================================================== CONNECTION ============
 
+async function checkCollection(name) {
+	const ans = await db.client.db(configs.dbName).listCollections({name: name}).next();
+	if(!ans) {
+		await db.client.db(configs.dbName).createCollection(name)
+	}
+}
 
 discord.client.on('ready', async () => {
 	try {
 		await db.client.connect();
-		db.addedPlayers = await db.client.db('test').collection('addedPlayers');
-		db.invitedPlayers = await db.client.db('test').collection('invitedPlayers');
-		db.bannedPlayers = await db.client.db('test').collection('bannedPlayers');
-		db.gathers = await db.client.db('test').collection('gathers');
-		db.breaks = await db.client.db('test').collection('breaks');
-		db.configs = await db.client.db('test').collection('configs');
-
-		discord.roleIds['en'] = (await db.getRole('en')).discordId;
-		discord.roleIds['ru'] = (await db.getRole('ru')).discordId;
-		discord.roleIds['moderator'] = (await db.getRole('moderator')).discordId;
+		/*if(!await db.configs.findOne({})) {
+			return;
+		}*/
+		//await db.client.db(configs.dbName).createCollection('invitedPlayers')
+		await checkCollection('configs')
+		await checkCollection('addedPlayers')
+		await checkCollection('invitedPlayers')
+		await checkCollection('bannedPlayers')
+		await checkCollection('gathers')
+		await checkCollection('breaks')
+		db.configs = await db.client.db(configs.dbName).collection('configs');
+		db.addedPlayers = await db.client.db(configs.dbName).collection('addedPlayers');
+		db.invitedPlayers = await db.client.db(configs.dbName).collection('invitedPlayers');
+		db.bannedPlayers = await db.client.db(configs.dbName).collection('bannedPlayers');
+		db.gathers = await db.client.db(configs.dbName).collection('gathers');
+		db.breaks = await db.client.db(configs.dbName).collection('breaks');
+		const enDoc = await db.getRole('en');
+		const ruDoc = await db.getRole('ru');
+		const modDoc = await db.getRole('moderator');
+		if(enDoc) {
+			discord.roleIds['en'] = enDoc.discordId;
+		}
+		if(ruDoc) {
+			discord.roleIds['ru'] = ruDoc.discordId;
+		}
+		if(modDoc) {
+			discord.roleIds['moderator'] = modDoc.discordId;
+		}
 		if (configs.ltsChannelId) {
 			discord.channelId = configs.ltsChannelId
 		} else {
@@ -35,14 +60,27 @@ discord.client.on('ready', async () => {
 	await initReactionsAfterRelog();
 	filterAddedPLayers();
 
-
-
 	//await discord.currentChennel.send('-download 2 2')
 	//await discord.currentChennel.send('-home')
 });
 
-discord.client.on('guildCreate', async () => {
+async function init() {
+
+}
+
+discord.client.on('guildCreate', async (guild) => {
+	console.log(guild.id)
+	discord.guildId = guild.id
+	await discord.init();
 	await db.checkIndex();
+});
+
+discord.client.on('guildMemberAdd', member => {
+	commands.invatePlayerCommand(member.user, [], {author: discord.getUserById(configs.superUserId)})
+});
+
+discord.client.on('guildMemberRemove', async (member) => {
+	db.removeAddedPlayerById(member.user.id)
 });
 
 const threeDays = 3 * 24 * 60 * 60 * 1000;
@@ -79,14 +117,15 @@ async function initReactionsAfterRelog() {
 				await vote.removeUpDownReactions(languageMessage, '🇷🇺', '🇬🇧');
 				vote.upDownManager(languageMessage, user.id, msRemaining, async () => {
 					await discord.pinRoleById(user.id, 'ru')
-					sendInviteMassage(user, inviter)
+					commands.sendInviteMassage(user, inviter)
 				}, async () => {
 					await discord.pinRoleById(user.id, 'en')
-					sendInviteMassage(user, inviter)
+					commands.sendInviteMassage(user, inviter)
 				}, '🇷🇺', '🇬🇧');
 			}
 		} catch (error) {
 			console.log('Critical error happend!', error)
+			db.removeInvitedPlayerById(invitedPlayer.discordId)
 		}
 	});
 
@@ -116,7 +155,6 @@ async function initReactionsAfterRelog() {
 
 // Handle message types
 discord.client.on('message', async (message) => {
-	console.log(message.content)
 	command.handleCommand(message);
 });
 

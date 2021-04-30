@@ -43,6 +43,9 @@ exports.getColumn = async (list, clusterSize = 20) => {
 	let pointer = 1;
 	let contentClusters = [];
 	// for every cluster
+	if(!list) {
+		return ['Empty.'];
+	}
 	for(let i=0; i<list.length; i+=clusterSize) {
 		let content = '';
 		// for every cluster row
@@ -63,6 +66,9 @@ exports.getColumn = async (list, clusterSize = 20) => {
 exports.getEmojiColumn = async (list, clusterSize = 20) => {
 	let pointer = 1;
 	let contentClusters = [];
+	if(!list) {
+		return ['Empty.'];
+	}
 	// for every cluster
 	for(let i=0; i<list.length; i+=clusterSize) {
 		let content = '';

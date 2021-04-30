@@ -360,7 +360,7 @@ const commands = {
 		en: "Shows a list of players in a group with a break."
 	},
 	break: {
-		command: '🔸-break <hours>',
+		command: '🔸-break `<hours>`',
 		ru: "Нужен перерыв? Отключает возможность звать тебя в игры на определённое количество часов.",
 		en: "Need a break? Disables the ability to invite you to games for a specified number of hours. Command only works in private messages with a bot. "
 	},
@@ -537,12 +537,12 @@ const phrases = {
 		en: (args) => "These commands are only available to players with the `Bot Moderator` role. Designed for initial configuration of the bot after joining the network. "
 	},
 	playerCommandFooter: {
-		ru: (args) => '🔸 - команда доступна только в личных сообщениях с ботом.',
-		en: (args) => '🔸 - the command is only available in private messages with bot.'
+		ru: (args) => '🔸 - команда доступна только в личных сообщениях с ботом.\nПри наборе команды писать `<` и `>` не надо.\nЭту информацию можно так же найти в закреплённых сообщения текстового канала.',
+		en: (args) => '🔸 - the command is only available in private messages with bot.\nUsing a command no need to write `<` and `>`.\nYou can alco find this information in the text channel pinned messages.'
 	},
 	onlyGuildChannel: {
-		ru: (args) => `Команда может быть вызвана только на сервере, в текстовом канале.`,
-		en: (args) => `Command can be invoked only in server, in text channel.`
+		ru: (args) => `Команда может быть вызвана только на сервере, в текстовом канале для бота.`,
+		en: (args) => `Command can be invoked only in server, in bot's text channel.`
 	},
 	onlyPrivateChannel: {
 		ru: (args) => `Команда может быть вызвана только в личных сообщениях с ботом.`,
@@ -677,12 +677,12 @@ const phrases = {
 		en: (args) => `Player \`${args[0]}\` have blocked me. So, I will block him to)..`
 	},
 	titleBadAccess: {
-		ru: (args) => `Плохой доступ`,
-		en: (args) => `Bad access`
+		ru: (args) => `Ошибка доступа`,
+		en: (args) => `Access error`
 	},
 	titleBadPlayer: {
-		ru: (args) => `Плохой игрок`,
-		en: (args) => `Bad player`
+		ru: (args) => `Ошибка цели`,
+		en: (args) => `Target error`
 	},
 	langConfirmation: {
 		ru: (args) => `Error`,
@@ -746,7 +746,7 @@ const phrases = {
 	},
 	toHome: {
 		ru: (args) => `Error`,
-		en: (args) => `Yee boy. Now it is my home!\nDon't forget to create moderator role by using \`-moderator <player>...\`.`
+		en: (args) => `Yee boy. Now it is my home!\nDon't forget to create moderator role by using \`-makemoderator <player>...\`.`
 	},
 	dontHaveHome: {
 		ru: (args) => `Error`,
@@ -832,7 +832,7 @@ const infoEmbeds = {
 		ru: new MessageEmbed({
 			color: '#b6cbd1',
 			title: "Так, ты реально заинтересовался", 
-			description: "Меня разработал один... *пшш..*\nТак-с, тут я разберусь. На связи `GeneralTao#5693`. Этот бот - мой первый боле-менее средний проект, в котором я хотел бы получит опыт разработки ботов, программирования на js. Разумеется, чтобы в конце получить что-то полезное. Разрабатываю бота, наверное, с начала 2021 года. ",               
+			description: "Меня разработал один... *пшш..*\nТак-с, тут я разберусь. На связи `GeneralTao#5693`. Этот бот - мой первый боле-менее средний проект, в котором я хотел бы получить опыт разработки ботов, программирования на js. Разумеется, чтобы в конце получить что-то полезное. Разрабатываю бота, наверное, с начала 2021 года. ",               
 			fields: [
 				{
 					name: 'Язык программирования', 

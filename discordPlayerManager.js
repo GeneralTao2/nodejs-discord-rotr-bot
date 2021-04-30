@@ -15,7 +15,7 @@ let roleIds = {
 //const enUserRoleId = '726406438142083133';
 //const ruUserRoleId = '449178005353267201';
 
-const guildId = '448934652992946176';
+exports.guildId = '837611904267583539';
 //let channelId = '726026506869932043';
 exports.channelId = undefined
 
@@ -87,11 +87,13 @@ async function initCurrentChannel(channelId) {
 }
 
 async function init() {
-    exports.currentGuild = await client.guilds.cache.get(guildId);
-    await exports.currentGuild.members.fetch()
-    await exports.currentGuild.roles.fetch()
-    if(exports.channelId) {
-        await initCurrentChannel(exports.channelId)
+    exports.currentGuild = await client.guilds.cache.get(exports.guildId);
+    if(exports.currentGuild) {
+        await exports.currentGuild.members.fetch()
+        await exports.currentGuild.roles.fetch()
+        if(exports.channelId) {
+            await initCurrentChannel(exports.channelId)
+        }
     }
 }
 
@@ -137,10 +139,13 @@ async function getUserDMbyMessageId(userId, messageId) {
 
 
 function isPlayerModerById(id) {
+    if(!roleIds['moderator']) {
+        return false;
+    }
     const roleArray = exports.currentGuild.roles.cache.filter(
 			role => role.id === roleIds['moderator']).array()
     if(!roleArray.length) {
-        return
+        return false
     }
     const role = roleArray[0]
     return getGuildMemberByUserId(id).roles.cache.has(role.id)
@@ -216,7 +221,6 @@ exports.matchTagStringByCommand = matchTagStringByCommand;
 exports.initCurrentChannel = initCurrentChannel
 exports.init = init;
 exports.client = client;
-exports.guildId = guildId;
 exports.botUserId = botUserId;
 exports.roleIds = roleIds
 exports.MessageAttachment = MessageAttachment

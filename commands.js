@@ -24,6 +24,7 @@ exports.invatePlayerCommand = async function invatePlayerCommand(user, args, mes
 
 exports.removePlayerCommand = async function removePlayerCommand(user, args, message) {
 	db.removeAddedPlayerById(user.id)
+	messagem.sendMessageToUser(user, 'titleRejection', 'rejection')
 }
 
 exports.cancelPlayerInvitationCommand = async function cancelPlayerInvitationCommand(user, args, message) {
@@ -197,10 +198,14 @@ exports.leaveBotChannelCommand = async function leaveBotChannelCommand(args, mes
 	const cahnnelInfo = await db.removeBotChannelId();
 	if (cahnnelInfo) {
 		for (let i = 0; i < cahnnelInfo.helpMessageDiscordIds.length; i++) {
-			const helpMessage = await discord.currentChennel.messages.fetch(cahnnelInfo.helpMessageDiscordIds[i]);
-			if (helpMessage) {
-				await helpMessage.unpin()
-				await helpMessage.delete()
+			try {
+				const helpMessage = await discord.currentChennel.messages.fetch(cahnnelInfo.helpMessageDiscordIds[i]);
+				if (helpMessage) {
+					await helpMessage.unpin()
+					await helpMessage.delete()
+				}
+			} catch (error) {
+				console.log("OMG, super ERROR!!!!")
 			}
 		}
 	}
@@ -323,6 +328,17 @@ exports.downloadMap = async function downloadMap(args, message) {
 	discord.currentChennel.send(attachment);
 }
 
+
+exports.aboutCommand = async function aboutCommand(args, message) {
+	let lang = messagem.getLang(message.author)
+	message.author.send(local.translateInfoEmbed('about', lang))
+}
+
+
+exports.superaboutCommand = async function superaboutCommand(args, message) {
+	let lang = messagem.getLang(message.author)
+	message.author.send(local.translateInfoEmbed('superabout', lang))
+}
 
 exports.gatherPlayersCommand = async function gatherPlayersCommand(args, message) {
 	const user = message.author;
@@ -500,6 +516,7 @@ async function addPlayerAfterInviting(user) {
 
 async function addPlayerProcess(user) {
 	dbinserter.addPlayer(user);
+	db.removeInvitedPlayerById(user.id);
 	messagem.sendMessageToUser(user, 'titleBegin', 'adding');
 	messagem.sendSystemMessage('systemInviteAcception', user.tag)
 }
@@ -507,7 +524,7 @@ async function addPlayerProcess(user) {
 async function askLanguage(user, imojiPressCallback, inviter) {
 	const languageMessage = await messagem.sendMessageToUser(user, 'titleLangConfirmation', 'langConfirmation')
 	await db.putLanguageMessageId(languageMessage.id, user.id)
-	upDownManager(languageMessage, user.id, threeDays, async () => {
+	vote.upDownManager(languageMessage, user.id, threeDays, async () => {
 		await discord.pinRoleById(user.id, 'ru')
 		if (imojiPressCallback) {
 			imojiPressCallback(user, inviter)
@@ -519,3 +536,5 @@ async function askLanguage(user, imojiPressCallback, inviter) {
 		}
 	}, '🇷🇺', '🇬🇧')
 }
+
+exports.sendInviteMassage = sendInviteMassage;

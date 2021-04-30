@@ -43,7 +43,7 @@ exports.commands = {
             bot: null,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: null,
             superuser: null,
             channel: 'common',
@@ -69,7 +69,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: true,
             superuser: null,
             channel: 'common',
@@ -83,7 +83,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: null,
             superuser: null,
             channel: 'common',
@@ -115,7 +115,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: true,
             superuser: null,
             channel: 'common',
@@ -141,7 +141,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: true,
             superuser: null,
             channel: 'common',
@@ -155,7 +155,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: null,
             superuser: null,
             channel: 'common',
@@ -181,7 +181,7 @@ exports.commands = {
             bot: null,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: null,
             superuser: null,
             channel: 'common',
@@ -207,7 +207,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: true,
             superuser: null,
             channel: 'common',
@@ -299,7 +299,7 @@ exports.commands = {
             bot: false,
             banned: false,
             added: true,
-            invited: false,
+            invited: null,
             moderator: null,
             superuser: null,
             channel: 'common',
@@ -613,6 +613,34 @@ exports.commands = {
         },
         func: commandsf.downloadMap
     },
+    about: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.aboutCommand
+    },
+    superabout: {
+        args: [],
+        rules: {
+            bot: false,
+            banned: false,
+            added: true,
+            invited: false,
+            moderator: null,
+            superuser: null,
+            channel: 'private',
+            name: 'user'
+        },
+        func: commandsf.superaboutCommand
+    },
 }
 
 const ruleCheckerMetaData = {
@@ -835,6 +863,7 @@ exports.handleCommand = async function handleCommand(message) {
                     case 'common': {
                         if(channelType != 'common') {
                             messagem.sendMessage(message.author, 'titleBadChannel', 'onlyGuildChannel', channelType);
+                            console.log(channelType)
                             return;
                         }
                         break;
@@ -862,13 +891,13 @@ exports.handleCommand = async function handleCommand(message) {
 
             }
 
-            console.log(args)
+            //console.log(args)
+            message.react('👌');
             if(userMentions.length) {
                 for(let j=0; j<userMentions.length; j++) {
                     command.func(userMentions[j], args, message)
                 }
             } else {
-                message.react('👌');
                 command.func(args, message)
             }
 
