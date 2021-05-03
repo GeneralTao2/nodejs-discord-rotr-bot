@@ -848,6 +848,7 @@ exports.handleCommand = async function handleCommand(message) {
         if(message.content.match(commandReg)) {
             const command = exports.commands[commandName];
             let channelType;
+            //console.log(discord.channelId)
             if(message.channel.id === discord.channelId) {
                 channelType = 'common';
             } else if(!message.guild) {

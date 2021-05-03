@@ -155,6 +155,7 @@ async function initReactionsAfterRelog() {
 
 // Handle message types
 discord.client.on('message', async (message) => {
+	//console.log(message.channel.id)
 	command.handleCommand(message);
 });
 

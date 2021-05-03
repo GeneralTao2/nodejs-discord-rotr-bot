@@ -15,7 +15,7 @@ let roleIds = {
 //const enUserRoleId = '726406438142083133';
 //const ruUserRoleId = '449178005353267201';
 
-exports.guildId = '837611904267583539';
+exports.guildId = '382234807003906061';
 //let channelId = '726026506869932043';
 exports.channelId = undefined
 
