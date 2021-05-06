@@ -705,8 +705,8 @@ const phrases = {
 		en: (args) => `Anyone home?`
 	},
 	titleBadChannel: {
-		ru: (args) => `Плохой канал`,
-		en: (args) => `Bad channel`
+		ru: (args) => `Неверный канал`,
+		en: (args) => `Wrong channel`
 	},
 	titleBegin: {
 		ru: (args) => `Давай же начнём!`,
